@@ -1,0 +1,16 @@
+# Genetic Markers & Basic Summary Statistics
+
+
+
+## Marker Types
+
+
+## Sampling
+
+
+
+## Allele Frequencies
+
+
+
+## Hardy-Weinberg Equilibrium
