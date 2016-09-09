@@ -1,0 +1,6 @@
+book_filename: "LGDA"
+chapter_name: ""
+rmd_files: [
+  "index.Rmd",
+  "Configuring.Rmd", "Vector_Raster.Rmd", "Map_Projections.Rmd"
+]
