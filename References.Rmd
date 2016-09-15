@@ -1,0 +1,5 @@
+# References Cited {.hanging}
+
+Dyer RJ. 2015  Is there such a thing as landscape genetics?  *Molecular Ecology*, **24**, 3518-3528.
+
+Manel S, Schwartz MK, Luikart G, Taberlet P.  2003.  Landscape genetics: combining landscape ecology and population genetics.  *Trends in Ecology and Evolution*, **18**, 189-197.

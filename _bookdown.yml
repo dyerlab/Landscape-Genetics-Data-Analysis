@@ -3,8 +3,9 @@ chapter_name: ""
 rmd_files: [
   "index.Rmd",
   "part_day_1.Rmd", "Configuring.Rmd", "Vector_Raster.Rmd", "Map_Projections.Rmd",
-  "part_day_2.Rmd", "Markers_Summary_Stats.Rmd", "Distance_Diversity.Rmd", "Genetic_Structure.Rmd",
+  "part_day_2.Rmd", "Genetic_Data.Rmd", "Genetic_Diversity.Rmd", "Genetic_Distance.Rmd", "Genetic_Structure.Rmd",
   "part_day_3.Rmd", "RemoteSensing.Rmd", "Barriers.Rmd", "Resistance.Rmd", 
   "part_day_4.Rmd", "Networks.Rmd", "Autocorrelation.Rmd",
-  "part_day_5.Rmd", "AdaptiveVariance.Rmd", "QuantitativeGenetics.Rmd", "ChromosomeWalking.Rmd"
+  "part_day_5.Rmd", "AdaptiveVariance.Rmd", "QuantitativeGenetics.Rmd", "ChromosomeWalking.Rmd",
+  "part_back.Rmd", "References.Rmd"
 ]
