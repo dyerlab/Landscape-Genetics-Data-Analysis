@@ -7,5 +7,5 @@ rmd_files: [
   "part_day_3.Rmd", "RemoteSensing.Rmd", "Barriers.Rmd", "Resistance.Rmd", 
   "part_day_4.Rmd", "Networks.Rmd", "Autocorrelation.Rmd",
   "part_day_5.Rmd", "AdaptiveVariance.Rmd", "QuantitativeGenetics.Rmd", "ChromosomeWalking.Rmd",
-  "part_back.Rmd", "References.Rmd"
+  "part_back.Rmd", "References.Rmd", "Appendix_RGDAL.Rmd"
 ]
