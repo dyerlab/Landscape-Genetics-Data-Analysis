@@ -1,51 +1,139 @@
 ---
-title: "Untitled"
-author: "R.J. Dyer"
-date: "September 16, 2016"
+title: "Vector & Raster Data"
+author: "Landscape Genetic Data Analysis Workshop"
+date: "SCENE Scotland, October, 2016"
 output: ioslides_presentation
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set()
 ```
 
-## The Characteristic Equation
+## The sp Library
 
-Landscape genetics has been described as a combination of landscape ecology and population genetics.
-
-\[
-G \propto f(E)
-\]
-
-
-$G$ - A measure of the spatial distribution of genetic variance.  
-$E$ - Variables external to the individuals/populations being examined.  
-$f()$ - Mapping and relationship among $E$ to maximally explain $G$.  
+A package containing data structure and support functions for point, line, and polygon data.^[Pebesma *et al.* 2005, Bivand *et al.* 2013]
 
 
 
 
-## R Markdown
 
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+## Coordinates {.build}
 
-## Slide with Bullets
+Spatial coordinates in R can be defined using normal data structures.
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
-
-## Slide with R Output
-
-```{r cars, echo = TRUE}
-summary(cars)
+```{r}
+coords <- matrix( c(-114.2935,29.32541,
+                    -113.9449,29.01457,
+                    -113.6679,28.96651), ncol=2, byrow=TRUE )
+colnames(coords) <- c("Longitude","Latitude")
+coords
 ```
 
-## Slide with Plot
 
-```{r pressure}
-plot(pressure)
+## Coordinates 
+
+However, for a set of corrdinates, there is more metadata that needs to be associated with the coordinates that *suggest* slightly more complicated data structures.
+
+```{r message=FALSE, warning=FALSE}
+library(sp)
+pts <- SpatialPoints( coords )
+summary(pts)
 ```
 
+## Coordinates
+
+
+```{r}
+pts
+bbox(pts)
+```
+
+
+## Coordiante Reference Systems
+
+A mathematical representation of coordiante space used to describe the non-flat (and non-spheroid) shape of the earth.
+
+```{r}
+proj <- "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
+proj4string(pts) <- CRS(proj)
+pts
+```
+
+
+## Coordinate Reference System Components 
+
+There are two main components to coordinate refrences systems:
+
+* Ellipsoid - Describe the physical shape of the earth
+* Projection - A way to represent the ellipsoid shape as a 2-dimensional object
+
+
+
+## Ellipsoids
+
+Commonly used models of earth's shape as an ellipsoid include:  
+
+* **NAD27** - North American Datum of 1927 based upon land surveys  
+* **NAD83/GRS80** - Is based upon satellite data measuring the radial distance of the earth.
+* **WGS84** - World Geodetic System refined initially for military use during the development of GPS systems.
+
+
+## Projections
+
+A way of converting the spherical coordinates on an ellipsoid, such as longitude and latitude or UTM, into 2-dimensional coordinates that we can use to map items on the surface of the earth.  All projectsion produce bias in area, distance, and/or shape.
+
+> - **Aximuthal**: A projection of coordiantes onto a plane that is tangential to the surface of the earth (typically a the pole or equator).  
+> - **Cylindrical**: Projects the surface of the earth onto a cylinder, which is 'unrooled' like a large map.  This is why Greenland is so large...
+> - **Conic**: Project coordinates onto a cone.
+
+
+## Equatorial Projections
+
+```{r projections1, warning=FALSE, message=FALSE, echo=FALSE, fig.align="center"}
+library(maps)
+par(mfrow=c(1,3))
+map("world",proj="mercator", ylim=c(38,70), xlim=c(-10,25))
+map("world",proj="mollweide", ylim=c(38,70), xlim=c(-10,25))
+map("world",proj="gilbert", ylim=c(38,70), xlim=c(-10,25))
+par(mfrow=c(1,1))
+```
+
+Mercator, Mollweide, & Gilbert projections of the same map
+
+
+## Cylindrical Projections
+
+
+
+```{r echo=FALSE,fig.align="center"}
+par(mfrow=c(1,3))
+map("world",proj="orthographic", ylim=c(38,70), xlim=c(-10,25))
+map("world",proj="stereographic", ylim=c(38,70), xlim=c(-10,25))
+map("world",proj="gnomonic", ylim=c(38,70), xlim=c(-10,25))
+par(mfrow=c(1,1))
+```
+
+Orthographic, Stereographic, & Gnomonic projections.
+
+
+
+## Conical Projections
+
+```{r echo=FALSE,fig.align="center"}
+par(mfrow=c(1,3))
+map("world",proj="conic", par=54, ylim=c(38,70), xlim=c(-10,25))
+map("world",proj="albers", par=c(7.5,54), ylim=c(38,70), xlim=c(-10,25))
+map("world",proj="lambert", par=c(7.5,54), ylim=c(38,70), xlim=c(-10,25))
+par(mfrow=c(1,1))
+```
+
+Conic, Albers Equal Area, and Lambert projections tangental to the center of the map.
+
+
+## Citations {.hanging}
+
+Pebesma, E.J., R.S. Bivand, 2005. Classes and methods for spatial data in R. *R News*, **5**, 2,  http://cran.r-project.org/doc/Rnews/.  
+
+Roger S. Bivand, Edzer Pebesma, Virgilio Gomez-Rubio, 2013. *Applied spatial data analysis
+  with R*, Second edition. Springer, NY. http://www.asdar-book.org/
