@@ -1,4 +1,4 @@
-.reveal section del {
+.reveal .section del {
   color: red;
 }
 
@@ -23,6 +23,11 @@
 
 .section .reveal .state-background {
    background: #000000;
+}
+
+h1 .state-background {
+  position: absolute;
+  bottom: 150px;
 }
 
 .midcenter {
