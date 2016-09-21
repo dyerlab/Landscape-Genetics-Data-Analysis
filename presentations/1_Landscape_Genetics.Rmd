@@ -1,0 +1,193 @@
+---
+title: "Landscape Genetics"
+author: "Landscape Genetic Data Analysis Workshop"
+date: "SCENE Scotland, October, 2016"
+output: ioslides_presentation
+---
+
+## Overview
+
+- General Overview of the Workshop?
+- What is landscape genetics?  
+- How do we configure R tools?
+- Data sets used.
+
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(global.par = TRUE)
+```
+
+```{r echo=FALSE}
+par( bg=NA )
+```
+
+
+
+<!------------------------------------------------
+
+          Initial Overview of Workshop
+
+------------------------------------------------->
+
+# Workshop Overview
+
+
+## General Schedule
+
+Over the next five days, we will be covering techniques and approaches that fall into the following general categories.
+
+Day       | Topics
+----------|----------------------------------------------------------
+Monday    | Overall Introduction & Spatial Data
+Tuesday   | Population Genetics & Genetic Data
+Wednesday | Defining Functional Relationships
+Thursday  | Spatial and Network Approaches
+Friday    | Adaptive Genetic Variance
+
+
+## Resources
+
+We have compiled the following items to help in instruction:
+
+> - Slides for each topic overview and enough background on theory and techniques to 
+> - The text, *Landscape Genetic Data Analysis*, is provided as an HTML book.  The source for this text is also available at the [Dyerlab github](https://github.com/dyerlab/Landscape-Genetics-Data-Analysis) site.  This text goes into deeper detail than the slides on each topic.
+> - Practical exercises will allow you get your *hands on the data*
+
+
+## Lectures
+
+Lectures will thematic and are provided as html output.  
+
+> - Focus on background theory as well as the practical approaches used to perform analyses.
+> - They are also available at the [Dyerlab github](https://github.com/dyerlab/Landscape-Genetics-Data-Analysis) site in source format in the `presentations` subdirectory.
+
+
+## Practical Exercises
+
+The overall goal of this workshop is to provide:
+
+- Overview of the background theory used in Landscape Genetic studies.
+- A set of reference code and data highlighting how do conduct anlayses that are commonly found in Landscape Genetic studies.
+- Practical exercises that allow you to develop your own code to perform these analyses.
+
+
+
+
+
+<!------------------------------------------------
+
+          What is Landscape Genetics
+
+------------------------------------------------->
+
+# Landscape Genetics
+
+## Landscape Genetics
+
+The term *Landscape Genetics* was coined by Manel *et al.* (2003) as:
+
+> Landscape genetics can resolve population substructure across different geographical scales at fine taxonomic levels; thus, it is different from the existing disciplines of biogeography, which focuses mainly on species diversity patterns at broad temporal and spatial scales, and phylogeography, which combines phylogenetics and biogeography... 
+
+## Landscape Genetics
+
+They further state that it is characterized, in a proceedural way, by:
+
+> The two key steps of landscape genetics are the detection of genetic discontinuities and the correlation of these discontinuities with landscape and environmental features, such as barriers (e.g. mountains, gradient of humidity).
+
+## Landscape Genetics | Literature Review (Dyer 2015) 
+
+<div class="centered">
+![](../media/LG_Papers.png)
+</div>
+
+
+## Landscape Genetics
+
+
+<div class="centered">
+![](../media/Lexicographic.png)
+</div>
+
+
+
+## Landscape Genetics {.columns-2}
+
+```{r, echo=FALSE}
+knitr::include_graphics("../media/lg_classification.png",dpi=400)
+```
+
+
+Are *Introduction* and *Methods* of Landscape Genetic manuscripts written in a way that suggests that this new field is a blend (fusion) of both Landscape Ecology and Population Genetics?
+
+
+
+## The Canonical Equation
+
+All landscape (and the majority of population) genetic studies can be categorized as trying to quantify the expression:
+
+\[
+G \propto f(E)
+\]
+
+where $G$ quantifies the spatial distribution of genetic variation, which has been created by some function of external (ecological, environemntal, demographic, spatial) variables $f(E)$.
+
+
+
+## Temporal Scales {.columns-2}
+
+![](../media/Stratigraphy.png)
+
+Spatial distribution of genetic variance is the results of a stratigraphy of evolutionary and demographic processes.  These historical factors provide constraints on where alleles are and may need to be factored out.
+
+## Populations vs. Individuals 
+
+```{r, echo=FALSE, fig.align="center"}
+knitr::include_graphics("../media/LG_Groups.png", dpi=330)
+```
+
+
+## Populations vs. Individuals | Different Causal Factors 
+
+
+Factor                     | Individual       | Population
+---------------------------|------------------|------------
+Generating Function        | Largely Behavior | Population Genetic Processes
+Theory to Future Structure | Largely Missing  | Standard Dogma
+
+
+
+
+<!------------------------------------------------
+
+          Configuring Tool Sets
+
+------------------------------------------------->
+
+# Configuring Tools
+
+
+
+
+
+# The Data Sets
+
+# Included Data
+
+You are more than welcome to use your own data at the end of each day and we will do what we can to help you. However, in the course of the practical exercises (and in the text and slides), we will use data that comes with the *gstudio* package.
+
+- Sonoran desert bark beetle *Araptus attenuatus*.  
+- Flowering dogwood, *Cornus florida*.
+
+## Data Sets | *Araptus attenuatus* {.columns-2}
+
+- Known only from the scenesing stems of the desert plant, *Euphorbia lomelii*.
+- Sonoran desert endemic
+- Cryptic speciation
+- Post-pleistocene range expansion
+- Collections throughout species range
+- Nuclear co-dominant & AFLP data
+
+
+
+## Data Sets | *Cornus florida*
+
