@@ -9,17 +9,101 @@ There are several kinds of genetic markers that can be used in landscape genetic
 
 For the purposes of this work, we are going to focus on genetic markers rather than sequence data.  These are most commonly nuclear markers---though there are cpDNA microsat markers in some species that make them very amenable to landscape genetic studies.  
 
+In R, there is not a default data type for genetic markers, and as such we will rely upon one derived in a package created by R. Dyer called *gstudio*.  This package provides not only a default data type `locus` but also the accompanying functions and routines that are commonly used in the spatial analysis of population genetic data (a subset of which we use in Landscape studies).  There are other packages available for genetic analyses, though not all are intercompatible.  In the *gstudio* package, the `locus` object is treated just as any other kind of data and can be inserted contained within `data.frame`, `list`, and `vector` containers just like any other kind of data.  In doing so, it allows the analysis workflow to proceed in a more streamline fashion.
 
-
-
-In R, the gstudio package defined the genotype as just another kind of data type, one that can be contained within `data.frame`, `list`, and `vector` objects just like any other.
+Here are some basic constructs for how to create and manipulate `locus` objects.  A locus is constructed by passing it zero or more alleles.  
 
 ```{r}
 library(gstudio)
+loc0 <- locus()
+loc0
+```
+
+A locus without alleles is recorded as missing data.^[No need to use negative numbers or any other kind of metric, it is just missing as if you didn't get the observation.]  Alleles within a locus can be defined as charater types, 
+
+```{r}
+
 loc1 <- locus( c("A","B") )
 loc1
 ```
 
+numeric types, 
+
+```{r}
+loc2 <- locus( c(128,134) )
+loc2
+```
+
+or any other construct
+
+```{r}
+loc3 <- locus( c("Minor Allele", "Major Allele"))
+loc3
+```
+
+And collections of them are stored as vectors.
+
+```{r}
+loci <- c( loc0, loc1, loc2, loc3 )
+loci
+```
+
+### Loading External Data
+
+The most way to get genotypes into R is to load them from an external file.  In many labs, genotypic data is kept in a spreadsheet-like format (or `data.frame` in R), where:  
+
+- Each row of the data represent observations on a single individual.  This may include information other than genotypes such as spatial coordinates, sampling locale, internal ID number, etc.   
+- Each column represents a single kind of data measured across all observations.  May be missing observations, genotypes, or whatever.  
+
+Loading the data in and configuring the genotypes as `locus` objects requires that we identify the columns of the data that are to be translated into `locus` objects as well as the kind of marker it is representing (AFLP vs. SNP vs. Microsatellite) and the format in which data are currently stored.  The following table provides some of the more commonly used types:
+
+Locus Type  | Description
+------------|-------------------------------------------------------------------------------
+aflp        | Amplified Fragment Length Polymorphism with bands encoded as $0$ or $1$.
+column      | Co-dominant markers such as microsatellite loci encoded as one allele per</br> column of data.  For diploid data, there are twice as many columns of</br> alleles as there are marker loci.
+separated   | Co-dominant markers in a single column with alleles separated by a pre-defined </br> symbol (default is ':').  For species with $ploidy > 2$, this is the default</br> approach for importing polyploid genotypes.
+snp         | Alleles encoded by the number of minor alleles 0, 1, or 2.
+genepop     | Import from the standard (non-fancy) genepop file format.
+
+Here are some examples data files that are included in the *gstudio* package and how they can be loaded in.  For your data, change out the path.  In all cases, the structure that is loaded into R is a `data.frame`.
+
+Here is a raw AFLP file
+
+```{r}
+path <- system.file("extdata", "data_aflp.csv", package = "gstudio")
+system( paste("head",path), intern = FALSE )
+```
+
+which is loaded as:
+
+```{r}
+data <- read_population( path, type="aflp", locus.columns = 4:7 )
+summary(data)
+```
+
+
+Here is a two-column microsat locus
+
+```{r}
+path <- system.file("extdata", "data_2_column.csv", package = "gstudio")
+system( paste("head",path), intern = FALSE )
+```
+
+which is loaded as:
+
+```{r}
+data <- read_population( path, type="column", locus.columns = 4:7 )
+summary(data)
+```
+
+### Build-In Data Sets
+
+There are some built-in data sets (described in \@ref(data-sets)) that we will be using and can be loaded into your workspaces using `data()`.  The main one in *gstudio* is the *Arapatus attenuatus* data set (referenced in shorthand as `arapat`).
+
+```{r}
+data(arapat)
+summary( arapat )
+```
 
 
 
