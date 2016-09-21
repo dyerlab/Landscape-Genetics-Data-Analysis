@@ -1,0 +1,96 @@
+---
+title: "Landscape Genetics"
+author: "Landscape Genetic Data Analysis Workshop"
+date: "SCENE Scotland, October, 2016"
+output: ioslides_presentation
+---
+
+## Overview
+
+- General Overview of the Workshop?
+- What is landscape genetics?  
+- How do we configure R tools?
+
+
+
+<!------------------------------------------------
+
+          Initial Overview of Workshop
+
+------------------------------------------------->
+
+# Workshop Overview
+
+
+## General Schedule
+
+Over the next five days, we will be covering techniques and approaches that fall into the following general categories.
+
+Day       | Topics
+----------|----------------------------------------------------------
+Monday    | Overall Introduction & Spatial Data
+Tuesday   | Population Genetics & Genetic Data
+Wednesday | 
+Thursday  | Spatial and Network Approaches
+Friday    | Adaptive Genetic Variance
+
+
+## Resources
+
+We have compiled the following items to help in instruction:
+
+> - Slides for each topic overview and enough background on theory and techniques to 
+> - The text, *Landscape Genetic Data Analysis*, is provided as an HTML book.  The source for this text is also available at the [Dyerlab github](https://github.com/dyerlab/Landscape-Genetics-Data-Analysis) site.  This text goes into deeper detail than the slides on each topic.
+> - Practical exercises will allow you get your *hands on the data*
+
+
+## Lectures
+
+Lectures will thematic and are provided 
+
+## Practical Exercises
+
+
+
+
+
+
+<!------------------------------------------------
+
+          What is Landscape Genetics
+
+------------------------------------------------->
+
+# Landscape Genetics
+
+## Landscape Genetics
+
+The term *Landscape Genetics* was coined by Manel *et al.* (2003) as:
+
+> Landscape genetics can resolve population substructure across different geographical scales at fine taxonomic levels; thus, it is different from the existing disciplines of biogeography, which focuses mainly on species diversity patterns at broad temporal and spatial scales, and phylogeography, which combines phylogenetics and biogeography... 
+
+## Landscape Genetics
+
+They further state
+
+> The two key steps of landscape genetics are the detection of genetic discontinuities and the correlation of these discontinuities with landscape and environmental features, such as barriers (e.g. mountains, gradient of humidity).
+
+
+## Temporal Scales
+
+
+## Characteristics
+
+
+## Population vs. Individual 
+
+
+
+<!------------------------------------------------
+
+          Configuring Tool Sets
+
+------------------------------------------------->
+
+# Configuring Tools
+
