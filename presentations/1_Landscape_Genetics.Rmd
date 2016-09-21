@@ -10,6 +10,16 @@ output: ioslides_presentation
 - General Overview of the Workshop?
 - What is landscape genetics?  
 - How do we configure R tools?
+- Data sets used.
+
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(global.par = TRUE)
+```
+
+```{r echo=FALSE}
+par( bg=NA )
+```
 
 
 
@@ -30,7 +40,7 @@ Day       | Topics
 ----------|----------------------------------------------------------
 Monday    | Overall Introduction & Spatial Data
 Tuesday   | Population Genetics & Genetic Data
-Wednesday | 
+Wednesday | Defining Functional Relationships
 Thursday  | Spatial and Network Approaches
 Friday    | Adaptive Genetic Variance
 
@@ -46,10 +56,19 @@ We have compiled the following items to help in instruction:
 
 ## Lectures
 
-Lectures will thematic and are provided 
+Lectures will thematic and are provided as html output.  
+
+> - Focus on background theory as well as the practical approaches used to perform analyses.
+> - They are also available at the [Dyerlab github](https://github.com/dyerlab/Landscape-Genetics-Data-Analysis) site in source format in the `presentations` subdirectory.
+
 
 ## Practical Exercises
 
+The overall goal of this workshop is to provide:
+
+- Overview of the background theory used in Landscape Genetic studies.
+- A set of reference code and data highlighting how do conduct anlayses that are commonly found in Landscape Genetic studies.
+- Practical exercises that allow you to develop your own code to perform these analyses.
 
 
 
@@ -71,18 +90,70 @@ The term *Landscape Genetics* was coined by Manel *et al.* (2003) as:
 
 ## Landscape Genetics
 
-They further state
+They further state that it is characterized, in a proceedural way, by:
 
 > The two key steps of landscape genetics are the detection of genetic discontinuities and the correlation of these discontinuities with landscape and environmental features, such as barriers (e.g. mountains, gradient of humidity).
 
+## Landscape Genetics | Literature Review (Dyer 2015) 
 
-## Temporal Scales
+<div class="centered">
+![](../media/LG_Papers.png)
+</div>
 
 
-## Characteristics
+## Landscape Genetics
 
 
-## Population vs. Individual 
+<div class="centered">
+![](../media/Lexicographic.png)
+</div>
+
+
+
+## Landscape Genetics {.columns-2}
+
+```{r, echo=FALSE}
+knitr::include_graphics("../media/lg_classification.png",dpi=400)
+```
+
+
+Are *Introduction* and *Methods* of Landscape Genetic manuscripts written in a way that suggests that this new field is a blend (fusion) of both Landscape Ecology and Population Genetics?
+
+
+
+## The Canonical Equation
+
+All landscape (and the majority of population) genetic studies can be categorized as trying to quantify the expression:
+
+\[
+G \propto f(E)
+\]
+
+where $G$ quantifies the spatial distribution of genetic variation, which has been created by some function of external (ecological, environemntal, demographic, spatial) variables $f(E)$.
+
+
+
+## Temporal Scales {.columns-2}
+
+![](../media/Stratigraphy.png)
+
+Spatial distribution of genetic variance is the results of a stratigraphy of evolutionary and demographic processes.  These historical factors provide constraints on where alleles are and may need to be factored out.
+
+## Populations vs. Individuals 
+
+```{r, echo=FALSE, fig.align="center"}
+knitr::include_graphics("../media/LG_Groups.png", dpi=330)
+```
+
+
+## Populations vs. Individuals | Different Causal Factors 
+
+
+Factor                     | Individual       | Population
+---------------------------|------------------|------------
+Generating Function        | Largely Behavior | Population Genetic Processes
+Theory to Future Structure | Largely Missing  | Standard Dogma
+
 
 
 
@@ -93,4 +164,30 @@ They further state
 ------------------------------------------------->
 
 # Configuring Tools
+
+
+
+
+
+# The Data Sets
+
+# Included Data
+
+You are more than welcome to use your own data at the end of each day and we will do what we can to help you. However, in the course of the practical exercises (and in the text and slides), we will use data that comes with the *gstudio* package.
+
+- Sonoran desert bark beetle *Araptus attenuatus*.  
+- Flowering dogwood, *Cornus florida*.
+
+## Data Sets | *Araptus attenuatus* {.columns-2}
+
+- Known only from the scenesing stems of the desert plant, *Euphorbia lomelii*.
+- Sonoran desert endemic
+- Cryptic speciation
+- Post-pleistocene range expansion
+- Collections throughout species range
+- Nuclear co-dominant & AFLP data
+
+
+
+## Data Sets | *Cornus florida*
 
