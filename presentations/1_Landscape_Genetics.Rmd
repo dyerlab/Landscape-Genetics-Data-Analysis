@@ -51,7 +51,7 @@ We have compiled the following items to help in instruction:
 
 > - Slides for each topic overview and enough background on theory and techniques to 
 > - The text, *Landscape Genetic Data Analysis*, is provided as an HTML book.  The source for this text is also available at the [Dyerlab github](https://github.com/dyerlab/Landscape-Genetics-Data-Analysis) site.  This text goes into deeper detail than the slides on each topic.
-> - Practical exercises will allow you get your *hands on the data*
+> - Practical exercises will allow you get your *hands on the data* which will push you to work with data using methods that were covered in both the slides and the text.
 
 
 ## Lectures

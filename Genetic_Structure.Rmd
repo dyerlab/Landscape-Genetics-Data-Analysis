@@ -518,7 +518,7 @@ Here is what that looks like (the `droplevels()` bit is to remove the non-observ
 df
 ```
 
-If you look at the alleles present by locus, you can see quite that the allele frequencies (above) are not that close to each other—in fact, population 101 has the 04 allele that is not present in population 102.  Numerically, they are:
+If you look at the alleles present by locus, you can see quite that the allele frequencies (above) are not that close to each other—in fact, population `101` has the `04` allele that is not present in population 102.  Numerically, they are:
 
 ```{r}
 frequencies(df, stratum = "Population")
@@ -531,21 +531,21 @@ x <- c(genetic_diversity(df[df$Population=="101",],mode="He")$He, genetic_divers
 x
 ```
 
-which results in an estimate of [~] of:
+which results in an estimate of $H_S$:
 
 ```{r}
 hs <- mean(x)
 hs
 ```
 
-Similarly, the parameter [~] is:
+Similarly, the parameter $H_T$ is:
 
 ```{r}
 ht <- genetic_diversity(df,mode="He")$He
 ht
 ```
 
-We can estimate [~] as:
+We can estimate $F_{ST}$ as:
 
 ```{r}
 Fst_biased <- 1 - hs/ht
@@ -555,21 +555,21 @@ Fst_biased
 If we do take into consideration the error associated with estimating these parameters, we find a much smaller value:
 
 ```{r}
-#Fst(df)
+Fst(df)
 ```
 
-Notice here that [~] is estimated from averaging (the first way) 10% lower than done when considering sampling allocations.  The bias associated with [~] is much smaller but exists all the same.  Overall, the problem here is an overestimation of [~] by a factor of almost 3!  These results are exaggerated a bit because of the small size—it would be foolish to estimate [~] from only N=17 individuals from two populations.  However, it does show the importance of considering sampling allocations.  As you sample more individuals, these estimates of heterozygosity will converge.
+Notice here that $H_S$ is estimated from averaging (the first way) 10% lower than done when considering sampling allocations.  The bias associated with $H_T$ is much smaller but exists all the same.  Overall, the problem here is an overestimation of $F_{ST}$ by a factor of almost 3!  These results are exaggerated a bit because of the small size—it would be foolish to estimate $F_{ST}$ from only N=17 individuals from two populations.  However, it does show the importance of considering sampling allocations.  As you sample more individuals, these estimates of heterozygosity will converge.
 
 ### Additional $X_{ST}$-like Parameters
 
 The use (and perhaps misuse) of [~] has supported the development of almost a cottage industry in other parameters, each trying to fit into a specific perceived problem in the original parameter.  Here are some other extensions of this basic parameter that you may come across:  
 
 - $R_{ST}$ for Microsatellite loci.  This uses the ladder genetic distance metric discussed previously.  
-- [~] for Nucleotides variation.  
-- [~] for population subdivision (and in some cases mutation).  
-- [~] for loci with high allelic diversity (along with its nemesis [~]).
+- $N_{ST}$ for Nucleotides variation.  
+- $G_{ST}$ for population subdivision (and in some cases mutation).  
+- $G_{ST}^\prime$ for loci with high allelic diversity (along with its nemesis $D_{est}$).
 
-Each of these parameters attempts to solve an additional problem that people have posed for [~].  The magnitude of bias associated with each may be differential, depending upon the extent to which your data are violating underlying assumptions.  For example, at highly diverse loci, the expectation for [~] is limited in that it cannot reach its theoretical maximum.  As such, Hedrick (ref) has derived the [~] parameter that corrects for this.  In general, the degree to which [~] and [~] diverge depend upon both the diversity and the evenness of allele frequencies in your populations.  This begs the question, “Is there a cutoff when I should not longer use [~] and prefer [~] instead?"  I think Hedrick would suggest to always use it the secondary one, just in case, though it may be in your best interest to examine the differences in the parameters in your own data first.
+Each of these parameters attempts to solve an additional problem that people have posed for $F_{ST}$.  The magnitude of bias associated with each may be differential, depending upon the extent to which your data are violating underlying assumptions.  For example, at highly diverse loci, the expectation for [~] is limited in that it cannot reach its theoretical maximum.  As such, Hedrick (ref) has derived the [~] parameter that corrects for this.  In general, the degree to which [~] and [~] diverge depend upon both the diversity and the evenness of allele frequencies in your populations.  This begs the question, “Is there a cutoff when I should not longer use [~] and prefer [~] instead?"  I think Hedrick would suggest to always use it the secondary one, just in case, though it may be in your best interest to examine the differences in the parameters in your own data first.
 
 Here is an example of how these parameters may give alternative estimates.  I'll use the MP20 locus as it is a microsatellite locus of high diversity and compare the [~], [~], and [~] estimates.
 
@@ -622,10 +622,12 @@ fit <- amova( D ~ pop, nperm=1000 )
 fit
 ```
 
-This gives us the standard anova table and an estimate of the probability associated with the variance component representing among-population variance, [~].  
-The estimated variance components of this model, we can estimate a structure statistic, [~], which for a 1-level analysis is
+This gives us the standard anova table and an estimate of the probability associated with the variance component representing among-population variance, $\sigma_A^2$.  
+The estimated variance components of this model, we can estimate a structure statistic, $\Phi_{ST}$, which for a 1-level analysis is
 
-[~]
+\[
+\Phi_{ST} = \frac{\sigma_A^2}{\sigma_A^2+\sigma_W^2}
+\]
 
 and from the output of the amova() function can be estimated as (don't know why this isn't done automagically)
 
