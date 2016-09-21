@@ -17,4 +17,4 @@ _book*
 *-figure/
 *.md
 *_Slides.html
-presentations/*.html
+*.html
