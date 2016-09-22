@@ -41,8 +41,8 @@ install_github("dyerlab/gstudio")
 
 In addition to this library, the text in this book utilizes requires several other packages from both CRAN and GitHub. The following if you run the following code, you should be up-to-date on the necessary packages used throughout this text.
 
-```{r echo=FALSE, warning=FALSE}
-files <- list.files(path=c(".","./presentations/"),pattern=".Rmd")
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+files <- list.files(path=c(".","./presentations/"),pattern=".Rmd",full.names = TRUE)
 libraries <- NA
 for( file in files ) {
   suppressWarnings(s <- system( paste("grep -E -o 'library\\(\\w+\\)'",file), intern=TRUE))
@@ -90,7 +90,7 @@ Make sure these are installed and up-to-date.
 
 ## Data Sets
 
-This course will use two different data sets from the Dyer Laboratory.
+This course will use two different data sets from the Dyer Laboratory.  Both of these data sets have been used in landscape genetic analyses.  The *Arapatus attenuata* data set has been sampled throughout the breadth of the entire species range and facilitates research questions regarding large spatial and temporal inferences.  The *Cornus florida* data focuses on features influencing mating at the scale of a few hundred hectares illuminating the features that influence how genes move across a landscape during a single reproductive bout.
 
 ### The Sonoran desert bark beetle, *Araptus attenuata*
 

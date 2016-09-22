@@ -1,4 +1,6 @@
-# Genetic Data
+# Genetic Data {.imageChapter}
+
+<div class="chapter_image"><img src="media/ch_pepsis.jpg"></div>
 
 > The spatial distribution of genetic variation is represeneted by some form of a genetic marker.  In this section, the identity of genetic markers and some fundamental propoerties of genotypes will be examined.  
 
@@ -106,6 +108,31 @@ summary( arapat )
 ```
 
 
+### General Manipulation Functions
+
+In working with data in R, the *gstudio* library has added several conviencence functions that help in manipulation and analyses.  
+
+Spatial coordinates for strata can be extracted using `strata_coordinates()`, which takes the centroid of all coordinates in each locale.
+
+```{r}
+library(DT)
+coords <- strata_coordinates( arapat )
+datatable(coords,rownames = FALSE)
+```
+
+The default convention for this and **almost all** support functions in *gstudio* is that they assume the column that has the locale data is named `Population` and the columns for coordiantes are named `Longitude` and `Latitude` (and they are valid decimal coordinates).  If you use different nomenclatures, then you must indicate the names of these columns.
+
+Mapping locales is also a common enough process that *gstudio* provides helper 
+
+```{r message=FALSE, warning=FALSE}
+library( ggmap )
+library( ggplot2 ) 
+library( ggrepel )
+map <- population_map(coords)
+p <- ggmap( map )
+p <- p + geom_strata(aes(x=Longitude, y=Latitude, stratum=Population), data=arapat)
+p
+```
 
 
 ## Allele Frequencies

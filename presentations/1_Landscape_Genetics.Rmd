@@ -252,13 +252,23 @@ You are more than welcome to use your own data at the end of each day and we wil
 - Sonoran desert bark beetle *Araptus attenuatus*.  
 - Flowering dogwood, *Cornus florida*.
 
-## *Araptus attenuatus* 
+## *Araptus attenuatus*
 
-- Known only from the scenesing stems of the desert plant, *Euphorbia lomelii*.
+![](../media/araptus.png)
+
+
+## *Araptus attenuatus* {.columns-2}
+
 - Sonoran desert endemic
 - Post-pleistocene range expansion
 - Collections throughout species range
 - Nuclear co-dominant & AFLP data
+
+<p></p>
+
+- Large temporal coverage  
+- Phylogeography influences inferences
+- Iterative landscape genetics
 
 
 ## *Araptus attenuatus* { .columns-2}

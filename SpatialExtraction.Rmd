@@ -1,0 +1,249 @@
+# Spatial Data Extraction {.imageChapter}
+
+<div class="chapter_image"><img src="media/ch_baja_south_of_loreto.jpg"></div>
+
+> To develop the set of predictor variables necessary for explaining spatial genetic structure, we must be able to extract not only point but also neighborhood information using vector and raster objects.  This section covers   
+
+
+
+
+
+## Cropping Rasters
+
+Just because we have a large raster does not mean that it is in your best interest to use the entire object.  Much of the spatial analyses routines used in population genetics require measurements of intervening distance, either Euclidean or ecological.  Many of the routines for estimation of these distances require the estimation of pairwise distance between *all* pixels.  For our purposes, the `arapat` dataset does not occur throughout most of this map, so it is in our best interests to use only the portion of the raster relevant to our data rather than the entire thing.  
+
+Here is one way of going this.  I first define an extent, which consists of a vector representing the coordinates for `xmin`, `xmax`, `ymin`, and `ymax` (in decimal degrees longitude and latitude).  You then `crop()` the raster to that extent.
+
+```{r}
+library(sp)
+library(raster)
+alt <- raster("./spatial_data/alt.tif")
+e <- extent( c(-115,-109,22,30) )
+baja_california <- crop( alt, e )
+plot(baja_california, xlab="Longitude",ylab="Latitude")
+```
+
+Lets make this base map a bit more pretty by taking the altitude and estimating the slope of each pixel and the direction it is facing (aspect).  From this, we can 'shade' the hills in the map giving it more of a relief view we commonly see in maps.  The optional parameters to `hillShade` provide the angle and direction of the light source. 
+
+```{r}
+slope <- terrain( baja_california, opt="slope" )
+aspect <- terrain( baja_california, opt="aspect")
+baja <- hillShade( slope, aspect, 40, 270 )
+plot(baja, xlab="Longitude",ylab="Latitude", legend=FALSE)
+```
+
+
+Onto this map, we can plot our populations.  For this, we convert the raw coordinates into a `SpatialPoints` object and then overlay onto the map.  I use two `points()` commands to make the symbol for each population.
+
+```{r echo=-1}
+library(gstudio)
+data(arapat)
+coords <- strata_coordinates(arapat)
+pts <- SpatialPoints( coords[,2:3], proj4string = CRS(proj4string(baja)))
+plot(baja, xlab="Longitude",ylab="Latitude", legend=FALSE)
+points( pts, col="darkred", pch=3)
+points( pts, col="red", pch=16)
+```
+
+### Cropping Rasters Via Polygons
+
+It is also possible to crop a raster with a more fine grained approach using a polygon.  Here is an example using five points picked around the region of Loreto, BCS (I just grabbed these by looking at Google Earth).  You define a polygon by a series of points, the last of which has to be identical to the first one so that the polygon is a closed object and not just a series of points on a crooked line...
+
+```{r}
+pts <- rbind( c(-111.5,27.0),
+              c(-112.4,26.7),
+              c(-111.7,25.7),
+              c(-111.1,25.4),
+              c(-110.8,26.0),
+              c(-111.5,27.0) )
+pts
+```
+
+From these points, we construct a `SpatialPolygons` object (see \@ref{polygons} for more info on this convoluted construction) and then can overlay onto the map to make sure it in the correct vicinity (here we are eyeballing it a bit).  For more on why this next line of code looks so crazy, see \@ref(polygons).
+
+```{r echo=-1}
+polys <- SpatialPolygons(list(Polygons(list(Polygon(pts)),"Polygon")))
+plot(baja, legend=FALSE)
+plot(polys, add=TRUE)
+```
+
+To use the polygon to crop the raster, we have to both remove the part of the raster that is not contained within the polygon (`mask`) and then cut down the remaining raster to change the bounding box to that representing the portion of the data that remains (`trim`).  If you do not trim the raster, it will have the same amount of data associated with it as the previous raster (e.g., the underlying data matrix will have 960 rows and 720 columns) but the part that is masked will be represented by `NA` values.  For many rasters, the data is held in-memory (see the entry for 'data source` in the summary above) and as such removing as much of a raster that is `NA` improves your ability to manipulate it better.
+
+```{r, fig.cap="Extraction of region within polygon from the full Baja California raster."}
+loredo <- trim( mask( baja, polys ) )
+plot(loredo, xlab="Longitude",ylab="Latitude")
+```
+
+
+### Cropping Rasters Via Convex Hull
+
+
+An analysis common to modern population genetics is that of finding ecological distances between objects on a landscape.  The estimation of pairwise distance derived from spatial data is a computationally intensive thing, one that if you are not careful will bring your laptop to its knees!  One way to mitigate this data problem is to use a minimal amount raster area so that the estimation of the underlying distance graph can be done on a smaller set of points.  
+
+Cropping by a polygon like demonstrated in the previous example is a 'by hand' approach to estimating a box that roughly encompasses your data points. A more efficient one is one where you simply provide your coordinates and we can estimate a polygon that surrounds those coordinates with the minimal amount of wasted space.  This is called a *Convex Hull*, which is kind of like a polygon that is created as if there was a rubbrerband fit around all your points.  It is a minimal area that includes all of your points.  
+
+For this example, I'm going to use the populations found along the peninsula and find the minimal area encompassing those points. 
+
+```{r message=FALSE, warning=FALSE, echo=-1}
+library(gstudio)
+data(arapat)
+coords <- strata_coordinates(arapat)
+baja_coords <- coords[ !(coords$Stratum %in% c("101","102","32")), ]
+baja_pts <- SpatialPoints( baja_coords[,2:3])
+plot(baja, legend=FALSE)
+plot(baja_pts,add=T,col="darkred")
+plot(baja_pts,add=T,col="darkred",pch=16)
+```
+
+The methods for finding the hull and adding a buffer around it are found in the `rgeos` package.  These are pretty easy functions to use and are very helpful.  If you are having trouble installing the `rgeos` package from source, see \@ref(rgdal-rgeos-packages).
+
+```{r message=FALSE,warning=FALSE, echo=-1}
+library(rgeos) # loads in gConvexHull & gBuffer functions
+hull <- gConvexHull(baja_pts)
+plot(baja, legend=FALSE)
+plot(baja_pts,add=T,col="darkred")
+plot(baja_pts,add=T,col="darkred",pch=16)
+plot(hull,add=T,border="red")
+```
+
+The function `gConvexHull()` returns an object of type *SpatialPolygons*, just like we created before.  However, we now have a polygon that has each of our most 'outward' populations on the very edge of the polygon.  It may be beneficial for us to add a buffer around this polygon.
+
+```{r echo=-1}
+hull_plus_buffer <- gBuffer(hull,width=.2)
+plot(baja, legend=FALSE)
+plot(baja_pts,add=T,col="darkred")
+plot(baja_pts,add=T,col="darkred",pch=16)
+plot(hull_plus_buffer, add=T, border="red")
+```
+
+Now, we can mask and trim it to include only the area of interest.
+
+```{r echo=-1}
+pop_hull <- trim( mask(baja,hull_plus_buffer) )
+plot(pop_hull, legend=FALSE, xlab="Longitude", ylab="Latitude")
+plot(baja_pts,add=T,col="darkred",pch=16)
+```
+
+This would be a great raster to start looking at ecological separation in since we have removed the extraneous data that would unintentionally cause problems with the distance estimators.
+
+
+## Extracting Point Data From Rasters
+
+So far, rastes have been confined to representing a single static object.  However, it is not uncommon to need to query a raster and find out the values at particular points.  These points may be pre-defined or they may be dynamic (e.g., you need to point at a location on the map and determine the value there).
+
+For queries of the first kind, we can use the `extract()` function.  For this I downloaded the average temperature and precipitation rasters from Worldclim.
+
+```{r}
+baja_temp <- raster("./spatial_data/bio1.tif")
+baja_prec <- raster("./spatial_data/bio12.tif")
+```
+
+And then extract the values from each of these layers into the `coords` data we already have set up.
+
+```{r}
+coords$elevation <- extract( baja_california, coords[,c(2,3)])
+coords$mean_temp <- extract( baja_temp, coords[,c(2,3)])
+coords$mean_precip <- extract( baja_prec, coords[,c(2,3)])
+coords[1:10,]
+```
+
+A note should be made on the temperature and precipitation values.  Temperature is denoted in tenths of a degree Celcius.  Though it does get quite hot at times, it does not average 188&deg;C at population 88!  Similarly, the units for precipitation are mm (or tenths of centimeters if you will...).
+
+
+```{r warning=FALSE, message=FALSE}
+library(ggrepel)
+coords <- coords[ order(coords$Latitude),]
+p <- ggplot( coords, aes(x=Latitude,y=elevation)) + geom_line(color="lightgrey") 
+p <- p + geom_point() + ylab("Elevation (m)")
+p + geom_text_repel(aes(label=Stratum), color="red") 
+```
+
+The package `ggrepel` provides a pseudo-smart labelling geometry for ggplot allowing you to have labels that are shifted around the points so as to maximize visibility.
+
+For inquires of the second type, we can use the function `click()` to retrieve one of several outputs. Here is the help file that describes the various components. 
+
+<div class="scrollingbox"><pre>
+<pre>click {raster}	R Documentation
+Query by clicking on a map
+
+Description
+
+Click on a map (plot) to get values of a Raster* or Spatial* object at that location; and optionally the coordinates and cell number of the location. For SpatialLines and SpatialPoints you need to click twice (draw a box).
+
+Usage
+
+## S4 method for signature 'Raster'
+click(x, n=Inf, id=FALSE, xy=FALSE, cell=FALSE, type="n", show=TRUE, ...)
+
+## S4 method for signature 'SpatialGrid'
+click(x, n=1, id=FALSE, xy=FALSE, cell=FALSE, type="n", ...)
+
+## S4 method for signature 'SpatialPolygons'
+click(x, n=1, id=FALSE, xy=FALSE, type="n", ...)
+
+## S4 method for signature 'SpatialLines'
+click(x, ...)
+
+## S4 method for signature 'SpatialPoints'
+click(x, ...)
+Arguments
+
+x	- Raster*, or Spatial* object (or missing)
+n	- number of clicks on the map
+id - Logical. If TRUE, a numeric ID is shown on the map that corresponds to the row number of the output
+xy - Logical. If TRUE, xy coordinates are included in the output
+cell - Logical. If TRUE, cell numbers are included in the output
+type - One of "n", "p", "l" or "o". If "p" or "o" the points are plotted; if "l" or "o" they are joined by lines. See ?locator
+show - logical. Print the values after each click?
+...	- additional graphics parameters used if type != "n" for plotting the locations. See ?locator
+
+Value
+
+The value(s) of x at the point(s) clicked on (or touched by the box drawn).
+
+Note
+
+The plot only provides the coordinates for a spatial query, the values are read from the Raster* or Spatial* object that is passed as an argument. Thus you can extract values from an object that has not been plotted, as long as it spatially overlaps with with the extent of the plot.
+
+Unless the process is terminated prematurely values at at most n positions are determined. The identification process can be terminated by clicking the second mouse button and selecting 'Stop' from the menu, or from the 'Stop' menu on the graphics window.
+
+See Also
+
+select, drawExtent
+
+Examples
+
+r <- raster(system.file("external/test.grd", package="raster"))
+#plot(r)
+#click(r)
+#now click on the plot (map)</pre></div>
+
+Here is the output from a single inquire on the `baja_california` raster map, asking for both the coordinates and the elevation of a particular location.  
+
+```{r eval=FALSE}
+plot( baja_california, legend=FALSE)
+click(baja_california, xy=TRUE)
+##           x        y value
+## 1 -113.3875 27.82083   116
+```
+
+In a similar fashion, you can interactively create polygon points.
+
+```{r eval=FALSE}
+> cape_pts <- click(baja_california, n=5, xy=TRUE, type="p")
+```
+
+and after you have selected the points, you get something like.
+
+![Cape Points Raster](./media/click_raster_example.png)
+```{r}
+load("./spatial_data/click_raster_example_pts.rda")
+```
+
+with the data as:
+
+```{r}
+cape_pts
+```
+
+This is an extremely helpful approach for cropping and manipulating your raster layers.
