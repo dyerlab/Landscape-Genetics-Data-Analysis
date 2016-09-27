@@ -7,7 +7,7 @@
 
 ## Marker Types
 
-There are several kinds of genetic markers that can be used in landscape genetic analyses, though some are more practical than others.  The limiting factor in deciding on an appropriate marker is the amount of genetic variance in the marker system relative to the features we are testing against.  For example, mtDNA markers are rather common in phylogeography and species and subspecies delimination studies but they evolve at a rate that may be too slow if we are trying to understand contemporary movement patterns across a landscape, which means that they will not be able to sptially track variation in a way that a more variable and faster mutating marker type would.
+There are several kinds of genetic markers that can be used in landscape genetic analyses, though some are more practical than others.  The limiting factor in deciding on an appropriate marker is the amount of genetic variance in the marker system relative to the features we are testing against.  For example, mtDNA markers are rather common in phylogeography and species and subspecies delimination studies but they evolve at a rate that may be too slow if we are trying to understand contemporary movement patterns.  They will not be able to sptially track variation in a way that a more variable and faster mutating marker type would.
 
 For the purposes of this work, we are going to focus on genetic markers rather than sequence data.  These are most commonly nuclear markers---though there are cpDNA microsat markers in some species that make them very amenable to landscape genetic studies.  
 
@@ -63,42 +63,30 @@ Locus Type  | Description
 ------------|-------------------------------------------------------------------------------
 aflp        | Amplified Fragment Length Polymorphism with bands encoded as $0$ or $1$.
 column      | Co-dominant markers such as microsatellite loci encoded as one allele per</br> column of data.  For diploid data, there are twice as many columns of</br> alleles as there are marker loci.
-separated   | Co-dominant markers in a single column with alleles separated by a pre-defined </br> symbol (default is ':').  For species with $ploidy > 2$, this is the default</br> approach for importing polyploid genotypes.
+separated   | Co-dominant markers in a single column with alleles separated by a pre-defined </br> symbol (default is ':').  For species with ploidy > 2, this is the default</br> approach for importing polyploid genotypes.
 snp         | Alleles encoded by the number of minor alleles 0, 1, or 2.
 genepop     | Import from the standard (non-fancy) genepop file format.
 
 Here are some examples data files that are included in the *gstudio* package and how they can be loaded in.  For your data, change out the path.  In all cases, the structure that is loaded into R is a `data.frame`.
 
-Here is a raw AFLP file
+Here is a raw AFLP file that comes with the *gstudio* package
 
 ```{r}
 path <- system.file("extdata", "data_aflp.csv", package = "gstudio")
-system( paste("head",path), intern = FALSE )
-```
-
-which is loaded as:
-
-```{r}
 data <- read_population( path, type="aflp", locus.columns = 4:7 )
 summary(data)
 ```
 
 
-Here is a two-column microsat locus
+And a two-column microsatellite data file
 
 ```{r}
 path <- system.file("extdata", "data_2_column.csv", package = "gstudio")
-system( paste("head",path), intern = FALSE )
-```
-
-which is loaded as:
-
-```{r}
 data <- read_population( path, type="column", locus.columns = 4:7 )
 summary(data)
 ```
 
-### Build-In Data Sets
+### Built-In Data Sets
 
 There are some built-in data sets (described in \@ref(data-sets)) that we will be using and can be loaded into your workspaces using `data()`.  The main one in *gstudio* is the *Arapatus attenuatus* data set (referenced in shorthand as `arapat`).
 
@@ -107,6 +95,7 @@ data(arapat)
 summary( arapat )
 ```
 
+This species also has a data set for AFLP 
 
 ### General Manipulation Functions
 
@@ -122,17 +111,26 @@ datatable(coords,rownames = FALSE)
 
 The default convention for this and **almost all** support functions in *gstudio* is that they assume the column that has the locale data is named `Population` and the columns for coordiantes are named `Longitude` and `Latitude` (and they are valid decimal coordinates).  If you use different nomenclatures, then you must indicate the names of these columns.
 
-Mapping locales is also a common enough process that *gstudio* provides helper 
+Mapping locales is also a common enough process that *gstudio* provides helper functions for plotting locales (and labeling them) using online mapping resources (Google, OSM, etc.).
 
 ```{r message=FALSE, warning=FALSE}
 library( ggmap )
 library( ggplot2 ) 
-library( ggrepel )
 map <- population_map(coords)
 p <- ggmap( map )
-p <- p + geom_strata(aes(x=Longitude, y=Latitude, stratum=Population), data=arapat)
+p <- p + geom_strata(data=arapat) + geom_strata_label( data=arapat )
 p
 ```
+
+
+
+```{r}
+groups <- partition(arapat,stratum = "Species")
+names(groups)
+lapply( groups, dim )
+```
+
+
 
 
 ## Allele Frequencies
