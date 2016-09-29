@@ -2,10 +2,10 @@ book_filename: "LGDA"
 chapter_name: ""
 rmd_files: [
   "index.Rmd",
-  "part_day_1.Rmd", "Landscape_Genetics.Rmd", "Vector_Raster.Rmd", "Map_Projections.Rmd", "SpatialExtraction.Rmd",
-  "part_day_2.Rmd", "Genetic_Data.Rmd", "Genetic_Diversity.Rmd", "Genetic_Distance.Rmd", "Genetic_Structure.Rmd",
-  "part_day_3.Rmd", "RemoteSensing.Rmd", "Barriers.Rmd", "Resistance.Rmd", 
-  "part_day_4.Rmd", "Networks.Rmd", "Autocorrelation.Rmd",
-  "part_day_5.Rmd", "AdaptiveVariance.Rmd", "QuantitativeGenetics.Rmd", "ChromosomeWalking.Rmd",
-  "part_back.Rmd", "References.Rmd", "Appendix_RGDAL.Rmd"
+  "1.0_part.Rmd", "1.1_Landscape_Genetics.Rmd", "1.2_Vector_Raster.Rmd", 
+  "2.0_part.Rmd", "2.1_Genetic_Data.Rmd", "2.2_Diversity_Distance_Structure.Rmd", 
+  "3.0_part.Rmd", "3.1_Resistance.Rmd", "3.2_Barriers.Rmd", 
+  "4.0_part.Rmd", "4.1_Advanced_Spatial.Rmd", "4.2_Network_Approaches.Rmd",
+  "5.0_part.Rmd", "5.1_Quantitative_Genetics.Rmd", "5.2_Outlier_Detection.Rmd", 
+  "6.0_part.Rmd", "6.1_References.Rmd", "6.2_Appendix_RGDAL.Rmd"
 ]
