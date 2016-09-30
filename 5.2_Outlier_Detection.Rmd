@@ -1,2 +1,11 @@
 # Outlier Detection
 
+> The operation of selection
+
+
+
+```{r}
+library(gstudio)
+data(arapat_aflp)
+```
+

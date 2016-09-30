@@ -145,7 +145,6 @@ In addition to codominant nuclear markers, a set of AFLP markers have been used 
 knitr::include_graphics("media/dogwood_flower.png",)
 ```
 
-
 Flowering dogwood is an ubiquitous feature of eastern north american forests. 
 
 The data set contains five microsatellite loci.

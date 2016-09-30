@@ -486,7 +486,14 @@ plot(bio_layers)
 From which values may be extracted using normal methods as outlined above.
 
 ```{r}
-df <- extract( bio_layers, baja_pts)
+library(sp)
+library(gstudio)
+data(arapat)
+coords <- strata_coordinates(arapat)
+pts <- SpatialPoints( coords[,2:3])
+coords <- strata_coordinates( arapat )
+pts <- SpatialPoints( coords[,2:3] )
+df <- extract( bio_layers, pts)
 df <- df[ !is.na(df[,1]),]
 head(df)
 ```
@@ -660,9 +667,6 @@ Cropping by a polygon like demonstrated in the previous example is a 'by hand' a
 For this example, I'm going to use the populations found along the peninsula and find the minimal area encompassing those points. 
 
 ```{r message=FALSE, warning=FALSE, echo=-1}
-library(gstudio)
-data(arapat)
-coords <- strata_coordinates(arapat)
 baja_coords <- coords[ !(coords$Stratum %in% c("101","102","32")), ]
 baja_pts <- SpatialPoints( baja_coords[,2:3])
 plot(baja, legend=FALSE)
@@ -822,8 +826,6 @@ cape_pts
 ```
 
 This is an extremely helpful approach for cropping and manipulating your raster layers.
-
-
 
 
 
