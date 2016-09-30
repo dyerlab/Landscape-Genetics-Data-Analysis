@@ -32,8 +32,7 @@ files_from_cran <- c("cowplot",
                      "rgdal")
 
 
-apply(files_from_cran,
-      1,
+lapply(files_from_cran,
       FUN = function(x){ 
         if(!require(x)) 
           install.packages(x,dependencies = TRUE) 
