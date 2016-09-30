@@ -29,31 +29,26 @@ files_from_cran <- c("cowplot",
                      "raster",
                      "rasterVis",
                      "rgeos",
-                     "rgdal")
+                     "rgdal",
+                     "rmarkdown")
 
 
-apply(files_from_cran,
-      1,
-      FUN = function(x){ 
+lapply(files_from_cran,
+      function(x) { 
         if(!require(x)) 
           install.packages(x,dependencies = TRUE) 
         }
       )
 
 
-files_from_github <- c("dyerlab/gstudio",
+files_from_github <- c("yihui/knitr",
+                       "dyerlab/gstudio",
                        "dyerlab/popgen")
+apply(files_from_cran,
+      1,
+      FUN = function(x){ 
+        if(!require(x)) 
+          devtools::install_github(x,dependencies = TRUE) 
+      }
+)
 
-
-
-
-
-
-# load in stuff from github
-if( !require(devtools) ) {
-  install.packages("devtools")
-  library(devtools)
-}
-
-install_github("dyerlab/gstudio")
-install_github("dyerlab/popgen")
