@@ -39,5 +39,3 @@ files_from_cran <- c("cowplot",
 need_inst <- setdiff( files_from_cran, rownames(installed.packages()) )
 install.packages( need_inst, dependencies = TRUE)
 
-
-
