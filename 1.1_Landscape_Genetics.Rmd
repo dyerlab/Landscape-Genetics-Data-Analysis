@@ -85,7 +85,14 @@ if( !("maxent.jar" %in% files) )
 
 ```
 
-Make sure these are installed and up-to-date.
+Make sure these are installed and up-to-date.  I have uploaded to the github repository for this project a script with all the libraries used.  You can rune the script^^[You need `devtools` to be installed *a priori*.] from within R by executing the following code.
+
+```{r eval=FALSE}
+url <- "https://goo.gl/kWDpNv"
+library(devtools)
+source_url( url )
+```
+
 
 
 ## Data Sets

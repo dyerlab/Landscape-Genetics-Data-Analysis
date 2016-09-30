@@ -16,6 +16,10 @@
 #   landscape genetics data analysis workshop in Scotlad, October 2016.  Simply
 #   source this file and the libraries will be downloaded and installed.
 
+# To load this file, execute the following code in an R session.
+# url <- "https://raw.githubusercontent.com/dyerlab/Landscape-Genetics-Data-Analysis/master/library_loader.R"
+# library(devtools)
+# source_url( url )
 
 files_from_cran <- c("cowplot",
                      "DT",
@@ -32,23 +36,8 @@ files_from_cran <- c("cowplot",
                      "rgdal",
                      "rmarkdown")
 
-
-lapply(files_from_cran,
-      function(x) { 
-        if(!require(x)) 
-          install.packages(x,dependencies = TRUE) 
-        }
-      )
+need_inst <- setdiff( files_from_cran, rownames(installed.packages()) )
+install.packages( need_inst, dependencies = TRUE)
 
 
-files_from_github <- c("yihui/knitr",
-                       "dyerlab/gstudio",
-                       "dyerlab/popgen")
-apply(files_from_cran,
-      1,
-      FUN = function(x){ 
-        if(!require(x)) 
-          devtools::install_github(x,dependencies = TRUE) 
-      }
-)
 
