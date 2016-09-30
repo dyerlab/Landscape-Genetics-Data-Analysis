@@ -94,7 +94,6 @@ source_url( url )
 ```
 
 
-
 ## Data Sets
 
 This course will use two different data sets from the Dyer Laboratory.  Both of these data sets have been used in landscape genetic analyses.  The *Arapatus attenuata* data set has been sampled throughout the breadth of the entire species range and facilitates research questions regarding large spatial and temporal inferences.  The *Cornus florida* data focuses on features influencing mating at the scale of a few hundred hectares illuminating the features that influence how genes move across a landscape during a single reproductive bout.
