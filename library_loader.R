@@ -34,7 +34,9 @@ files_from_cran <- c("cowplot",
                      "rasterVis",
                      "rgeos",
                      "rgdal",
-                     "rmarkdown")
+                     "rmarkdown",
+                     "SDMTools")
 
 need_inst <- setdiff( files_from_cran, rownames(installed.packages()) )
-install.packages( need_inst, dependencies = TRUE)
+if( length( need_inst ) ) 
+  install.packages( need_inst, dependencies = TRUE)
