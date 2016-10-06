@@ -76,7 +76,8 @@ A projection onto an ellipsoid is a way of converting the spherical coordinates,
 
 These include:  
 
-- Azimuthal:  An approach in which each region of the earth is projected onto a plane tangential to the surface, typically at the pole or equator. Cylindrical: This approach projects the surface of the earth onto a cylinder, which is ‘unrolled' like a large map.  This approach ‘stretches' distances in a east-west fashion, which is why Greenland looks so large...
+- Azimuthal:  An approach in which each region of the earth is projected onto a plane tangential to the surface, typically at the pole or equator.   
+- Cylindrical: This approach projects the surface of the earth onto a cylinder, which is ‘unrolled' like a large map.  This approach ‘stretches' distances in a east-west fashion, which is why Greenland looks so large...
 - Conic: Another ‘unrolling' approach, though this time instead of a cylinder, it is projected onto a cone.  
 
 All projections produce bias in area, distance, or shape (some do so in more than one), so there is no 'optimal' projection.  To give you an idea of the consequences of these projections, I'll use the United States map as an example and we can visualize how it is projected onto a 2-dimensional space using different projections.
