@@ -7,5 +7,43 @@
 ```{r}
 library(gstudio)
 data(arapat_aflp)
+dim(arapat_aflp)
 ```
+
+The AFLP dataset has $K =$ `r length( column_class(arapat_aflp,"locus"))` binary loci.
+
+
+
+```{r eval=FALSE}
+freqs <- frequencies(arapat_aflp,stratum="Population")
+```
+
+```{r echo=FALSE}
+load("./media/arapat.aflp.freqs.rda")
+```
+
+
+```{r}
+freqs <- freqs[ freqs$Allele=="0",]
+freqs$Frequency <- sqrt( freqs$Frequency )
+```
+
+```{r}
+library(reshape2)
+x <- dcast( freqs, Stratum~Locus, value.var="Frequency",fill = 0 )
+fname <- "~/Desktop/test.pcadept.txt"
+txt <- apply( x[2:ncol(x)], 1, function(x) paste(x,collapse=" "))
+write(paste(txt,collapse="\n"),file=fname)
+```
+
+
+
+
+```{r}
+library(qvalue)
+library(pcadapt)
+x <- read
+```
+
+
 
