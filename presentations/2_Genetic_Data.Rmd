@@ -1,7 +1,0 @@
----
-title: "Genetic Data in R"
-author: "Landscape Genetic Data Analysis Workshop"
-date: "SCENE Scotland, October, 2016"
-output: ioslides_presentation
----
-
