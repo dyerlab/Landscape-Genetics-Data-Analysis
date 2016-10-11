@@ -25,18 +25,30 @@ files_from_cran <- c("cowplot",
                      "DT",
                      "devtools",
                      "GGally",
+                     "gdistance",
                      "ggmap",
                      "ggplot2",
+                     "ggrepel",
                      "igraph",
+                     "kinship2",
+                     "knitr",
                      "maps",
                      "networkD3",
                      "raster",
                      "rasterVis",
+                     "RColorBrewer",
+                     "RCurl",
                      "rgeos",
                      "rgdal",
                      "rmarkdown",
-                     "SDMTools")
+                     "SDMTools",
+                     "sp",
+                     "vegan")
 
 need_inst <- setdiff( files_from_cran, rownames(installed.packages()) )
 if( length( need_inst ) ) 
   install.packages( need_inst, dependencies = TRUE)
+
+library(devtools)
+install_github("dyerlab/gstudio")
+install_github("dyerlab/popgraph")
