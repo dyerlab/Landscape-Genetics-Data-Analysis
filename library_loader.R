@@ -52,3 +52,9 @@ if( length( need_inst ) )
 library(devtools)
 install_github("dyerlab/gstudio")
 install_github("dyerlab/popgraph")
+
+print("Download STRUCTURE from the Pritchard Laboratory webpage")
+system("open http://pritchardlab.stanford.edu/structure.html")
+
+print("Download Circuitscape from Brad McRae's webpage")
+system("open http://www.circuitscape.org")
