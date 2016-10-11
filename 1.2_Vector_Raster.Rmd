@@ -879,8 +879,8 @@ In a similar fashion, you can interactively create polygon points.
 
 and after you have selected the points, you get something like.
 
-![Cape Points Raster](./media/click_raster_example.png)
-```{r}
+![Raster points around the Cape region identified manually.](./media/click_raster_example.png)
+```{r echo=FALSE}
 load("./spatial_data/click_raster_example_pts.rda")
 ```
 
