@@ -37,6 +37,7 @@ files_from_cran <- c("cowplot",
                      "knitr",
                      "maps",
                      "networkD3",
+                     "pegas",
                      "raster",
                      "rasterVis",
                      "RColorBrewer",
@@ -62,3 +63,6 @@ system("open http://pritchardlab.stanford.edu/structure.html")
 
 print("Download Circuitscape from Brad McRae's webpage")
 system("open http://www.circuitscape.org")
+
+print("Downlaod RStudio Preview version from webpage")
+system("open https://www.rstudio.com/products/rstudio/download/preview/")
