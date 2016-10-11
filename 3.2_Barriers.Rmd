@@ -33,7 +33,8 @@ In this example, I'll use the more common software STRUCTURE to demonstrate how 
 To use STRUCTURE, you need to reformat your data. Population designations cannot be anything other than numeric values, alleles have to be encoded in a particular way, files need to be formatted in a particular way, etc.  Total pain.  Fortunately, we can do all this as:
 
 ```{r eval=FALSE}
-write_population(arapat,file="arapat_structure.txt",mode="structure", stratum="Population")
+write_population(arapat, file="arapat_structure.txt", 
+                 mode="structure", stratum="Population")
 ```
 
 which will take your R data.frame with loci and other information in it and save it as a text file in the appropriate directory in the STRUCTURE format.  
@@ -273,5 +274,178 @@ dendroNetwork(hc, height=600,
 
 
 
+## Mantel Tests
+
+```{r}
+mixed <- c("157","163","164","166","73","75","77","98","Aqu","Const","ESan","Mat")
+data <- droplevels( arapat[ !(arapat$Population %in% mixed),] )
+D <- genetic_distance(data,mode="Nei")
+coords <- strata_coordinates( data )
+P <- strata_distance( coords )
+D <- D[ lower.tri(D) ]
+P <- P[ lower.tri(P) ]
+rho <- cor(D,P)
+Z <- rep(NA,1000)
+Z[1] <- sum(P*D)
+for(i in 2:1000) {
+  P <- sample( P, size=length(P), replace = FALSE)
+  Z[i] <- sum(P*D)
+}
+df <- data.frame( Z, Value=c("Observed",rep("Permuted",999)))
+cdf <- sum( Z<Z[1] )/1000
+colors <- c("#5ab4ac","#d8b365")
+ggplot( df, aes(x=Z,fill=Value)) + geom_histogram(bins=30) + ylab("Frequency") + theme_bw()  + scale_fill_manual(name = "", values = colors) 
+```
+
+
+
+```{r}
+library(vegan)
+clusters <- unique( cbind( data$Cluster, data$Population))
+C <- outer(clusters[,1], clusters[,1], function(x,y) return( ifelse( x == y, 1, 2 ) ))
+P <- strata_distance( coords )
+D <- genetic_distance(data,mode="Nei")
+mantel.partial(as.dist(D),as.dist(C),as.dist(P))
+mantel.partial(as.dist(D),as.dist(P),as.dist(C))
+```
+
+
+
+```{r}
+library(raster)
+library(sp)
+pts <- strata_coordinates(data,as.SpatialPoints = TRUE)
+alt <- raster("spatial_data/alt.tif")
+pts$elev <- extract(alt, pts)
+pts <- pts[ !is.na(pts$elev),]
+coords <- coords[ !is.na(pts$elev),]
+P <- strata_distance(coords)
+elev <- outer(pts$elev, pts$elev, function(x,y) return ( (x - y)^2 ))
+lat <- outer( coords$Latitutde, coords$Latitude, function(x,y) return ( (x - y)^2 ))
+
+df1 <- data.frame( Latitude= coordinates(pts)[,2], Elevation=pts$elev)
+ggplot( df1, aes(Latitude, Elevation)) + geom_point() + theme_bw()
+cor(df1$Latitude, df1$Elevation )
+```
+
+```{r}
+elev <- outer(df1[,2], df1[,2], function(x,y) return ( (x - y)^2 ))
+lat <- outer( df1[,1], df1[,1], function(x,y) return ( (x - y)^2 ))
+df2 <- data.frame( Elevation = elev[ lower.tri(elev)], Latitude= lat[ lower.tri(lat)] )
+ggplot( df2, aes(Latitude, Elevation)) + geom_point() + theme_bw() + xlab("Pairwise Latitude") + ylab("Pairwise Elevation")
+cor( df2$Latitude, df2$Elevation )
+```
+
+
+### Autocorrealtion problem with mantel
+
+
+```{r}
+X <- rnorm(1296)
+Y <- rnorm(1296)
+
+rX <- raster(matrix(X,nrow=36))
+rY <- raster(matrix(Y,nrow=36))
+
+plot(rX,legend=FALSE,axes=FALSE, box=FALSE)
+plot(rY,legend=FALSE,axes=FALSE, box=FALSE)
+rho.p <- rep(NA,10000)
+fit <- cor.test(X,Y)
+K <- 50
+
+for( i in 1:10000){
+  idx <- sample( 1:2500, size=K, replace=FALSE)
+  ct <- cor.test(X[idx], Y[idx])
+  rho[i] <- ct$p.value
+}
+type1 <- length(rho[ rho<0.05])/1000
+type1
+```
+
+
+
+```{r}
+xr <- raster(ncols=50, nrows=50, xmn=0)
+xr[] <- runif(ncell(xr))
+sX <- focal(xr, w=matrix(1/2,nrow=15,ncol=15))
+
+plot(sX, legend=FALSE,axes=FALSE, box=FALSE)
+
+yr <- raster(ncols=50, nrows=50, xmn=0)
+yr[] <- runif(ncell(yr))
+sY <- focal(yr, w=matrix(1/9,nrow=15,ncol=15))
+plot(sY, legend=FALSE,axes=FALSE, box=FALSE)
+
+vX <- values(sX)
+vY <- values(sY)
+vXp <- vX[ !is.na(vX) & !is.na(vY)]
+vYp <- vY[ !is.na(vX) & !is.na(vY)]
+
+rho.sp <- rep(NA,10000)
+for( i in 1:10000){
+  idx <- sample( 1:2116, size=K, replace=FALSE)
+  ct <- cor.test(vXp[idx], vYp[idx])
+  rho.sp[i] <- ct$p.value
+}
+type1.sp <- length(rho.sp[ rho.sp<0.05])/1000
+type1.sp
+```
+
+
+```{r}
+par( mfrow=c(2,2))
+plot(rX,legend=FALSE)
+plot(rY,legend=FALSE)
+plot(sX, legend=FALSE)
+plot(sY, legend=FALSE)
+```
+
+
+
+
+
+```{r}
+D <- genetic_distance(data,mode="Nei")
+coords <- strata_coordinates( data )
+pts <- strata_coordinates(data,as.SpatialPoints = TRUE)
+elev <- extract(alt, pts)
+coords <- coords[ !is.na(elev),]
+elev <- elev[ !is.na(elev)]
+P <- strata_distance( coords )
+w <- 1/P
+diag(w) <- 0
+ape::Moran.I(elev,w)
+
+hist(w)
+hist(elev)
+qplot( elev, geom="histogram", bins=20) + xlab("Elevation") + theme_bw() + ylab("Frequency")
+```
+
+
+### Raster Autocorrelation
+
+```{r}
+alt <- raster("./spatial_data/alt.tif")
+pts <- rbind( c(-111.5,27.0),
+              c(-112.4,26.7),
+              c(-111.7,25.7),
+              c(-111.1,25.4),
+              c(-110.8,26.0),
+              c(-111.5,27.0) )
+polys <- SpatialPolygons(list(Polygons(list(Polygon(pts)),"Polygon")))
+loredo <- trim( mask( alt, polys ) )
+plot(loredo, xlab="Longitude",ylab="Latitude")
+```
+
+
+```{r}
+Moran(loredo)
+```
+
+
+```{r}
+ml <- MoranLocal(loredo)
+plot(ml, xlab="Longitude",ylab="Latitude")
+```
 
 

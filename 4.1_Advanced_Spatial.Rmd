@@ -1,3 +1,78 @@
 # Autocorrelation
 
 
+
+
+
+
+```{r}
+library(gstudio)
+data(arapat)
+data <- droplevels( arapat[ arapat$Species == "Peninsula",] )
+groups <- data.frame( unique( cbind(as.character(data$Population), as.character(data$Cluster))))
+names(groups) <- c("Stratum","Cluster")
+```
+
+
+
+```{r message=FALSE, message=FALSE}
+library(ggplot2)
+library( ggmap) 
+library( ggrepel )
+coords <- strata_coordinates(data)
+map <- population_map(coords, zoom=7)
+coords <- merge( coords, groups )
+ggmap( map) + geom_point( aes(x=Longitude, y=Latitude, label=Stratum, color=Cluster), data=coords)  + geom_text_repel( aes(x=Longitude, y=Latitude, label=Stratum, color=Cluster), data=coords) + xlab("Longitude") + ylab("Latitude")
+```
+
+
+## PCA
+
+```{r}
+library(ade4)
+freqs <- to_mv_freq(data)
+fit.pca <- dudi.pca( freqs, scale=FALSE, scannf=FALSE, nf=10)
+summary(fit.pca)
+```
+
+```{r}
+library(ggplot2)
+df <- data.frame( Axis=1:length(fit.pca$eig), Lambda=fit.pca$eig)
+df$Lambda <- df$Lambda / sum( df$Lambda )
+ggplot( df, aes(x=Axis,y=Lambda)) + geom_bar( stat="identity") + xlab("PCA Axis") + ylab("Proportion of Variation Explained") + theme_bw()
+```
+
+```{r}
+df <- data.frame( PC1=fit.pca$li$Axis1, PC2=fit.pca$li$Axis2, Stratum=rownames(fit.pca$li))
+df <- merge( df, groups)
+ggplot( df, aes(x=PC1,y=PC2, label=Stratum, color=Cluster)) + geom_text() + theme_bw()
+```
+
+
+
+### PCoA
+
+```{r}
+D <- genetic_distance(data, mode = "Nei")
+D <- quasieuclid( as.dist( D ) )
+fit.pcoa <- dudi.pco(D,scannf = FALSE,full = TRUE, nf=10)
+summary( fit.pcoa )
+```
+
+
+```{r}
+df <- data.frame( Axis=1:length(fit.pcoa$eig), Lambda=fit.pcoa$eig)
+df$Lambda <- df$Lambda / sum( df$Lambda )
+ggplot( df, aes(x=Axis,y=Lambda)) + geom_bar( stat="identity") + xlab("PCA Axis") + ylab("Proportion of Variation Explained") + theme_bw()
+```
+
+
+
+
+```{r}
+df <- data.frame( PC1=fit.pcoa$li$A1, PC2=fit.pcoa$li$A2, Stratum=rownames(fit.pcoa$li))
+df <- merge( df, groups)
+ggplot( df, aes(x=PC1,y=PC2, label=Stratum, color=Cluster)) + geom_text() + theme_bw()
+```
+
+  

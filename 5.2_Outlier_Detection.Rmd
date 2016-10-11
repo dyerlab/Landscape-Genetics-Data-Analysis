@@ -6,16 +6,16 @@
 
 ```{r}
 library(gstudio)
-data(arapat_aflp)
-dim(arapat_aflp)
+data(aflp_arapat)
+dim(aflp_arapat)
 ```
 
-The AFLP dataset has $K =$ `r length( column_class(arapat_aflp,"locus"))` binary loci.
+The AFLP dataset has $K =$ `r length( column_class(aflp_arapat,"locus"))` binary loci.
 
 
 
 ```{r eval=FALSE}
-freqs <- frequencies(arapat_aflp,stratum="Population")
+freqs <- frequencies(aflp_arapat,stratum="Population")
 ```
 
 ```{r echo=FALSE}
@@ -42,7 +42,7 @@ write(paste(txt,collapse="\n"),file=fname)
 ```{r}
 library(qvalue)
 library(pcadapt)
-x <- read
+
 ```
 
 
