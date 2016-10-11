@@ -1,6 +1,0 @@
-ioslides_presentation:
-  css: slide_style.css
-  self_contained: true
-  highlight: tango
-  fig_caption: true
-  widescreen: true
