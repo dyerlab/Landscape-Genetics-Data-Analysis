@@ -4,6 +4,7 @@
 #
 # > find . -name "Icon*" -type f -delete
 #
+
 .Rproj.user
 .Rhistory
 .RData
@@ -17,4 +18,3 @@ _book*
 *.md
 *_Slides.html
 *.html
-*[Conflict]
