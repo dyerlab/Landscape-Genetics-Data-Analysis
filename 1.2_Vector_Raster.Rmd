@@ -257,16 +257,7 @@ or any other projection available listed in the `mapproject()` function.
 
 
 
-## Coordinate Systems
-
-Onto this ellipsoid, we must define a set of reference locations (in 3-space) called datum that help describe the precise shape of the surface.  We typically are dealing with a combination of data that we've collected and that we've attained from some other provider.  In most GIS applications, the coordinate systems we encounter are either:  
-
-- UTM (Universal Transverse Mercator) measuring the distance from the prime meridian for the x-coordinate and the distance from the equator (often called northing in the northern hemisphere) for the y-coordinate. These distances are in meters and the globe is divided into 60 zones, each of which is 6 degrees in width.
-Geographic coordinate systems use longitude and latitude.  For historical purposes these are unfortunately reported in degrees, minutes, seconds, a temporal abstraction that is both annoying and a waste of time (IMHO).  
-- Decimal degrees, while less easy to remember, are easier to work with in R.
-- State Planar coordinate systems are coordinate systems that each US State has defined for their own purposes.  They are based upon some arbitrarily defined points of reference and another pain to use (IMHO).  Given the differential in state area, some states are also divided into different zones.  Maps you get from municipal agencies may be in this coordinate system.  If your study straddles different zones or even state lines, you have some work ahead of you...
-
-It is best to use a system that is designed for your kind of work.  Do not, for example, use a state plane system outside of that state as you have bias associated with the distance away from the origin.  That said, Longitude/Latitude (decimal degrees) and UTM systems are probably the easiest to work with in R.  
+## Setting Coordinate Systems
 
 In R, we use rgdal to project points.  Here I load in the coordinates of the populations in the *Arapatus attenuatus* data set and make a *SpatialPoints* object out of it.  Setting the `proj4string()` here **does not** project the data, I am just specifying that the data are already in the lat/long WGS84 format.
 

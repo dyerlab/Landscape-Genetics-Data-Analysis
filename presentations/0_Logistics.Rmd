@@ -1,0 +1,37 @@
+---
+title: "Landscape Genetic Data Analysis"
+author: "R.J. Dyer"
+date: "10/11/2016"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+## Logistics
+
+Hello and welcome to the Landscape Genetics Data Analysis workshop.  In preparation for this workshop, it is in your best interests to get your R work environment set up and ready, with the appropriate libraries installed so we can hit the ground running.  We are going to mostly be working in R but we will also use some additional computational resources that need to be installed.  
+
+I have also put together a script that will do all the package downloading (hopefully).  You can run it by starting up `R` and executing the following code.  It should download the packages, install them and then open up a browser to install stuff outside of R.  
+
+```{r eval=FALSE}
+install.packages("devtools")
+url <- "https://goo.gl/kWDpNv"
+library(devtools)
+source_url( url )
+```
+
+If the browser is not launched, you need to manually install the following software from their original webpages.  We will be using these tools in conjunction with the packages that were installed from the script.  Make sure you have the latest versions of:
+
+1. STRUCTURE.  Download STRUCTURE from the Pritchard Laboratory webpage, at [http://pritchardlab.stanford.edu/structure.html](http://pritchardlab.stanford.edu/structure.html)
+2. Circuitscape.  Download Circuitscape from Brad McRae's webpage, at [http://www.circuitscape.org](http://www.circuitscape.org)
+3. RStudio.  Please download and install the latest version of RStudio.  I would recommend the Preview Release, it is pretty stable and has some additional features you may find helpful.  Download the Desktop version for your OS and install it from [https://www.rstudio.com/products/rstudio/download/preview/](https://www.rstudio.com/products/rstudio/download/preview/)
+
+
+If you have any problems and want to see the list of packages, you can find the script `library_loader.R` at the github repository for this course at:
+https://github.com/dyerlab/Landscape-Genetics-Data-Analysis 
+
+I look forward to meeting each of you and exploring landscape genetic issues next week!
+
+Ciao,
+
+Rodney Dyer
