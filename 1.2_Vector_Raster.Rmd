@@ -6,10 +6,6 @@ Functionally, we will be working with two kinds of spatial data: vector and rast
 
 Rasters are a form of data that is georeferenced and (somewhat) more continuous.  Raster data is perhaps best envisioned as a matrix of values, whose entries represent spatially referenced data points (pixels).  The raster itself can be visualized as you could for normal matrix output.  What makes a raster different, however, is that it is (or should be) georeferenced. This means that each element of the matrix represents some measurement on the ground having a specific location and spread---sometimes referred to as granularity.  This is analogous to an image, where if you zoom in on it enough, you will be able to differentiate between individual pixels, each with its own color value.  Raster representation specifies each pixel in terms of a location and size associated with that value that we can map onto the earth.
 
-
-
-
-
 ## Points
 
 Points are defined by *SpatialPoints* objects.  A collection of points may have additional data associated with each location and would make a *SpatialPointsDataFrame*.  This is a bit different than the normal `data.frame` objects we've been using with coordinates in them already---in fact it is the opposite of that.  It is a set of points within which is located a `data.frame` rather than `data.frame` that has within it a set of points.  

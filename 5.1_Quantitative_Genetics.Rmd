@@ -1,4 +1,78 @@
 # Quantitative Genetics
 
+\[
+\sigma_P^2 = \sigma_G^2 + \sigma_E^2 + \sigma_{GxE}^2 
+\]
+
+\[
+\sigma_G^2 =\sigma_A^2 + \sigma_D^2 + \sigma_I^2 
+\]
+
+
+
+
+
+
+## Heritability
+
+\[
+H^2 = \frac{\sigma_G^2}{\sigma_P^2}
+\]
+
+
+\[
+h^2 = \frac{\sigma_A^2}{\sigma_P^2}
+\]
+
+
+## Data Examples
+
+![Dogwood seedlings growing in the greenhouse.  Seeds were collected from urban and natural populations and grown in either full light (to mimic urban environments) and shaded (to mimic native popualtions)](./media/seedlings.png)
+
+
+
+
+
+```{r}
+load("media/seedlings.rda")
+summary(seedlings)
+```
+
+
+
+
+
+```{r message=FALSE, warning=FALSE}
+library(GGally)
+library(ggplot2)
+ggpairs( seedlings, columns=4:8)
+```
+
+### Measured Traits
+
+```{r}
+ggplot(seedlings) + geom_density( aes(fill=Source,x=Cold), alpha=0.75) + facet_grid(Treatment~.)
+```
+
+
+```{r}
+ggplot(seedlings) + geom_density( aes(fill=Source,x=Height), alpha=0.75) + facet_grid(Treatment~.)
+```
+
+```{r}
+ggplot(seedlings) + geom_density( aes(fill=Source,x=Branches), alpha=0.75) + facet_grid(Treatment~.)
+```
+
+
+```{r}
+ggplot(seedlings) + geom_density( aes(fill=Source,x=LeafArea), alpha=0.75) + facet_grid(Treatment~.)
+```
+
+
+```{r}
+ggplot(seedlings) + geom_density( aes(fill=Source,x=Leaves), alpha=0.75) + facet_grid(Treatment~.)
+```
+
+
 
 
