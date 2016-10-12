@@ -889,6 +889,30 @@ cape_pts
 This is an extremely helpful approach for cropping and manipulating your raster layers.
 
 
+## Questions
+
+1. The [WorldClim](http://worldclim.org) organization makes a set of bioclimatic data avaialbe for free.  Grab the raster layers for Tile 22 and extract the value for each layer recorded at each of the sampling sites.  To what extent are these variables correlated with eachother?
+
+```{r eval=FALSE, echo=FALSE}
+library(raster)
+library(gstudio)
+layers <- paste( "bio",c(1,2,5,6,7,8,12,13,15,17),".tif",sep="")
+data(arapat)
+coords <- strata_coordinates(arapat)
+pts <- SpatialPoints( coords[,2:3])
+for( layer in layers ) {
+  r <- raster( paste("./spatial_data/",layer,sep=""))
+  coords[[layer]] <- extract( r, pts)  
+}
+coords <- coords[ coords$Stratum != "165", ]
+rho <- cor( coords[4:13])
+summary( rho[ lower.tri(rho)])
+```
+
+
+2. Using the methods outlined in the Cropping via Convex Hull approach, crop all the bio rasters to an are surrounding the sample locations in Baja California. We will be using these rasters later in the week.
+
+3. Which sampling location is highest in elevation?  Which has the hottest summers?
 
 
 

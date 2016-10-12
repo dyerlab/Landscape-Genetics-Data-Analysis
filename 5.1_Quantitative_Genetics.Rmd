@@ -1,6 +1,6 @@
 # Quantitative Genetics {.imageChapter}
 
-<div class="chapter_image"><img src="media/ch_palm.jpg"></div>
+<div class="chapter_image"><img src="media/ch_cactus.jpg"></div>
 
 In the vast majority of landscape genetic studies, we focus on genetic markers and how thier spatial structure is influenced by ecological, environmental, and spatial features.  This focus emphasizes neutral genetic variance, whose configuration is due to demographic and microevolutionary processes other than selection.  However, if we are interested in adaptive features in natural populations, we have a much more difficult task to accomplish, one that necessitates us to partition the neutral signal from the data so that we can identify the putatively adaptive components.  
 

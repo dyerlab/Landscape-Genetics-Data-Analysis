@@ -169,5 +169,3 @@ knitr::kable(df,align=c("l","c","c","c"),digits=3)
 ```
 
 
-
-

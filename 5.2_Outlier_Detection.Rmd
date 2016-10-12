@@ -1,4 +1,6 @@
-# Outlier Detection
+# Outlier Detection {.imageChapter}
+
+<div class="chapter_image"><img src="media/ch_salamander.jpg"></div>
 
 > The operation of selection
 
