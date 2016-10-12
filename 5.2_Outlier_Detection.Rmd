@@ -40,8 +40,6 @@ write(paste(txt,collapse="\n"),file=fname)
 
 
 ```{r}
-library(qvalue)
-library(pcadapt)
 
 ```
 

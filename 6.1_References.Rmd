@@ -1,6 +1,8 @@
-# References Cited {.hanging}
+# References Cited {-, .hanging}
 
 Dyer RJ. 2015  Is there such a thing as landscape genetics?  *Molecular Ecology*, **24**, 3518-3528.
+
+Eckert AJ Dyer RJ.  2012.  Defining the landscape of adaptive genetic diversity.  *Molecular Ecology*, **21**, 2836-2838.
 
 Jacquard A. 1983.  Heritability: one word, three concepts. *Biometrics*, **39**, 465-477.
 

@@ -1,4 +1,4 @@
-# RGDAL & RGEOS {-, #rgdal-rgeos-packages}
+# RGDAL & RGEOS {-}
 
 Every time I upgrade R in any significant way, two libraries seem to raise their ugly heads and scream like a spoiled child—--*rgdal* and *rgeos*.  Why do these two have to be SOOOO much of a pain? Why can't we have a auto build of a binary with all the options in it for OSX? Who knows? I always feel like I get the fuzzy end of the lollipop with these two. Here is my latest approach for getting them going.
 
