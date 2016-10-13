@@ -26,6 +26,7 @@
 
 files_from_cran <- c("cowplot",
                      "DT",
+                     "ecodist",
                      "devtools",
                      "GGally",
                      "gdistance",
