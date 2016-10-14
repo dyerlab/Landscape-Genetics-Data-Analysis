@@ -1,0 +1,440 @@
+---
+title: "Resistance Models"
+author: "Landscape Genetic Data Analysis"
+date: "Scotland, October 2016"
+output: html_document
+---
+
+![](../media/ch_mountain.jpg)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+library(ggplot2)
+theme_set( theme_bw() )
+```
+
+## Synopsis
+
+One of the characteristics of landscape genetics studies, maybe even a defining feature, is its use of resistance and distance approaches to understanding the spatial distribution of genetic structure and *hopefully* to use it in support of characterizing landscape mediated connectivity.  In this activity, we will explore how to characterize and estimate separation and delve into a approaches for understanding how we can analyze similarily defined genetic distances.
+
+## Objectives
+
+1. Dive into the concepts assocaited with the development of resistance costs.  
+2. Explore alternative methods for estimating separation among locations using resistance rasters
+3. Examine different statistical models applicable to distance-based resistance modeling.
+
+
+## Resistance Costs
+
+- General Features
+   - Euclidean distnce 
+   - Elevation similarity.
+- Forest Canopy Features
+   - Coniferous vegetation (cv)
+   - Mixed hardwoods (mh)
+   - Open field (fd)
+- Forest Understory Features
+  - Roads (rd)
+  - Cornus canopies (cf)
+  
+
+```{r echo=FALSE,fig.cap="Mirror resistance rasters based upon the presence of conifer canopy structure.  Data were collected from hyperspectral imaging."}
+require(raster)
+pines <- raster("LGDA-Data/dogwood_costs/pines.asc")
+dfp <- data.frame( rasterToPoints(pines) )
+dfp <- dfp[ dfp$pines > 0 , ]
+dfp$Ratio <- "Pine 1 : Not Pine 0"
+npines <- abs( pines - 1 )
+dfn <- data.frame( rasterToPoints(npines) )
+names( dfn )[3] <- "pines"
+dfn <- dfn[ dfn$pines > 0 , ]
+dfn$Ratio <- "Pine 0 : Not Pine 1"
+df.pines <- rbind( dfp, dfn )
+p <- ggplot( df.pines, aes(x,y,fill=pines)) + geom_tile() 
+p <- p + coord_equal() + xlab("") + ylab("")
+p <- p + scale_fill_gradient(low="#f7fcfd",high="#00441b") 
+p + facet_grid(~Ratio )
+```
+
+
+
+
+
+## Resistance Distance
+
+
+
+One way to estimate distances in R, is through the use of the `gdistance` library.  In this approach, we define a transition object based upon:  
+1. The cost distance raster.  By default, the `transition()` function works on conductance, which is the inverse of resistance.  In these examples, we have used a single raster, though use of *RasterBrick* objects is just as appropriate.
+2. The function by which we estimate the pixel-to-pixel distances.  
+3. The neighborhood around each pixel that we look at during each step.  Options for this include:  
+  - A von Neumann neighborhood (`directions=4`) consists of the pixels immediately above, below, and on both sides of the target pixel.  
+  - A Moore's neighborhood (`directions=8`) consisting of all pixels surrounding the target pixel (e.g., even the diagonal ones)
+  - A Knight & One-Cell Queen move (`directions=16`), which adds the next layer of cells outside of Moore's neighborhood.
+
+Once estimated, the transition object *must* be corrected for if you are either using a large extent based upon Latitude and Longitude datum (e.g., they are not unit-wise consistent in area), or you have used a `direction` option other than the von Neuman Neighborhood.
+
+In the example below, I use the cost distance estimated as an absolute distance with a resistance cost of 2:1.
+
+
+```{r}
+require(gdistance)
+pine <- pines + 1
+tr <- transition( 1/pine, transitionFunction = mean, directions=4 )
+tr <- geoCorrection( tr, type="c", multpl=FALSE, scl=FALSE)
+tr
+```
+
+
+```{r}
+coords <- cbind( x=c(304374,304546,304079),
+                 y=c(4134281,4133413,4133584))
+pts <- SpatialPoints( coords )
+path.1 <- shortestPath( tr, pts[1], pts[2], output="SpatialLines")
+path.2 <- shortestPath( tr, pts[2], pts[3], output="SpatialLines")
+path.3 <- shortestPath( tr, pts[3], pts[1], output="SpatialLines")
+plot( pine )
+lines( path.1, col="red")
+lines( path.2, col="blue")
+lines( path.3, col="darkgreen")
+points( pts, pch=16, col="black")
+```
+
+
+```{r}
+d <- as.matrix( costDistance(tr, pts) )
+d
+```
+
+
+
+## Resistance Models
+
+
+```{r}
+b <- bbox( pine )
+x <- runif( 20, min = b[1,1], max=b[1,2] )
+y <- runif( 20, min = b[2,1], max=b[2,2] )
+samples <- SpatialPoints( cbind( x, y ) )
+```
+
+
+
+```{r eval=FALSE}
+tr <- transition( 1/pine, transitionFunction = mean, directions=4 )
+tr <- geoCorrection( tr, type="c", multpl=FALSE, scl=FALSE)
+d.lcp <- as.matrix( costDistance(tr, samples) )
+```
+
+
+```{r}
+tr.ct <- transition( 1/pine, transitionFunction = mean, directions=4 )
+tr.ct <- geoCorrection( tr.ct, type="r", multpl=FALSE, scl=FALSE)
+d.ct <- as.matrix( commuteDistance(tr.ct, samples))
+```
+
+
+```{r echo=FALSE, eval=FALSE}
+save( d.lcp, file="lcp.pine.rda")
+save( d.ct, file="ct.pine.rda")
+```
+
+```{r echo=FALSE}
+load("lcp.pine.rda")
+load("ct.pine.rda")
+```
+
+```{r}
+df <- data.frame( CT=d.ct[ lower.tri(d.ct)],
+                  LCP=d.lcp[lower.tri(d.lcp)])
+p <- ggplot( df, aes(x=LCP,y=CT)) + geom_point()
+p <- p + stat_smooth()
+p + xlab("Least Cost Path Distance") + ylab("Circuit Theory Distance")
+```
+
+
+
+Circuitscape, a stand alone Java application can be used to estimate distances and you should have downloaded it and have it on your computer.  What we need as input is a raster and our points.
+
+Both raster and point data should be converted into *.asc raster format.  
+
+```{r, eval=FALSE}
+cost <- temp.10
+sites <- rasterize(x = pts,y = cost)
+writeRaster(sites,"sites_rast.asc",overwrite=TRUE)
+writeRaster(cost,"cost_rast.asc",overwrite=TRUE)
+```
+
+Then start Circuitscape and set the following parameters:  
+1. Choose Step 1: Raster
+2. Choose Step 2: All pairs
+3. Use the file section buttons to load in both the cost and site rasters.
+4. Select an output location (it will create a lot of files), I called it 'trees' (the results are saved with that as a file prefix).
+5. Selection the option to save a current map.
+6. Hit Run.
+
+It will take a bit of time, it has to estimate distances across all pairs of points.  When it finishes, it will produce a lot of files, two of which we are interested in working with.  The first is the circuit distance data file called, "trees_resistances_3columns".  If you named the output something other than 'tree' (as I did ), it will be prefixed with that name instead. We can load that into R and make it into a matrix.
+```{r eval=FALSE}
+trees <- read.table( "LGDA-Data/dogwood_costs/tree_coords.txt", header=FALSE, sep="\t")
+trees <- SpatialPoints( trees[,2:3])
+cost <- pine
+sites <- rasterize(x = trees,y = cost)
+writeRaster(sites,"trees_rast.asc",overwrite=TRUE)
+writeRaster(cost,"cost_rast.asc",overwrite=TRUE)
+```  
+
+The next file, which is much more interesteing to look at, is a raster map of the current, as it was estimated across the landscape.  Is should be saved as 'trees_cum_curmap.asc' file.  You can load that in using: 
+
+```{r}
+pine.current <- raster("trees_cum_curmap.asc")
+```
+
+
+
+```{r}
+e <- extent( c( 304421, 304583, 4133540, 4133869) )
+pine.portion <- crop( pine.current, e )
+df <- data.frame( rasterToPoints(pine.portion) )
+names(df) <- c("X", "Y", "Current")
+df$Current <- log( df$Current)
+df$Current[ df$Current > 0 ] <- 0
+ggplot(df, aes(X,Y,fill=Current)) + geom_tile() + scale_fill_gradientn( colors=c('#a6611a','#dfc27d','#f5f5f5','#80cdc1','#018571')) + coord_equal()
+```
+
+
+
+
+
+
+## Pixel Size
+
+```{r}
+pine.p1 <- aggregate( pine )
+pine.p2 <- aggregate( pine.p1 )
+pine.p3 <- aggregate( pine.p2 )
+pine.p4 <- aggregate( pine.p3 )
+```
+
+```{r echo=FALSE}
+par( mfrow=c(2,2), mar=rep(0.2,4) )
+plot( pine.p1, legend=FALSE, axes=FALSE, box=FALSE )
+plot( pine.p2, legend=FALSE, axes=FALSE, box=FALSE )
+plot( pine.p3, legend=FALSE, axes=FALSE, box=FALSE )
+plot( pine.p4, legend=FALSE, axes=FALSE, box=FALSE )
+```
+
+
+
+```{r}
+tr1 <- transition( 1/pine.p4, transitionFunction = mean, directions=4 )
+tr1 <- geoCorrection( tr1, type="c", multpl=FALSE, scl=FALSE)
+path.p1 <- shortestPath( tr1, pts[1], pts[2], output="SpatialLines")
+path.p2 <- shortestPath( tr1, pts[2], pts[3], output="SpatialLines")
+path.p3 <- shortestPath( tr1, pts[3], pts[1], output="SpatialLines")
+
+par( mfrow=c(1,2), mar=rep(1,4))
+plot( pine , legend=FALSE)
+lines( path.1, col="red")
+lines( path.2, col="blue")
+lines( path.3, col="darkgreen")
+points( pts, pch=16, col="black")
+plot( pine.p4 , legend=FALSE)
+lines( path.p1, col="red")
+lines( path.p2, col="blue")
+lines( path.p3, col="darkgreen")
+points( pts, pch=16, col="black")
+```
+
+```{r}
+d2 <- as.matrix( costDistance(tr1, samples) )
+df <- data.frame( Fine=d.lcp[lower.tri(d.lcp)],
+                  Course=d2[lower.tri(d2)])
+ggplot( df, aes( Fine, Course ) ) + geom_point()  + coord_equal() + geom_abline(slope=1, color="red")
+```
+
+
+
+### The Mantel Test
+
+```{r}
+lcp.files <- list.files("./LGDA-Data/dogwood_costs/", pattern="lcp*", full.names = TRUE)
+library(vegan)
+df <- data.frame( File=lcp.files,
+                  Feature=NA,
+                  In=NA,
+                  Out=NA,
+                  Type="Least Cost",
+                  Correlation=NA, 
+                  P=NA)
+load( "./LGDA-Data/dogwood_costs/G.rda")
+for( path in lcp.files) {
+  file <- strsplit( path, split="/")[[1]][5]
+  components <- strsplit(file, split=".",fixed=TRUE)[[1]]
+  load( path )
+  fit <- mantel( as.dist( G ), as.dist( D ))
+  idx <- which( df$File == path)
+  df$Feature[idx] <- components[2]
+  df$In[idx] <- as.numeric( components[3] )
+  df$Out[idx] <- as.numeric( components[4] )
+  df$Correlation[idx] <- fit$statistic
+  df$P[idx] <- fit$signif
+}
+library(DT)
+datatable(df[,2:7])
+```
+
+```{r}
+df <- df[ !(df$Feature %in% c("elevation","euclidian")),]
+df$Feature <- factor( df$Feature )
+df$Ratio <- log10( df$In / df$Out )
+df <- droplevels(df)
+ggplot( df, aes(x=Ratio, y=Correlation, color=Feature)) + geom_line() + geom_point() + xlab("Log(In:Out)")
+```
+
+### The Partial Mantel
+
+```{r}
+target <- lcp.files[ 34 ]
+remaining <- lcp.files[ -(27:34) ]
+dfp <- data.frame( File=remaining,
+                  Feature=NA,
+                  In=NA,
+                  Out=NA,
+                  Type="Least Cost",
+                  Correlation=NA, 
+                  P=NA)
+
+load("./LGDA-Data/dogwood_costs/lcp.mh.7.1.rda")
+MH <- D
+
+for( path in remaining) {
+  file <- strsplit( path, split="/")[[1]][5]
+  components <- strsplit(file, split=".",fixed=TRUE)[[1]]
+  load( path )
+  fit <- mantel.partial(as.dist(G), as.dist(MH), as.dist(D))
+
+  idx <- which( dfp$File == path)
+  dfp$Feature[idx] <- components[2]
+  dfp$In[idx] <- as.numeric( components[3] )
+  dfp$Out[idx] <- as.numeric( components[4] )
+  dfp$Correlation[idx] <- fit$statistic
+  dfp$P[idx] <- fit$signif
+}
+datatable(dfp[2:7])
+```
+
+```{r}
+dfp <- dfp[ !(dfp$Feature %in% c("elevation","euclidian")),]
+dfp$Feature <- factor( dfp$Feature )
+dfp$Ratio <- log10( dfp$In / dfp$Out )
+dfp <- droplevels(dfp)
+ggplot( dfp, aes(x=Ratio, y=Correlation, color=Feature)) + geom_line() + geom_point() + xlab("Log(In:Out)")
+```
+
+
+### Distance Regression
+
+```{r}
+library(ecodist)
+```
+
+
+<div class="scrollingbox"><pre>
+<pre>MRM {ecodist}	R Documentation
+Multiple Regression on distance Matrices
+
+Description
+
+Multiple regression on distance matrices (MRM) using permutation tests of significance for regression coefficients and R-squared.
+
+Usage
+
+MRM(formula = formula(data), data = sys.parent(), nperm = 1000, mrank = FALSE)
+Arguments
+
+formula	
+formula in R/S-Plus format describing the test to be conducted.
+data	
+an optional dataframe containing the variables in the model as columns of dissimilarities. By default the variables are taken from the current environment.
+nperm	
+number of permutations to use. If set to 0, the permutation test will be omitted.
+mrank	
+if this is set to FALSE (the default option), Pearson correlations will be used. If set to TRUE, the Spearman correlation (correlation ranked distances) will be used.
+Details
+
+Performs multiple regression on distance matrices following the methods outlined in Legendre et al. 1994.
+
+Value
+
+coef	
+A matrix with regression coefficients and associated p-values from the permutation test (using the pseudo-t of Legendre et al. 1994).
+r.squared	
+Regression R-squared and associated p-value from the permutation test.
+F.test	
+F-statistic and p-value for overall F-test for lack of fit.
+Author(s)
+
+Sarah Goslee, Sarah.Goslee@ars.usda.gov
+
+References
+
+Lichstein, J. 2007. Multiple regression on distance matrices: A multivariate spatial analysis tool. Plant Ecology 188: 117-131.
+
+Legendre, P.; Lapointe, F. and Casgrain, P. 1994. Modeling brain evolution from behavior: A permutational regression approach. Evolution 48: 1487-1499.
+
+See Also
+
+mantel
+
+Examples
+
+data(graze)
+LOAR10.mrm <- MRM(dist(LOAR10) ~ dist(sitelocation) + dist(forestpct), data=graze, nperm=100)
+[Package ecodist version 1.2.9 Index]</pre></div>
+
+
+
+```{r}
+load("LGDA-Data/dogwood_costs/lcp.mh.7.1.rda")
+X1 <- D
+model.1 <- MRM( dist(G) ~ dist(X1) )
+model.1
+```
+
+
+
+```{r}
+load("LGDA-Data/dogwood_costs/lcp.cv.10.1.rda")
+X2 <- D
+model.2 <- MRM( dist(G) ~ dist(X1) + dist(X2)  )
+model.2
+```
+
+
+### Model Comparisons & Concerns
+
+Both the Mantel and the MRM approaches have been recently criticized in the literature due to some problems associated with assessing  probabilities.
+
+
+
+### Redundancy Analysis
+
+```{r}
+
+```
+
+
+
+## Questions
+
+Here are some questions for you to exercise what was covered in the lab above.
+
++ For the cost networks, I only calculated the costs associated with least cost paths.  Go back and load in the circuit theory paths and perform the same set of Mantel tests.  For each feature, which combination of resistance value and distance algorithm produce the highest correlations?
++ To what extent does the pixel size influence hypothesized connectivity currents across the landscape?  Select one of the aggregated pine rasters (pine.p1, pine.p2, or pine.p3) and run it through Circuitscape.
++ Is pairwise circuit theory distance, as estimated by gdistance and Circuitscape identical?
++ In the dogwood_costs subdirectory there are two more rasters, open.asc (non-canopy locations) and roads.asc (openings under the canopy which may act as barriers).  Everything that is either not pine and not open is also mixed-hardwood canopy.  Explore these rastes and estimate the correlation with inter-tree genetic covariance.  Are any of these (at various levels of resistance) better at describing connectivity?
+
+
+
+
+

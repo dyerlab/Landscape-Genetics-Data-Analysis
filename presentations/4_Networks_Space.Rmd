@@ -1,0 +1,1254 @@
+# Network Approaches {.imageChapter}
+
+[](../media/ch_euphorbia.jpg)
+
+In R, a network can be derived from several different kinds of data. For simplicity, lets start with an *adjacency matrix*, which represents the patterns of connectivity among nodes in a network.  Here our nodes may represent individuals, locales, populations, regions, or any other clumping of our data.  The adjacency matrix has as many rows and columns as there are distinct sampling units.  Lets consider the case where we have 5 locales, from which we derived some measure of connectivity.  The matrix has five rows and columns and a non-zero entry in each element where connectivity has been inferred.  In R, we can set it up as:
+
+```{r}
+A <- matrix(0, nrow=5, ncol=5)
+A[1,2] <- A[2,3] <- A[1,3] <- A[3,4] <- A[4,5] <- 1
+A <- A + t(A)
+A
+```
+
+To convert this into a graph, we can use the *igraph* package---a comprehensive (and multilingual) package of network design, manipulation, and analysis.
+
+```{r warning=FALSE, error=FALSE, message=FALSE}
+library(igraph)
+g <- graph_from_adjacency_matrix( A , mode="undirected")
+```
+
+There are several options available under the `mode` parameter, which describes the type of network we are going to be using.  The following are available:
+
+1. `undirected` The connections between nodes are symmetric.  This is the default for population graphs as covariance, the quantity the edge is representing is symmetrical.
+2. `directed` The edges are asymetric.
+3. `max` or `min` Will take the largest (or smallest) value of the matrix (e.g., $max(A[i,j], A[j,i])$ or $min( A[i,j], A[j,i])$ ).
+4. `upper` or `lower` Uses either the upper or lower element of the matrix.
+5. `plus` Adds upper and lower values (e.g., $A[i,j] + A[j,i]$).
+
+The graph object presents several characteristics as an output including the number of nodes and edges, the mode of the graph, and a list of the edges (if there aren't too many--in which case the list is truncated).
+
+```{r}
+g
+```
+
+Here we see that this object is an *igraph*, is 'U'ndirected, and has 5 nodes and 5 edges.  The edges are indicated by numbers and are graphically displayed.
+
+
+### Node &amp; Edge Attributes
+
+The underlying structure of an `igraph` object allows you to assoicate attributes (e.g., other data) with nodes and edges. Node attributes are accessed using the $V(graph)$ operator (for vertex) and edge attributes are done via $E(graph)$.  Attributes can be set as well as retrieved using the same mechanisms for nodes.
+
+```{r}
+V(g)$name <- c("Olympia","Bellingham","St. Louis","Ames","Richmond")
+V(g)$group <- c("West","West", "Central","Central","East")
+V(g)$color <- "#cca160"
+list.vertex.attributes( g )
+V(g)$name
+```
+
+and for edges
+
+```{r}
+E(g)
+E(g)$color <- c("red","red", "red", "blue","dark green")
+list.edge.attributes( g )
+```
+
+
+## Plotting a Graphs
+
+One of the main benefits to using R is that you can leverage the mutlitude of other packages to visualize and manipulate your data in interesting and informative ways.  Since a `popgraph` is an instance of an *igraph* element, we can use the *igraph* routines for plotting.  Here is an example.
+
+```{r}
+plot(g)
+```
+
+There are several different options you can use to manipulate the graphical forms.  By default, the plotting routines look for node and edge attributes such as `name` and `color` to plot the output appropriately.  There are several additional plotting functions for plotting *igraph* objects.  Here are some examples.
+
+```{r}
+plot(g, edge.color="black", vertex.label.color="darkred", vertex.color="#cccccc", vertex.label.dist=1)
+```
+
+Below is the output from the `igraph.plotting` help file that covers the main options that you have for customizing the way that the network is displayed.
+
+<div class="scrollingbox"><pre>
+Drawing graphs {igraph}	R Documentation
+Drawing graphs
+
+Description
+
+The common bits of the three plotting functions plot.igraph, tkplot and rglplot are discussed in this manual page
+
+Details
+
+There are currently three different functions in the igraph package which can draw graph in various ways:
+
+plot.igraph does simple non-interactive 2D plotting to R devices. Actually it is an implementation of the plot generic function, so you can write plot(graph) instead of plot.igraph(graph). As it used the standard R devices it supports every output format for which R has an output device. The list is quite impressing: PostScript, PDF files, XFig files, SVG files, JPG, PNG and of course you can plot to the screen as well using the default devices, or the good-looking anti-aliased Cairo device. See plot.igraph for some more information.
+
+tkplot does interactive 2D plotting using the tcltk package. It can only handle graphs of moderate size, a thousend vertices is probably already too many. Some parameters of the plotted graph can be changed interactively after issuing the tkplot command: the position, color and size of the vertices and the color and width of the edges. See tkplot for details.
+
+rglplot is an experimental function to draw graphs in 3D using OpenGL. See rglplot for some more information.
+
+Please also check the examples below.
+
+How to specify graphical parameters
+
+There are three ways to give values to the parameters described below, in section 'Parameters'. We give these three ways here in the order of their precedence.
+
+The first method is to supply named arguments to the plotting commands: plot.igraph, tkplot or rglplot. Parameters for vertices start with prefix ‘vertex.', parameters for edges have prefix ‘edge.', and global parameters have no prefix. Eg. the color of the vertices can be given via argument vertex.color, whereas edge.color sets the color of the edges. layout gives the layout of the graphs.
+
+The second way is to assign vertex, edge and graph attributes to the graph. These attributes have no prefix, ie. the color of the vertices is taken from the color vertex attribute and the color of the edges from the color edge attribute. The layout of the graph is given by the layout graph attribute. (Always assuming that the corresponding command argument is not present.) Setting vertex and edge attributes are handy if you want to assign a given ‘look' to a graph, attributes are saved with the graph is you save it with save or in GraphML format with write_graph, so the graph will have the same look after loading it again.
+
+If a parameter is not given in the command line, and the corresponding vertex/edge/graph attribute is also missing then the general igraph parameters handled by igraph_options are also checked. Vertex parameters have prefix ‘vertex.', edge parameters are prefixed with ‘edge.', general parameters like layout are prefixed with ‘plot'. These parameters are useful if you want all or most of your graphs to have the same look, vertex size, vertex color, etc. Then you don't need to set these at every plotting, and you also don't need to assign vertex/edge attributes to every graph.
+
+If the value of a parameter is not specified by any of the three ways described here, its default valued is used, as given in the source code.
+
+Different parameters can have different type, eg. vertex colors can be given as a character vector with color names, or as an integer vector with the color numbers from the current palette. Different types are valid for different parameters, this is discussed in detail in the next section. It is however always true that the parameter can always be a function object in which it will be called with the graph as its single argument to get the “proper" value of the parameter. (If the function returns another function object that will not be called again...)
+
+The list of parameters
+
+Vertex parameters first, note that the ‘vertex.' prefix needs to be added if they are used as an argument or when setting via igraph_options. The value of the parameter may be scalar valid for every vertex or a vector with a separate value for each vertex. (Shorter vectors are recycled.)
+
+size
+The size of the vertex, a numeric scalar or vector, in the latter case each vertex sizes may differ. This vertex sizes are scaled in order have about the same size of vertices for a given value for all three plotting commands. It does not need to be an integer number.
+
+The default value is 15. This is big enough to place short labels on vertices.
+
+size2
+The “other" size of the vertex, for some vertex shapes. For the various rectangle shapes this gives the height of the vertices, whereas size gives the width. It is ignored by shapes for which the size can be specified with a single number.
+
+The default is 15.
+
+color
+The fill color of the vertex. If it is numeric then the current palette is used, see palette. If it is a character vector then it may either contain integer values, named colors or RGB specified colors with three or four bytes. All strings starting with ‘#' are assumed to be RGB color specifications. It is possible to mix named color and RGB colors. Note that tkplot ignores the fourth byte (alpha channel) in the RGB color specification.
+
+For plot.igraph and integer values, the default igraph palette is used (see the ‘palette' parameter below. Note that this is different from the R palette.
+
+If you don't want (some) vertices to have any color, supply NA as the color name.
+
+The default value is “SkyBlue2".
+
+frame.color
+The color of the frame of the vertices, the same formats are allowed as for the fill color.
+
+If you don't want vertices to have a frame, supply NA as the color name.
+
+By default it is “black".
+
+shape
+The shape of the vertex, currently “circle", “square", “csquare", “rectangle", “crectangle", “vrectangle", “pie" (see vertex.shape.pie), ‘sphere', and “none" are supported, and only by the plot.igraph command. “none" does not draw the vertices at all, although vertex label are plotted (if given). See shapes for details about vertex shapes and vertex.shape.pie for using pie charts as vertices.
+
+The “sphere" vertex shape plots vertices as 3D ray-traced spheres, in the given color and size. This produces a raster image and it is only supported with some graphics devices. On some devices raster transparency is not supported and the spheres do not have a transparent background. See dev.capabilities and the ‘rasterImage' capability to check that your device is supported.
+
+By default vertices are drawn as circles.
+
+label
+The vertex labels. They will be converted to character. Specify NA to omit vertex labels.
+
+The default vertex labels are the vertex ids.
+
+label.family
+The font family to be used for vertex labels. As different plotting commands can used different fonts, they interpret this parameter different ways. The basic notation is, however, understood by both plot.igraph and tkplot. rglplot does not support fonts at all right now, it ignores this parameter completely.
+
+For plot.igraph this parameter is simply passed to text as argument family.
+
+For tkplot some conversion is performed. If this parameter is the name of an exixting Tk font, then that font is used and the label.font and label.cex parameters are ignored complerely. If it is one of the base families (serif, sans, mono) then Times, Helvetica or Courier fonts are used, there are guaranteed to exist on all systems. For the ‘symbol' base family we used the symbol font is available, otherwise the first font which has ‘symbol' in its name. If the parameter is not a name of the base families and it is also not a named Tk font then we pass it to tkfont.create and hope the user knows what she is doing. The label.font and label.cex parameters are also passed to tkfont.create in this case.
+
+The default value is ‘serif'.
+
+label.font
+The font within the font family to use for the vertex labels. It is interpreted the same way as the the font graphical parameter: 1 is plain text, 2 is bold face, 3 is italic, 4 is bold and italic and 5 specifies the symbol font.
+
+For plot.igraph this parameter is simply passed to text.
+
+For tkplot, if the label.family parameter is not the name of a Tk font then this parameter is used to set whether the newly created font should be italic and/or boldface. Otherwise it is ignored.
+
+For rglplot it is ignored.
+
+The default value is 1.
+
+label.cex
+The font size for vertex labels. It is interpreted as a multiplication factor of some device-dependent base font size.
+
+For plot.igraph it is simply passed to text as argument cex.
+
+For tkplot it is multiplied by 12 and then used as the size argument for tkfont.create. The base font is thus 12 for tkplot.
+
+For rglplot it is ignored.
+
+The default value is 1.
+
+label.dist
+The distance of the label from the center of the vertex. If it is 0 then the label is centered on the vertex. If it is 1 then the label is displayed beside the vertex.
+
+The default value is 0.
+
+label.degree
+It defines the position of the vertex labels, relative to the center of the vertices. It is interpreted as an angle in radian, zero means ‘to the right', and ‘pi' means to the left, up is -pi/2 and down is pi/2.
+
+The default value is -pi/4.
+
+label.color
+The color of the labels, see the color vertex parameter discussed earlier for the possible values.
+
+The default value is black.
+
+Edge parameters require to add the ‘edge.' prefix when used as arguments or set by igraph_options. The edge parameters:
+
+color
+The color of the edges, see the color vertex parameter for the possible values.
+
+By default this parameter is darkgrey.
+
+width
+The width of the edges.
+
+The default value is 1.
+
+arrow.size
+The size of the arrows. Currently this is a constant, so it is the same for every edge. If a vector is submitted then only the first element is used, ie. if this is taken from an edge attribute then only the attribute of the first edge is used for all arrows. This will likely change in the future.
+
+The default value is 1.
+
+arrow.width
+The width of the arrows. Currently this is a constant, so it is the same for every edge. If a vector is submitted then only the first element is used, ie. if this is taken from an edge attribute then only the attribute of the first edge is used for all arrows. This will likely change in the future.
+
+This argument is currently only used by plot.igraph.
+
+The default value is 1, which gives the same width as before this option appeared in igraph.
+
+lty
+The line type for the edges. Almost the same format is accepted as for the standard graphics par, 0 and “blank" mean no edges, 1 and “solid" are for solid lines, the other possible values are: 2 (“dashed"), 3 (“dotted"), 4 (“dotdash"), 5 (“longdash"), 6 (“twodash").
+
+tkplot also accepts standard Tk line type strings, it does not however support “blank" lines, instead of type ‘0' type ‘1', ie. solid lines will be drawn.
+
+This argument is ignored for rglplot.
+
+The default value is type 1, a solid line.
+
+label
+The edge labels. They will be converted to character. Specify NA to omit edge labels.
+
+Edge labels are omitted by default.
+
+label.family
+Font family of the edge labels. See the vertex parameter with the same name for the details.
+
+label.font
+The font for the edge labels. See the corresponding vertex parameter discussed earlier for details.
+
+label.cex
+The font size for the edge labels, see the corresponding vertex parameter for details.
+
+label.color
+The color of the edge labels, see the color vertex parameters on how to specify colors.
+
+label.x
+The horizontal coordinates of the edge labels might be given here, explicitly. The NA elements will be replaced by automatically calculated coordinates. If NULL, then all edge horizontal coordinates are calculated automatically. This parameter is only supported by plot.igraph.
+
+label.y
+The same as label.x, but for vertical coordinates.
+
+curved
+Specifies whether to draw curved edges, or not. This can be a logical or a numeric vector or scalar.
+
+First the vector is replicated to have the same length as the number of edges in the graph. Then it is interpreted for each edge separately. A numeric value specifies the curvature of the edge; zero curvature means straight edges, negative values means the edge bends clockwise, positive values the opposite. TRUE means curvature 0.5, FALSE means curvature zero.
+
+By default the vector specifying the curvatire is calculated via a call to the curve_multiple function. This function makes sure that multiple edges are curved and are all visible. This parameter is ignored for loop edges.
+
+The default value is FALSE.
+
+This parameter is currently ignored by rglplot.
+
+arrow.mode
+This parameter can be used to specify for which edges should arrows be drawn. If this parameter is given by the user (in either of the three ways) then it specifies which edges will have forward, backward arrows, or both, or no arrows at all. As usual, this parameter can be a vector or a scalar value. It can be an integer or character type. If it is integer then 0 means no arrows, 1 means backward arrows, 2 is for forward arrows and 3 for both. If it is a character vector then “<" and “<-" specify backward, “>" and “->" forward arrows and “<>" and “<->" stands for both arrows. All other values mean no arrows, perhaps you should use “-" or “–" to specify no arrows.
+
+Hint: this parameter can be used as a ‘cheap' solution for drawing “mixed" graphs: graphs in which some edges are directed some are not. If you want do this, then please create a directed graph, because as of version 0.4 the vertex pairs in the edge lists can be swapped in undirected graphs.
+
+By default, no arrows will be drawn for undirected graphs, and for directed graphs, an arrow will be drawn for each edge, according to its direction. This is not very surprising, it is the expected behavior.
+
+loop.angle
+Gives the angle in radian for plotting loop edges. See the label.dist vertex parameter to see how this is interpreted.
+
+The default value is 0.
+
+loop.angle2
+Gives the second angle in radian for plotting loop edges. This is only used in 3D, loop.angle is enough in 2D.
+
+The default value is 0.
+
+Other parameters:
+
+layout
+Either a function or a numeric matrix. It specifies how the vertices will be placed on the plot.
+
+If it is a numeric matrix, then the matrix has to have one line for each vertex, specifying its coordinates. The matrix should have at least two columns, for the x and y coordinates, and it can also have third column, this will be the z coordinate for 3D plots and it is ignored for 2D plots.
+
+If a two column matrix is given for the 3D plotting function rglplot then the third column is assumed to be 1 for each vertex.
+
+If layout is a function, this function will be called with the graph as the single parameter to determine the actual coordinates. The function should return a matrix with two or three columns. For the 2D plots the third column is ignored.
+
+The default value is layout_nicely, a smart function that chooses a layouter based on the graph.
+
+margin
+The amount of empty space below, over, at the left and right of the plot, it is a numeric vector of length four. Usually values between 0 and 0.5 are meaningful, but negative values are also possible, that will make the plot zoom in to a part of the graph. If it is shorter than four then it is recycled.
+
+rglplot does not support this parameter, as it can zoom in and out the graph in a more flexible way.
+
+Its default value is 0.
+
+palette
+The color palette to use for vertex color. The default is categorical_pal, which is a color-blind friendly categorical palette. See its manual page for details and other palettes. This parameters is only supported by plot, and not by tkplot and rglplot.
+
+rescale
+Logical constant, whether to rescale the coordinates to the [-1,1]x[-1,1](x[-1,1]) interval. This parameter is not implemented for tkplot.
+
+Defaults to TRUE, the layout will be rescaled.
+
+asp
+A numeric constant, it gives the asp parameter for plot, the aspect ratio. Supply 0 here if you don't want to give an aspect ratio. It is ignored by tkplot and rglplot.
+
+Defaults to 1.
+
+frame
+Boolean, whether to plot a frame around the graph. It is ignored by tkplot and rglplot.
+
+Defaults to FALSE.
+
+main
+Overall title for the main plot. The default is empty if the annotate.plot igraph option is FALSE, and the graph's name attribute otherwise. See the same argument of the base plot function. Only supported by plot.
+
+sub
+Subtitle of the main plot, the default is empty. Only supported by plot.
+
+xlab
+Title for the x axis, the default is empty if the annotate.plot igraph option is FALSE, and the number of vertices and edges, if it is TRUE. Only supported by plot.
+
+ylab
+Title for the y axis, the default is empty. Only supported by plot.
+
+Author(s)
+
+Gabor Csardi csardi.gabor@gmail.com
+
+See Also
+
+plot.igraph, tkplot, rglplot, igraph_options
+
+Examples
+
+## Not run: 
+
+# plotting a simple ring graph, all default parameters, except the layout
+g <- make_ring(10)
+g$layout <- layout_in_circle
+plot(g)
+tkplot(g)
+rglplot(g)
+
+# plotting a random graph, set the parameters in the command arguments
+g <- barabasi.game(100)
+plot(g, layout=layout_with_fr, vertex.size=4,
+     vertex.label.dist=0.5, vertex.color="red", edge.arrow.size=0.5)
+
+# plot a random graph, different color for each component
+g <- sample_gnp(100, 1/100)
+comps <- components(g)$membership
+colbar <- rainbow(max(comps)+1)
+V(g)$color <- colbar[comps+1]
+plot(g, layout=layout_with_fr, vertex.size=5, vertex.label=NA)
+
+# plot communities in a graph
+g <- make_full_graph(5) %du% make_full_graph(5) %du% make_full_graph(5)
+g <- add_edges(g, c(1,6, 1,11, 6,11))
+com <- cluster_spinglass(g, spins=5)
+V(g)$color <- com$membership+1
+g <- set_graph_attr(g, "layout", layout_with_kk(g))
+plot(g, vertex.label.dist=1.5)
+
+# draw a bunch of trees, fix layout
+igraph_options(plot.layout=layout_as_tree)
+plot(make_tree(20, 2))
+plot(make_tree(50, 3), vertex.size=3, vertex.label=NA)
+tkplot(make_tree(50, 2, mode="undirected"), vertex.size=10,
+vertex.color="green")
+
+## End(Not run)
+</pre></div>
+
+
+In addition to the physical appearance of nodes, edges, and labels, networks are must also have a 'layout' that describes the relative position of nodes on the plot surface. There are several ways you can define a layout, here are some examples.
+
+```{r}
+layout <- layout.circle( g )
+plot( g, layout=layout)
+layout <- layout.fruchterman.reingold( g )
+plot( g, layout=layout)
+```
+
+In addition to normal plotting, you can also integrate interactive plotting.  Here is an example using the `networkD3` library.  It is interactive, so grab one of the nodes and move it around.
+
+```{r}
+library(networkD3)
+edgelist <- as_edgelist(g) 
+df <- data.frame( src=edgelist[,1], target=edgelist[,2])
+simpleNetwork(df,fontSize = 14,opacity = 0.95)
+```
+
+
+
+## Mapping Networks
+
+For quick maps I typically use the **maps** library. It is pretty straightforward to use and does not take too much thought to quickly plot something or find the approporiate raster files.  Below, I add some coordinates to the data set.
+
+```{r}
+V(g)$Latitude <- c( 47.15, 48.75,38.81, 42.26, 37.74 )
+V(g)$Longitude <- c(-122.89,-122.49,-89.98, -93.47, -77.16 )
+```
+
+Then overlay this onto a map using the `overlay_popgraph()` function.    Here is an example where I plot it over the map of the US states.
+
+```{r,message=FALSE,fig.cap="Map of graph stetched onto continential US map."}
+library(maps)
+library(popgraph)
+pg <- as.popgraph( g )
+
+map( "state" )
+overlay_popgraph( pg )
+```
+
+This function **requires** that you already have a plot available (it uses the `lines()` and `points()` routines).  If you try to just overlay this with no existing plot, it will not work (and should throw an error).
+
+
+
+
+## Genetic Distance Graphs
+
+Several graph-theoretic approaches have been suggested in the literature, some of which are based upon statistical models (e.g., popgraphs in the next chapter) and some of which are less structured.  
+
+A common approach has been to use a measure of pair-wise genetic distance, measured between individuals or strata.  In the following example, Nei's genetic distance (see Chapter \@ref(genetic-distance)) is used.
+
+```{r}
+library(gstudio)
+data(arapat)
+d <- genetic_distance(arapat,mode="Nei")
+```
+
+yielding a $KxK$ distance matrix.  Nei's distance produces values that are non-negative 
+
+```{r}
+d[1:6,1:6]
+```
+
+and in the case of the `arapat` data, produces a bivariate distribution of distances.
+
+```{r warning=FALSE, message=FALSE}
+library(ggplot2)
+qplot(d[lower.tri(d)],geom = "histogram", bins=40)
+```
+
+Since Nei's distance is 
+
+
+TODO!!!!!!!!!!
+
+
+
+
+
+
+
+
+## Population Graphs
+
+Population Graphs are a statistical representation of among population genetic variance, $\sigma^2_A$, as viewed through a network (Dyer & Nason 2004).  A population graph is a graph-theoretic interpretation of genetic covariance and serves as a tool for understanding underlying evolutionary history for a set of populations.  
+
+These structures are estimated in R using the **popgraphs** library.  
+
+```{r,message=FALSE, warning=FALSE}
+library(popgraph)
+```
+
+As other networks, a population graph is a graph-theoretic structure that can be represetendHere we will focus on the former approach as it is native to this package.  If you use the latter one, it will produce a *.pgraph file and you can read it in using the `read_popgraph()` function.
+
+
+## Adding data to a graph
+
+A population graph is made more informative if you can associate some data with topology.  External data may be spatial or ecolgoical data associated with each node.  Edge data may be a bit more complicated as it is traversing both spatial and ecolgoical gradients and below we'll see how to extract particular from rasters using edge crossings. 
+
+Included in the *popgraph* package are some build-in data sets to illustrate some of the utility. Included is the cactus topology that was originally used to develop this approach (from Dyer & Nason 2004).
+
+```{r}
+data(lopho)
+class(lopho)
+lopho
+```
+
+We can associate data with the nodes using the `decorate_graph()` function.  This takes a `data.frame` object and tries to match up the columns of data in the data.frame to the nodes.  Here is an example with some addition built-in data.  The option `stratum` indicates the name of the column that has the node labels in it (which are stored as `V(graph)$name`).
+
+```{r}
+data(baja)
+summary(baja)
+lopho <- decorate_graph( lopho, baja, stratum="Population")
+lopho
+```
+
+Each vertex now has seveal different types of data associated with it now.  We will use this below.
+
+
+### Plotting a graph using **ggplot2** routines
+
+The **ggplot2** package provides a spectacular plotting environment in an intuitive context and there are now some functions to support the Population Graphs in this context.  
+
+If you haven't used **ggplot2** before, it may at first be a bit odd because it deviates from normal plotting  approaches where you just shove a bunch of arguments into a single plotting function.  In **ggplot**, you build a graphic in the same way you build a regression equation.  A regression equation has an intercept and potentially a bunch of independent terms.  This is exactly how **ggplot** builds plots, by adding togther components.
+
+To specifiy how things look in a plot, you need to specify an aesthetic using the `aes()` funciton.  Here is where you supply the variable names you use for coordinate, coloring, shape, etc.  For both of the `geom_*set` funcitons, these names **must** be attributes of either the node or edge sets in the graph itself.
+
+Here is an example using the *Lopohcereus* graph.  We begin by making a `ggplot()` object and then adding to it a `geom_` object.  The 5**popgraph** package comes with two funcitons, one for edges and one for nodes.  
+
+```{r}
+library(ggplot2)
+p <- ggplot() 
+p <- p + geom_edgeset( aes(x=Longitude,y=Latitude), lopho ) 
+p
+```
+
+I broke up the plotting into several lines to improve readability, it is not necessary to to this in practice though.  The addition of additional `geom_` objects to the plot will layer them on top (n.b., I also passed the *size=4* option to the plot as the default point size is a bit too small and this is how you could change that).
+
+```{r}
+p <- p +  geom_nodeset( aes(x=Longitude, y=Latitude), lopho, size=4)
+p
+```
+
+And then you can add additional options to the plot, like axis labels and a less exciting background theme (the `theme_empty()` provided by **popgraph** is actually transparent so you can save the image and throw it into a presentation as necessary).
+
+
+```{r}
+p <- ggplot() + geom_edgeset( aes(x=Longitude,y=Latitude), lopho, color="darkgrey" )
+p <- p + geom_nodeset( aes(x=Longitude, y=Latitude, color=Region, size=size), lopho) 
+p <- p + xlab("Longitude") + ylab("Latitude") 
+p + theme_empty()
+```
+
+You can also use the default layout routines in *igraph* for visualization.  Here is an example using Fruchterman-Reingold algorithm.
+
+```{r message=FALSE, warning=FALSE}
+library(igraph)
+c <- layout.fruchterman.reingold( lopho )
+V(lopho)$x <- c[,1]
+V(lopho)$y <- c[,2]
+p <- ggplot() + geom_edgeset( aes(x,y), lopho, color="darkgrey" )
+p <- p + geom_nodeset( aes(x, y, color=Region, size=size), lopho) 
+p + theme_empty()
+```
+
+
+
+### Reading Existing **popgraph** Files
+
+
+The online versions of Population Graphs provides a *.pgraph file for visualization. These files are visualized in several different software platforms including GeneticStudio (Dyer 2009), a OpenGL visualization application (Dyer &amp; Nason 2004), an online visualization framework at http://dyerlab.bio.vcu.edu, and of course, in R.  We shall focus on this last one.  Reading in files to R 
+
+```{r,eval=FALSE,echo=TRUE}
+graph <- read.popgraph( "thegraph.pgraph" )
+```
+
+
+### Saving Population Graph Objects
+
+
+A **popgraph** object is a normal R object and can be saved using the normal R mechanisms.
+
+```{r,echo=TRUE,eval=FALSE}
+save( lopho, file="MyLophoGraph.rda")
+```
+
+
+For interoperability, **popgraph** objects can also be saved in other formats. These are accessed through the `write.popgraph()` function.  
+
+```{r,echo=TRUE,eval=FALSE}
+write.popgraph(lopho,file="~/Desktop/Cactus.pgraph", format="pgraph")
+```
+There are several other options available for outputing your graph.  Currently the other formats that have been implemented are:
+
+1. `json` A format for html javascript data processing.  
++ `kml` The Keyhole Markup Language which is read by GoogleEarth.  This requires `Latitude` and `Longtitude` vertex properties.
++ `graphml` The graph markup language.
++ `html` Export as an interactive html document you can manipulate on your desktop (uses javascript d3.js library so you need an internet connection).
++ `pajek` Export to a format that works with the software Pajek (http://pajek.imfm.si/doku.php?id=pajek)
++ `pgraph` The format used in GeneticStudio and the original popgraph 3D viewer (this is the default).
++ `adjacency` Saves the adjacency matrix of the graph (binary) as a CSV file
++ `paths` Saves the shortest paths matrix as a CSV file
++ `weights` Saves the adjacency matrix with edge weights.
+
+
+
+## Interactive Networks
+
+To create a popgraph, you need to pass the `popgraph()` function genotypes as multivariate variables—the function `to_mv()` does this behind the scene—and a vector of variables that allocate each row of data to a node.  Here we use the 'Population' vector from the arapat `data.frame`.
+
+```{r interactive1, message=FALSE, warning=FALSE}
+library(gstudio)
+library(popgraph)
+data(arapat)
+graph <- popgraph(to_mv(arapat),groups = arapat$Population)
+print(graph)
+```
+
+The `forceNetwork()` function is what does the plotting and it needs some data that are in a specific format.  Essentially, there needs to be two `data.frame` objects with the following attributes:  
+
+ - **nodes** - A `data.frame` with each row representing the name of the node to be displayed, the group the node belongs to (if there are groupings of nodes to be displayed by alternative colors), and a vector of node sizes.  
+ - **edges** - A `data.frame` representing the edge connecting the nodes, labeled as 'from' and 'to' and a vector of weights.  
+ 
+The 'from' and 'to' vectors need to be numeric values of the nodes in the other data frame **and** need to be 0-indexed (e.g., the first node name it is going to look up is indexed as '0' in the javascript instead of '1' as is common in R).  
+
+
+
+```{r message=FALSE, warning=FALSE}
+nodes <- to_data.frame( graph, mode="nodes", as.named=FALSE )
+edges <- to_data.frame( graph, mode="edges", as.named=FALSE )
+edges$source <- edges$source - 1
+edges$target <- edges$target - 1 
+```
+
+The only last thing to do is to define a grouping of populations.  This will be represented in the network as a coloring.  For this one, I'm going to use the hypothesized STRUCTURE clustering (see \@ref(admixture) for how this was done).  In the `arapat` data set, there is a designation for each individual on which cluster they belong.  Some populations are 'pure' in their groupings but others (in spatial regions of sympatry) they are mixed.  Below I determine the estimated STRUCTURE groups for each population and collapse those who have more than one into a single string.
+
+
+```{r}
+grps <- by( arapat$Cluster, arapat$Population, unique )
+l <- lapply( grps, function(x) { g <- paste(sort(x),collapse="/") })
+df <- data.frame( name=names(l), group=as.character(l))
+nodes <- merge( nodes, df )
+```
+
+
+
+Once defined, we can then call the function to make the `data.frame` objects and then do the plot.  These graphics are *interactive*, grab a node and drag it around!
+
+```{r}
+library(networkD3)
+forceNetwork(Links = edges, Nodes = nodes,
+            Source = "source", Target = "target",
+            Value = "value", NodeID = "name",
+            Group = "group", opacity=1.0,
+            legend=TRUE, fontSize = 16,
+            zoom=TRUE )
+```
+
+
+
+
+## Spatial Population Graphs
+
+
+Mapping the nodes and edges onto real space is a key task in the understanding of how covariance is partitioned on the landscape.  There are several approaches that can be used in R since it is such a flexible platform.  In what follows I will use a series of techniques that I find useful ordered from the simplest to the more complicated.  
+
+
+
+### Integrating Google and **ggplot2** for Plotting
+
+R has some pretty good facilities for using spatial assests from Google and OpenStreetMaps and is a very easy way to get quick plots from Population Graphs, particularly if you can integrate it into the **ggplot2** framework.
+
+Using the **ggmap** package, you can request map tiles and use as backgrounds onto which you can plot specific objects.  To do so, you must first get:
+
+- Either the centroid of the location you are interested in finding and a value of zoom (just like in google maps), or
+- A bounding box with left, bottom, right, top coordinates.  This is a bit of an experimental thing and does not always get you what you want.  
+
+Some fiddling is required with either way you go.  The map you get from `get_map()` is essentially a huge matrix of hex colors as shown above.
+
+```{r, message=FALSE}
+library(ggmap)
+location <- c( mean(V(lopho)$Longitude), mean(V(lopho)$Latitude))
+location
+map <- get_map(location,maptype="satellite", zoom=6)
+dim(map)
+map[1:4,1:4]
+```
+
+This map object can be passed on to `ggmap()`, which replaces the traditional `ggplot()` funciton and sets up the bounding box in terms of Latitude and Longtidue.  Onto this, you can plot the graph topologoy using:
+
+- `geom_edgeset()` This takes the graph and plots out the edges.  
+- `geom_nodeset()` This plots out the nodes.  You could probably use a regular *data.frame* and `geom_point()` as well. Here is an example:
+
+```{r}
+p <- ggmap( map ) 
+p <- p + geom_edgeset( aes(x=Longitude,y=Latitude), lopho, color="white" ) 
+p <- p + geom_nodeset( aes(x=Longitude, y=Latitude, color=Region, size=size), lopho) 
+p + xlab("Longitude") + ylab("Latitude")
+```
+
+
+
+### Integrating Raster Maps
+
+At times we have raster data upon we can plot a population graph. Here is an example from Baja California. The underlying raster image is croped from a WorldClim tile and represents elevation.  
+
+```{r,message=FALSE}
+library(raster)
+data(alt)
+plot(alt)
+```
+
+Since it is a **raster** object, it knows how to plot itself relatively well.  There are a ton of good references for showing you how to play with raster data (e.g., Bivand *et al.* 2008)
+
+To plot our graph onto this topology, we export the spatial components of the graph into objects that interact with rasters.  The packages provides simple extraction of features into `SpatialLines` and `SpatialPoints` objects.
+
+```{r}
+lopho.nodes <- to_SpatialPoints(lopho)
+lopho.nodes
+lopho.edges <- to_SpatialLines(lopho)
+head(lopho.edges)
+```
+
+Once we have them extracted into the right format, we can add them to the raster plot.  I plot the nodes twice to overlay a circular icon (`pch=16`) onto the default cross marker and make them 50 \% larger (`cex=1.5`).
+
+```{r, fig.width=8}
+plot( alt )
+plot( lopho.edges, add=TRUE, col="#555555" )
+plot( lopho.nodes, add=TRUE, col="black", cex=1.5 )
+plot( lopho.nodes, add=TRUE, col=V(lopho)$color, pch=16, cex=1.5 )
+```
+
+
+## Extracting Spatial Data Using Population Graphs
+
+
+Since we are dealing with the spatial stuff right now, it makes sense to look into how we can use the topological features of the graph to extract spatial data.  
+
+
+### Node Specific Data
+
+The node data `nodes` is a `SpatialPoints` object and can be used to pull data from raster sources.  I'll start by creating a `data.frame` with some existing data in it.
+
+```{r}
+df.nodes <- data.frame(Pop=V(lopho)$name, Latitude=V(lopho)$Latitude, Longitude=V(lopho)$Longitude)
+```
+
+
+Then we can extract the elevation from the `alt` raster as:
+
+```{r}
+library(raster)
+df.nodes$Elevation <- extract( alt, lopho.nodes )
+summary(df.nodes)
+```
+
+Additional data could be extracted from other rasters.  See http://worldclim.org for some example data that may prove useful.
+
+### Extracting Data Along Popgraph Edges
+
+It is also possible to extract data along vectors, or other *SpatialLines* objects, which the edges in a popgraph can be tranformed into.  This is a particularly helpful approach if you are trying to quantify the value of characteristics of the environment between your sampling locations.  In the following example, I estimate the popualtion graph from the `arapat` data set 
+
+```{r popgraphInBaja, warning=FALSE,message=FALSE, echo=-1}
+graph <- popgraph( to_mv( arapat ), arapat$Population )
+coords <- strata_coordinates(arapat)
+graph <- decorate_graph( graph, coords )
+edges <- to_SpatialLines(graph)
+proj4string(edges) <- CRS( proj4string( alt ))
+plot( alt, legend=FALSE)
+plot(edges,add=TRUE)
+```
+
+and determine which of the edges has the longest length.  
+
+```{r}
+edge_lengths <- SpatialLinesLengths( edges )
+longest <- sort( edge_lengths,decreasing = TRUE )[1]
+longest
+```
+
+This edge is found at:
+
+```{r echo=-1}
+idx <- which( edge_lengths == longest )
+idx
+edge <- edges[ 37 ]
+edge
+plot( alt, legend=FALSE)
+plot(edge,add=TRUE)
+```
+
+From this edge object (or a collection of edge objects) we can again extract values from a raster.  Here I pull out the elevation profile of this edge.  To plot it, I need to make a sequence of latitude values equal in length to that of the observed elevation values I extracted.  
+
+```{r warning=FALSE,message=FALSE}
+elev <- extract( alt, edge )[[1]]
+from_lat <- V(graph)$Latitude[V(graph)$name == "SFr"]
+to_lat <- V(graph)$Latitude[ V(graph)$name == "164"]
+lat <- seq( from=from_lat, to=to_lat, length.out = length(elev) )
+df <- data.frame( Latitude=lat, Elevation=elev)
+p <- ggplot( df, aes(Latitude,Elevation)) + geom_line(color="lightgrey") 
+p + geom_point() + ylab("Elevation (m)")
+```
+
+
+Population Graphs have been used to determine if there is an preference (or avoidance) of a specific raster value for the location of individual edges on the landscape. For example, Dyer *et al.* (2012) were interested in determining if there the edge in the pollination graph (e.g., a population graph constructed from male pollen haplotypes) preferentially traverse (or avoid) specific intervening habitat features.  To do this, they permuted the edge set among nodes in the graph and recorded the prevalence (mean and variance) of specific features extracted from specific categorical rasters representing both canopy and understory features.  The permutation of a network should be done such that you preserve aspects of the spatial heterogeneity and spatial arrangement of the nodes on the landscape.  You probably do not want to permute all edges randomly in the graph (though this option is available in the code), but would probably be better served by permuting the network while maintaining both the node coordinates (e.g., where they exist on the landscape) as well as the degree distribution of the overall network.  This second criteria holds constant higher network structure.  The general idea is to:  
+
+1. Create a saturated graph and extract ecological features for all potential connections.  This gives us a `data.frame` within which we can pull out ecological values for each permutation.  This is the most computationally intensive process and doing it once and then extracting values from the `data.frame` for each permutation is a more efficient approach.
+2. Once you have all the potential values of your features, you can permute the observed matrix, while holding both the connection probability (e.g., the number of edges) and the degree distribution (e.g., the amount of edges connected to nodes) constant using the `randomize_graph` function included in the `popgraph` library.  For each permutation, you then compile the permuted environmental factor as a null distribution and then compare those to the observed.  
+
+This may sound a bit convoluted, but this example may help.  Consider the hypothetical case where we think that the edges in the population graph from Figure \@ref(fig:popgraphInBaja), are restricted in elevation because we believe that dispersing insects fly around high elevation mountains rather than over them.^[This is a truly hypothetical and contrived example to show how you would do this in the code and is not motivated by any biologically motivated reasons.  Ya' gotta make up examples sometimes...]  If this is true, then we should expect that the average (or max) elevation along any of the observed edges in the Population Graph would be less than what would be expected if we permuted the edges among nodes and measured elevation along edges from permuted graphs.
+
+First, we need to set up the network and extract values of elevation along all potential edges.  I make a saturated graph from all potential 
+
+```{r}
+data(baja)
+graph <- popgraph( to_mv( arapat ), arapat$Population )
+graph <- decorate_graph( graph, coords )
+allpops <- V(graph)$name
+```
+
+I then can make an adjacency matrix connecting all pairs of populations
+
+```{r}
+A <- matrix(1,nrow=length(allpops),ncol=length(allpops))
+diag(A) <- 0
+rownames(A) <- colnames(A) <- allpops
+saturated_graph <- graph.adjacency(A, mode = "undirected")
+saturated_graph <- as.popgraph( saturated_graph )
+```
+
+From which I can pull all the edges (all `r 0.5*nrow(A)*(nrow(A)-1)` of them) as `SpatialLines` objects
+
+```{r}
+saturated_graph <- decorate_graph( saturated_graph, coords )
+all_edges <- to_SpatialLines( saturated_graph )
+```
+
+From these `r length(all_edges)` `SpatialLines` objects, we can extract data from the elevation raster.  
+
+```{r echo=TRUE, eval=FALSE}
+edge_values <- extract( alt, all_edges, fun=max, na.rm=TRUE, df=TRUE)
+```
+
+This will take a bit of time to complete.  The options that I provided were:  
+- `fun=max` - The function used is the max function.
+- `na.rm=TRUE` - Ignore all missing data (e.g., when an edge crosses water on the `alt` raster, the extracted values are `NA`)
+- `df=TRUE` - Return the answer as a `data.frame` object instead of just a vector.
+
+```{r eval=TRUE, echo=FALSE}
+load("./spatial_data/edge_values.rmd")
+```
+
+This `data.frame` has two columns, one for edge number and the other for value.  I'm going to put an additional pair of columns with the names of the nodes the edges are connected to into this `data.frame`
+
+```{r}
+edge_names <- as_edgelist( saturated_graph )
+edge_values$Nodes <- paste( edge_names[,1], edge_names[,2], sep="-")
+head(edge_values)
+```
+
+This constitutes *all potential* connections across the landscape.  From this we can extract the edges that we observed in the original Population Graph
+
+```{r}
+e <- as_edgelist( graph )
+obs <- edge_values$alt_22[ edge_values$Nodes %in% paste( e[,1], e[,2], sep="-") ]
+mean(obs)
+```
+
+We can now permute the network a moderate number of times and take the values of permuted elevation to see if our observed are smaller than all potential elevations for this specific network.
+
+```{r}
+perm_elev <- rep(NA,999)
+for( i in 1:length(perm_elev) ) {
+  perm_graph <- randomize_graph( graph )
+  e <- as_edgelist( perm_graph )
+  perm_val <- edge_values$alt_22[ edge_values$Nodes %in% paste( e[,1], e[,2], sep="-") ]
+  perm_elev[i] <- mean(perm_val)
+}
+```
+
+Now, we can see where the observed value occurs in the distribution of elevations created under the null hypothesis of no difference in elevation across edges.
+
+```{r}
+df <- data.frame( Elevation=c(mean(obs),perm_elev), Category=c("Observed",rep("Permuted",999)))
+ggplot( df, aes(x=Elevation,fill=Category)) + geom_histogram(stat="bin", bins=40) + xlab("Elevation (m)") + ylab("Distribution of Permuted Elevations")
+```
+
+In fact, we can estimate the probablity as:
+
+```{r}
+sum( mean(obs) >= perm_elev )
+```
+
+As it turns out, the observed edges do in fact appear to be traversing lower elevations than the potential set of edges that could be present (while controlling for spatial location of populations and graph structure).  
+
+
+## Extracting Graph-Theoretic Parameters
+
+
+The underlying structure of a **popgraph** object is based upon the **igraph** package from Gabor Csardi.  A population graph is essentially a specific kind of **igraph**object and can be decorated with metadata that is useful for spatial population genetic analyses.  As such, there is a wealth of existing analyses from both the **igraph** as well as the **sna** packages that can be used on **popgraph** objects.  Here are some examples.
+
+### Matrix Representations of Population Graph Objects
+
+A graph topology is a graphical representation of a matrix and there are several reasons why you may want to use these matrices.  The function `to_matrix()` is an easy front-end to several kinds of matrices.  Matrix structure itself can be defined by adjacency matrics, either binary (the default) or weighed by the edge weight.  Several graph-theoretic parameters are derived from the adjacency matrix.  Here is an example from our little graph that started this document.
+
+```{r}
+to_matrix( lopho, mode="adjacency")[1:5,1:5]
+to_matrix( lopho, mode="edge weight")[1:5,1:5]
+```
+
+In addition to who each node is connected to, it is often of interest to know the length of the shortest path through the matrix connecting nodes.  Here is a slightly larger example, using the cactus data so we can look at isolation by graph distance.
+
+```{r}
+cGD <- to_matrix( lopho, mode="shortest path")
+cGD[1:5,1:5]
+```
+
+It should be noted that the shortest distance through a population graph is defined as the parameter $cGD$, conditional graph distance (see Dyer *et al.* 2010 for more information on this parameter).
+
+Now, we need the physical distance between the nodes.  If the physical size of the sampling area is small we could just use the Pythagorean equation.  However, here the distance is relatively large and the curvature of the earth may be of interest to take into account.  There are seveal functions that will calculate 'great circle distance' but the easiest is `rdist.earth()` from the **fields** funtion.  
+
+
+```{r,warning=FALSE,message=FALSE}
+library(gstudio)
+df <- data.frame( Stratum = V(lopho)$name, 
+                  Longitude  =V(lopho)$Longitude, 
+                  Latitude = V(lopho)$Latitude ) 
+pDist <- strata_distance( df )
+```
+
+Now, we can plot these values against each other to see if there is a pattern of 'isolation by distance' captured in the graph topology.  To do this, I extract only the upper triangle (e.g., the values above the diagonal of each matrix) because they are symmetric matrices and we do not want to look at each datum twice.
+
+```{r}
+df <- data.frame( cGD=cGD[upper.tri(cGD)], Phys=pDist[upper.tri(pDist)])
+cor.test( df$Phys, df$cGD, method="spearman")
+```
+
+We can plot these values and make a trendline pretty easily.  Here is a plot using **ggplot2** (a very nice plotting library; you could use `plot()` to do the normal plotting but I think **ggplot2** does such a nice job I encourage its use).  
+
+```{r,message=FALSE}
+qplot( Phys, cGD, geom="point", data=df) + stat_smooth(method="loess") + xlab("Physical Distance") + ylab("Conditional Genetic Distance")
+```
+
+The trendline is the loess predicted line with confidence interval.  
+
+
+### Node Specific Parameters
+
+Features of the topology can be extracted as either properties of the nodes or the edges. Node properties may provide insights into localized processes (e.g., a 'sink' population).  There are a lot of different parameters that can be derived and several packages in R that help out.  Here are some basic ones.
+
+```{r}
+df.nodes$closeness <- closeness(lopho)
+df.nodes$betweenness <- betweenness(lopho)
+df.nodes$degree <- degree( lopho )
+df.nodes$eigenCent <- evcent( lopho )$vector
+df.nodes$Region <- factor(V(lopho)$Region)
+summary(df.nodes,color="Region")
+```
+
+
+The relationship betwwen the node variables can be evaluated in a pair plot.
+
+```{r,message=FALSE,warning=FALSE,fig.width=8}
+library(GGally)
+ggpairs(df.nodes,columns=2:9, color='Region')
+```
+
+
+
+
+### Edge Specific Parameters
+
+
+Edges may have specific properties as well.  Here are some examples using betweeness centrality, community, and regionality (if the edge connects within Baja or Sonora or crosses the Sea of Cortéz).
+
+```{r}
+df.edge <- data.frame( Weight=E(lopho)$weight )
+df.edge$betweenness <- edge.betweenness(lopho)
+df.edge$Region <- rep("Baja",52)
+df.edge$Region[36:52] <- "Sonora"
+df.edge$Region[c(11,24,27,35)] <- "Cortez"
+ggpairs(df.edge, color="Region")
+```
+
+
+
+
+## Testing for Topological Congruence
+
+If you have more than one topology and the node sets overlap sufficiently, you can test for the topological congruence of the two.  There are several specific reasons why population graph topologies may be congruent.  In this section we use the spatial genetic structure of the Senita cactus (*Lophocereus schottii*) and its obligate pollinator, *Upiga virescens* as an example.  This is an obligate pollination mutualism and as such we should expect there to be some degree of spatial genetic congruence between the species due to this co-evolution.  
+
+
+```{r}
+data(upiga)
+upiga <- decorate_graph(upiga,baja,stratum="Population")
+upiga.nodes <- to_SpatialPoints(upiga)
+upiga.edges <- to_SpatialLines(upiga)
+```
+
+These two data sets were 'mostly' collected in the same physical locations.  Here is a comparison of the two topologies.
+
+```{r,fig.width=9}
+par(mfrow=c(1,2))
+plot(lopho)
+plot(upiga)
+```
+
+You can clearly see some differences in both the node and edge sets.  However, given the relationship between these organisms, there is an expectation that they should share some spatial structure.  The function `congruence_topology()` is designed to extract the congruence graph that is the intersection of both node and edge sets.  If the node sets are not completely overlapping (in this case they are not), it will give you a warning.  If you want to compare topologies, you must start with identical node sets because the topology in a Population Graph is based upon the entire structure, not just pairwise differences.  See the writeup about the **gstudio** package for more information on this.  
+
+```{r,message=FALSE}
+cong <- congruence_topology(lopho,upiga)
+plot(cong)
+```
+
+We can then take the congruence graph and plot it or work with it in the normal fashion.
+
+```{r}
+cong <- decorate_graph( cong, baja )
+cong.nodes <- to_SpatialPoints(cong)
+cong.edges <- to_SpatialLines(cong)
+plot(alt)
+plot(cong.edges,add=T)
+plot(cong.nodes,add=T, pch=16, col="red")
+```
+
+
+There are several ways to examine 'congruence' in graph topologies, of which I show two.  The first method is based upon the correlation of pair-wise distance through the graph for each.  That is to say, are proximate nodes in `lopho` similarily close in `upiga`?   This is called "Distance Congruence" and is based upon a non-parametric correlation of path distances.
+
+```{r,warning=FALSE}
+test_congruence(lopho,upiga,method="distance")
+```
+
+Another way is to ask about the pattern of connectivity. Based upon the number of nodes and edges in `lopho` and `upiga`, are there more in the congruence graph than could be expected if the two graph were just randomly associated?  This is called "Structural Congruence" and is determined combinatorially.  What is returned by this is the probability having as many edges as observed in the congruence graph given the size of the edge sets in the predictor graphs. You can think of this as the fraction of the area under the line as large or larger than the observed.
+
+```{r,warning=FALSE}
+test_congruence(lopho,upiga, method="combinatorial")
+```
+
+
+Hope this provides enough of an overview of the **popgraph** package to get you started.  If you have any questions feel free to email [mailto://rjdyer@vcu.edu].
+
+
+
+
+
+# Autocorrelation
+
+
+
+
+
+
+```{r}
+library(gstudio)
+data(arapat)
+data <- droplevels( arapat[ arapat$Species == "Peninsula",] )
+groups <- data.frame( unique( cbind(as.character(data$Population), as.character(data$Cluster))))
+names(groups) <- c("Stratum","Cluster")
+```
+
+
+
+```{r message=FALSE, message=FALSE}
+library(ggplot2)
+library( ggmap) 
+library( ggrepel )
+coords <- strata_coordinates(data)
+map <- population_map(coords, zoom=7)
+coords <- merge( coords, groups )
+ggmap( map) + geom_point( aes(x=Longitude, y=Latitude, label=Stratum, color=Cluster), data=coords)  + geom_text_repel( aes(x=Longitude, y=Latitude, label=Stratum, color=Cluster), data=coords) + xlab("Longitude") + ylab("Latitude")
+```
+
+
+## PCA
+
+```{r}
+library(ade4)
+freqs <- to_mv_freq(data)
+fit.pca <- dudi.pca( freqs, scale=FALSE, scannf=FALSE, nf=10)
+summary(fit.pca)
+```
+
+```{r}
+library(ggplot2)
+df <- data.frame( Axis=1:length(fit.pca$eig), Lambda=fit.pca$eig)
+df$Lambda <- df$Lambda / sum( df$Lambda )
+ggplot( df, aes(x=Axis,y=Lambda)) + geom_bar( stat="identity") + xlab("PCA Axis") + ylab("Proportion of Variation Explained") + theme_bw()
+```
+
+```{r}
+df <- data.frame( PC1=fit.pca$li$Axis1, PC2=fit.pca$li$Axis2, Stratum=rownames(fit.pca$li))
+df <- merge( df, groups)
+ggplot( df, aes(x=PC1,y=PC2, label=Stratum, color=Cluster)) + geom_text() + theme_bw()
+```
+
+
+
+### PCoA
+
+```{r}
+D <- genetic_distance(data, mode = "Nei")
+D <- quasieuclid( as.dist( D ) )
+fit.pcoa <- dudi.pco(D,scannf = FALSE,full = TRUE, nf=10)
+summary( fit.pcoa )
+```
+
+
+```{r}
+df <- data.frame( Axis=1:length(fit.pcoa$eig), Lambda=fit.pcoa$eig)
+df$Lambda <- df$Lambda / sum( df$Lambda )
+ggplot( df, aes(x=Axis,y=Lambda)) + geom_bar( stat="identity") + xlab("PCA Axis") + ylab("Proportion of Variation Explained") + theme_bw()
+```
+
+
+
+
+```{r}
+df <- data.frame( PC1=fit.pcoa$li$A1, PC2=fit.pcoa$li$A2, Stratum=rownames(fit.pcoa$li))
+df <- merge( df, groups)
+ggplot( df, aes(x=PC1,y=PC2, label=Stratum, color=Cluster)) + geom_text() + theme_bw()
+```
+
+  
+
+
+
+
+
+
+
+## Ordination
+
+There are several ways that we can look for natural groupings in our data.  Barriers and sources of vicariance across the landscape create discontinuities in the genetic structure.  As we begin to analyze the spatial structure of the data itself, one of the first things that needs to be done is to allow the data to tell the analyst how it is internally structured.  This is a deviation from common approaches in statistical analyses.  Typically, we start with a model and then see the extent to which the data fit into a model framework, potentially testing many different models.  However, just because you get a significant model does not mean it is the best or even the correct one describing the underlying processes.  In Dyer & Nason (2004), we examined the spatial genetic structure of Lophocereus schottii (Cactaceae) and found that while the Sea of Cortéz has acted to separate mainland populations from those on peninsular Baja California, there is a particular population at the very northern extent of the range that is really a peninsular population even though it is spatially on the mainland.  The differences, in aggregate, between peninsula and mainland populations are so large that even if we allocated an individual stratum into the wrong region, we still were able to derive a significant model.  This is where model-free approaches are most powerful, they let the data tell us how it is distributed as opposed to asking if there is enough structure to fit into some pre-conceived model.
+
+A popular way to examine how individuals and populations are configured is to use an ordination approach or apply a multivariate rotation on the data.  In what follows, I'll describe a principal components analysis (though it is not really an analysis, it is more of a projection).  These approaches are common in multivariate statistics and have very little to do with population genetic processes or assumptions.  Fortunately, there are several approaches amenable to transforming population genetic data into a form that is usable in normal multivariate statistics, the one used most often is discretizing the data.  To demonstrate, consider the case where we have four individuals genotyped for a single locus as depicted below.
+
+```{r ordination1, message=FALSE, warning=FALSE}
+library(gstudio)
+x <- c( locus(c(1,2)), locus( c(1,1) ), locus(c(1,3)), locus(c(3,3)))
+x
+```
+
+We can convert these data into a matrix of data, where each row in the matrix represents an individual and each column determines the frequency of alleles in that individuals genotype.  In this case, the resulting matrix should have four rows (one for each individual) and three columns (one for each of the three alleles present in the whole data).  This conversion is done using the function `to_mv()`.
+
+
+```{r}
+X <- to_mv(x)
+X
+```
+
+When using multiple loci, we can essentially bind onto this matrix additional columns of predictor variables.  This matrix can be used as an input to most multivariate analyses.  Depending upon the analysis being used, you may need to modify it a bit.  Many statistical approaches require that you invert the covariance matrix.  For example, the regression coefficients are found as:
+
+\[
+\beta = (X'X)^{-1}X'Y
+\]
+
+where the $X$ matrix is the predictor data and the $Y$ is the response variables.  That $(\cdot)^{-1}$ exponent represents inversion of the matrix resulting from the multiplication.  The problem with the above [~] matrix derived from the genotypes is that the rows are all linearly related in that they all sum to unity.
+
+```{r}
+rowSums(X)
+```
+
+which is a problem for matrix inversion as it throws a zero into the mix and dividing by zero is still a problematic endeavor.  To fix this, we need to drop a column from each locus we use to estimate.  This is an optional flag in the `to_mv()` function.
+
+```{r}
+X <- to_mv(x,drop.allele = TRUE)
+X
+```
+
+Once we have the proper data, we can do a principal component (PC) rotation.  A PC rotation is one that takes the original columns of data and performs a rotation on the values to align onto new ‘synthetic' axes.  Consider the example in the next figure.  Here, some bivariate data is plot in 2-space, though this can be done for much higher dimensions of data as well—in fact it is more beneficial with more columns of data and this can be used as a way of reducing the dimensionality of the data while loosing very little (or no) content (more later on this).  The axes of a PC rotation are taken as linear combinations of the existing axes and define a new coordinate set onto which the points are plot.  All points are rigidly constrained to keep the same relationship and there is no loss of information.  The PC axes are defined by determining the most variable stretch through the data. In the figure on the next page, we see the raw data plot onto the X- and Y-axes.  The axis of highest variance does not align with either of the original ones, and instead can be defined as a combination of both X- and Y- coordinates.  If we take the blue axis as the first PC axis, the coordinate of the points would be taken along that new synthetic axis.  The next PC axis is defined as being perpendicular to the previous one(s) and is identified as covering the largest variance in the data as before.  This process continues until there are no more axes.  In our case, the second axis would be at a right angle from the blue line (above).  You can, at maximum, have as many PC axes as there are columns of data.  However, the later axes may not explain any significant chunk of the underlying data, the process of rotating based upon axes of maximal variation may be able to capture the complete dataset with fewer axes than the total set.  This is where a technique like this may be helpful in reducing the dimensionality of the data.
+
+To perform this on genetic data, we first translate the raw genotypes into multivariate data, dropping an allele from each locus.
+
+```{r}
+data(arapat)
+x <- to_mv(arapat, drop.allele = TRUE)
+```
+
+The full arapat data, with 363 individuals has 50 independent allele columns to it, after dropping one for each locus. Passing this to the princomp() function we get the results.
+
+
+```{r}
+fit.pca <- princomp(x, cor = TRUE)
+```
+
+
+Here are the first 8 (out of 50 potential) axes for the arapat data set.
+
+```{r}
+summary(fit.pca)
+```
+
+This output has two important components to it.  First, it shows the axes, in decreasing order of importance and how much of the total variation they describe.  The first Comp.1 axis explains 14.2% of the variance, the second explains 9.5%, etc.  Second, it shows the cumulative proportion of the variation explained.  From the 50 axes we started with, we can explain 49% of the variance by using just the first eight PC axes.
+
+Where this becomes meaningful for us is in how we can project our original data onto these new coordinate locations and look at the distribution to see if there are any obvious trends, partitions, gradients, etc.  
+
+```{r warning=FALSE, message=FALSE}
+library(ggplot2)
+pred <- predict(fit.pca)
+df <- data.frame(PC1 = pred[, 1], PC2 = pred[, 2])
+df$Species <- arapat$Species
+df$Clade <- arapat$Cluster
+df$Pop = arapat$Population
+ggplot(df) + geom_point(aes(x = PC1, y = PC2, shape = Species, color = Clade), size = 3, alpha = 0.75)
+```
+
+We can see from the plot (I've added some designations to the points) that the 363 samples are clustered in an obvious way.  The designation of ‘Species' as depicted by the shape of the points, is defined by the mtDNA clade for each individual, independent of the nuclear marker data we are using here.  Still, it shows a broad separation between the Cape, Mainland, and Peninsula groups.  The colors of the points found within the Peninsula group, come more formal clustering approaches, as defined in the next two sections.
+ 
+
+
+
+## Hierarchical Clustering
+
+In the previous section, we defined a new coordinate space for all individuals in the dataset.  The rotation of the 50 allele encoding columns was able to describe over 95% of the observed variation using only the first 34 PC axes.  In this section, we are going to use the rotated coordinates to evaluate population-level differences using a hierarchical clustering method.  Hierarchical clustering are very helpful in understanding groupings in the data, particularly if there is a ‘nesting' structure.  While there are many ways to do it, they all generally proceed as follows:  
+1. Define a numeric metric that measured the distances between all K groups.  
+2. Find the two groups that have the smallest distance and coalesce them together into a pair.  
+3. Assume that the coalesced pair now constitutes a single entity, estimate the numeric metric among all K-1 groups in the data set.  
+4. Go to #2 and repeat until you have coalesced all the groups together.
+
+Here again, it is the data that is telling us how it is structured rather than us imposing a model onto the data to see if it fits.
+
+To do this, the rotated coordinates are used to define the centroid of each population.  Here I use the tapply() function as a short-cut to estimate the mean of each population.  If you are not familiar with this approach, it essentially applies a particular function (in this case taking the mean), to a set of data  in a matrix (the predicted coordinates from the PCA) based upon a set of factor levels (the populations).  This is quite an efficient way to do what would take you a bit of looping to get through.
+
+```{r}
+p <- ncol(pred)
+pops <- arapat$Population
+pop.means <- tapply( pred, list(rep(pops,p),col(pred)),mean)
+dim(pop.means)
+```
+
+The result is a matrix where each row represents a population and each column represents the mean location of all individuals for each of the 50 PCA axes variables.  These 50-dimensional coordinates can be used to define a pairwise distance metric using the dist() function.  By default, this measures the euclidean distance (e.g., straight-line distance) between each populations 50-dimensional coordinate.
+
+```{r}
+pop_pw <- dist(pop.means)
+h <- hclust( pop_pw)
+plot(h)
+```
+
+The plot of this shows the nesting structure of the populations as depicted in the PC-derived data.  
+
+There are some interesting things to notice here.   
+- The main separation between mainland populations (32, 101, 102) and peninsular populations (the rest) seems to be the largest difference.  As indicated in the mtDNA (not used for this analysis), there seems to be a clear division between those two groups, consistent with the idea that the Sea of Cortéz has acted as a source of vicariance.
+- There seems to be a deep division within the peninsular populations separating out the group of populations including 98, Mat, 157, 73, 75, Aqu, ESan, 156, and 48.  If we look at where these populations are found, we see that they are all located in the southern portion of Baja California—the Cape groupings...
+- Then there is the rest of the populations, some of which appear to be partitioned into at least two groups, though there may be more.
+
+This approach is pretty good at pulling apart components within the data set that represent different genetic clusters.
+
+## Interactive Tree Display
+
+Another network approach that could be used is defining bifurcating networks.  Here we will examine the *A. attenuatus* data set using Nei's genetic distance metric.
+
+\[
+D_{nei} = -\ln( L )
+\]
+
+where
+
+\[
+L = \frac{\sum_l\sum_u x_uy_u}{\sqrt{(\sum_l\sum_u x_u^2)(\sum_l\sum_u y_u^2)}}
+\]
+
+I make the among stratum distance matrix and then turn it into a `dist` object to do a hierarchal clustering on the populations. I then plot it and make the node colors equal to the grouping of the dendrogram *if* there were 4 groups in the dataset.  This is also zoomable, for large trees, so if you want to figure out the relationships at the leaves, where the internal edges are smaller, zoom in with the mouse.
+
+```{r message=FALSE, error=FALSE, warning=FALSE}
+library(networkD3)
+d <- genetic_distance(arapat,stratum = "Population", mode="Nei")
+d <- as.dist( d )
+hc <- hclust(d)
+dendroNetwork(hc, height=600, 
+              zoom=TRUE, 
+              textColour = c("red","green","orange","blue")[ cutree(hc,4)])
+```
+
+
