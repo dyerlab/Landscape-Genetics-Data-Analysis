@@ -19,8 +19,10 @@ One of the characteristics of landscape genetics studies, maybe even a defining 
 
 ## Objectives
 
-1. Dive into the concepts assocaited with the development of resistance costs.  
-2. Explore alternative methods for estimating separation among locations using resistance rasters
+In this section, we focus on the characterization and analysis of distance matrices. By the time you finish this activity, you should be able to:
+
+1. Create, develop, and manipulate matrices and rasters to be used in resistance modeling analyses.
+2. Understand and use alternative methods for estimating separation among locations using resistance rasters
 3. Examine different statistical models applicable to distance-based resistance modeling.
 
 
