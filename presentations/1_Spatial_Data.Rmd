@@ -26,7 +26,7 @@ Rasters are a form of data that is georeferenced and (somewhat) more continuous.
 The specific objectives of this activity include:
 
 1. Familiarize yourself with geographic projections and how to manipulate both `Spatial*` and `raster` projections, ellipses, and datum.
-2. Learning about the `sp` library and how to create, manipulate, displaty, and otherwise use `Spatial*` objects to reprent spatially relevant data.
+2. Learning about the `sp` library and how to create, manipulate, display, and otherwise use `Spatial*` objects to represent spatially relevant data.
 3. Learn how to make, acquire, manipulate, and display raster data to represent (semi) continuous landscape data.
 4. Modify raster extents, find boundaries, and extract useful data from `raster` and `Spatial*` data objects.
 
@@ -176,7 +176,7 @@ pts <- SpatialPoints( coords )
 pts
 ```
 
-Since we use coordiantes all the time in our analyses, `gstudio` has included some helper functions as long as you are keeping our data in a `data.frame`.  In the *Arapatus attenuatus* data set there are locale coordinates defined as Longitude and Latitude.  By defult it produces just a `data.frame`.
+Since we use coordinates all the time in our analyses, `gstudio` has included some helper functions as long as you are keeping our data in a `data.frame`.  In the *Arapatus attenuatus* data set there are locale coordinates defined as Longitude and Latitude.  By default it produces just a `data.frame`.
 
 ```{r chunk-vector}
 library(gstudio)
@@ -345,7 +345,7 @@ SPDF
 
 ### Projecting `sp` objects.
 
-In R, we use rgdal to project points.  Here I load in the coordinates of the populations in the *Arapatus attenuatus* data set and make a *SpatialPoints* object out of it.  Setting the `proj4string()` here **does not** project the data, I am just specifying that the data are already in the lat/long WGS84 format because that is the format it was in when I recoreded the values and put them into the data file.
+In R, we use rgdal to project points.  Here I load in the coordinates of the populations in the *Arapatus attenuatus* data set and make a *SpatialPoints* object out of it.  Setting the `proj4string()` here **does not** project the data, I am just specifying that the data are already in the lat/long WGS84 format because that is the format it was in when I recorded the values and put them into the data file.
 
 ```{r message=FALSE, warning=FALSE}
 coords <- strata_coordinates( arapat )
@@ -356,14 +356,14 @@ pts
 
 The `CRS()` function holds the definition of the projection and interfaces between the PROJ.4 and RGDAL libraries.  To project a set of data points into a new coordinate systems, we use `spTransform()` and pass it the definition of the new system to use.
 
-If we want to actually change the projection, ellipse, or datum, we need to projet the data onto the new model.  We do this using the `spTransform` function.  Here is an example of taking the exact same data and projecting it from decimal Longitude and Latitude into Universal Transverse Mercator ([UTM](https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system)).
+If we want to actually change the projection, ellipse, or datum, we need to project the data onto the new model.  We do this using the `spTransform` function.  Here is an example of taking the exact same data and projecting it from decimal Longitude and Latitude into Universal Transverse Mercator ([UTM](https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system)).
 
 ```{r}
 pts.utm <- spTransform(pts, CRS("+proj=utm +zone=12 +datum=WGS84"))
 summary( pts.utm )
 ```
 
-You can see the tranformations in the coordinate system by comparing the plots below.  The relative position of each point is the same, it has just been loaded into a new space.
+You can see the transformations in the coordinate system by comparing the plots below.  The relative position of each point is the same, it has just been loaded into a new space.
 
 ```{r eval=TRUE,echo=FALSE, message=FALSE, fig.cap="Population locations in (A) longitude and latitude and (B) Universal Transverse Mercator coordinate systems.",warning=FALSE}
 library(cowplot)
@@ -383,7 +383,7 @@ plot_grid( plot.lalong, plot.utm, labels=c("A","B"), align="h")
 
 I am a huge fan of the `ggplot2` graphics library, mostly because it is constructed in a way that makes sense to me and it produces very beautiful graphics.  You will see various `ggplot` plotting functions throughout the week so let me give you a brief tutorial.
 
-The library is build upon the idea of the grammar of graphics.  Essentially, a graphical display is created, sequentially, by adding (literally) components to it.  These components may represent the raw data, layers of plotting geometries, spatial transformations (maps, projections, etc.), lables, summaries (expected lines, etc) and coordinate transformations.  Unlike build-in graphic approaches, these are added together rather than put into a single function call.  This allows us to sequentially build the graphic.  Here I'm going plot the locations for the *arapat* data set onto a map as the final graphic but do so incrementally to demonstrate how it work.
+The library is build upon the idea of the grammar of graphics.  Essentially, a graphical display is created, sequentially, by adding (literally) components to it.  These components may represent the raw data, layers of plotting geometries, spatial transformations (maps, projections, etc.), labels, summaries (expected lines, etc) and coordinate transformations.  Unlike build-in graphic approaches, these are added together rather than put into a single function call.  This allows us to sequentially build the graphic.  Here I'm going plot the locations for the *arapat* data set onto a map as the final graphic but do so incrementally to demonstrate how it work.
 
 At a bare minimum, ggplot requires your data to be in a `data.frame` object.  Columns of data will define the x-, y-, z-, color, shape, and other characteristics.
 
@@ -406,7 +406,7 @@ p <- p + geom_point()
 p
 ```
 
-By default it makes the points filled and black.  Since this is a projected set of data, we should probably change the coordinate space so it knows that these are supposed to be mapped onto a projection in decimal degrees.  If you look at the figure above, you will see that the x- and y- limits are maximized in the graphic display, not scaled to be spatially coherient.  To change the coordinate system, we add a coordinate tranformation to the data.
+By default it makes the points filled and black.  Since this is a projected set of data, we should probably change the coordinate space so it knows that these are supposed to be mapped onto a projection in decimal degrees.  If you look at the figure above, you will see that the x- and y- limits are maximized in the graphic display, not scaled to be spatially coherent.  To change the coordinate system, we add a coordinate transformation to the data.
 
 ```{r}
 p <- p + coord_map("mercator")
@@ -464,7 +464,7 @@ These data are available free of charge and have been used in numerous biologica
 
 > Bioclimatic variables are derived from the monthly temperature and rainfall values in order to generate more biologically meaningful variables. These are often used in ecological niche modeling (e.g., BIOCLIM, GARP). The bioclimatic variables represent annual trends (e.g., mean annual temperature, annual precipitation) seasonality (e.g., annual range in temperature and precipitation) and extreme or limiting environmental factors (e.g., temperature of the coldest and warmest month, and precipitation of the wet and dry quarters).
 
-These layers are encoded into 19 Bio-layers as defined in Table \@ref(tab:bioclim).  These layers are available for download from their site directly (I recommend using the tiles approach so you do not have to download the entire world map) as well as from the R package [dismo](https://cran.r-project.org/web/packages/dismo/index.html).  
+These layers are encoded into 19 Bio-layers as defined in  the following Table.  These layers are available for download from their site directly (I recommend using the tiles approach so you do not have to download the entire world map) as well as from the R package [dismo](https://cran.r-project.org/web/packages/dismo/index.html).  
 
 ```{r bioclim, echo=FALSE}
 df <- data.frame( Layer=paste( rep("BIO",19), 1:19, sep=""))
@@ -485,7 +485,7 @@ alt
 
 The `alt` object is summarized here.   A couple of things should be pointed out here:
 - In total, this is an object with 12,960,000 entries in it!  
-- The resolution of each 'pixel' in this representation is 0.008, which is about 30-arc seconds or ~1km. That means that each loation in the study area is represented by the same exact value as the surrounding square kilometer. Obviously, if you are working on processes whose spatial scale is relevant less than 1000 m^^2^^, this kind of data is going to be of little value to you. 
+- The resolution of each 'pixel' in this representation is 0.008, which is about 30-arc seconds or ~1km. That means that each location in the study area is represented by the same exact value as the surrounding square kilometer. Obviously, if you are working on processes whose spatial scale is relevant less than 1000 m^^2^^, this kind of data is going to be of little value to you. 
 - The values within the matrix range from -202 upwards to 5469.  This is in meters.
 
 In addition, the raster has a spatial extent and a projection associated with it.  For more information on projections see \@ref(map-projections).
@@ -604,7 +604,7 @@ plot3D( baja_california , zfac=0.1)
 knitr::include_graphics("../media/Baja_Plot3D.png")
 ```
 
-The `zfac` option in the plot is the amount to scale the z-axis (elevation) in relation to the x-axis and y-axis dimensions.  It is a bit exagerated at `zfac=0.1` but you get the idea.
+The `zfac` option in the plot is the amount to scale the z-axis (elevation) in relation to the x-axis and y-axis dimensions.  It is a bit exaggerated at `zfac=0.1` but you get the idea.
 
 
 <!-- TODO: Add Categorical Rasters -->
@@ -732,7 +732,7 @@ plot(loredo, xlab="Longitude",ylab="Latitude")
 
 An analysis common to modern population genetics is that of finding ecological distances between objects on a landscape.  The estimation of pairwise distance derived from spatial data is a computationally intensive thing, one that if you are not careful will bring your laptop to its knees!  One way to mitigate this data problem is to use a minimal amount raster area so that the estimation of the underlying distance graph can be done on a smaller set of points.  
 
-Cropping by a polygon like demonstrated in the previous example is a 'by hand' approach to estimating a box that roughly encompasses your data points. A more efficient one is one where you simply provide your coordinates and we can estimate a polygon that surrounds those coordinates with the minimal amount of wasted space.  This is called a *Convex Hull*, which is kind of like a polygon that is created as if there was a rubbrerband fit around all your points.  It is a minimal area that includes all of your points.  
+Cropping by a polygon like demonstrated in the previous example is a 'by hand' approach to estimating a box that roughly encompasses your data points. A more efficient one is one where you simply provide your coordinates and we can estimate a polygon that surrounds those coordinates with the minimal amount of wasted space.  This is called a *Convex Hull*, which is kind of like a polygon that is created as if there was a rubber band fit around all your points.  It is a minimal area that includes all of your points.  
 
 For this example, I'm going to use the populations found along the peninsula and find the minimal area encompassing those points. 
 
@@ -744,7 +744,7 @@ plot(baja_pts,add=T,col="darkred")
 plot(baja_pts,add=T,col="darkred",pch=16)
 ```
 
-The methods for finding the hull and adding a buffer around it are found in the `rgeos` package.  These are pretty easy functions to use and are very helpful.  If you are having trouble installing the `rgeos` package from source, see \@ref(rgdal-rgeos-packages).
+The methods for finding the hull and adding a buffer around it are found in the `rgeos` package.  These are pretty easy functions to use and are very helpful.  If you are having trouble installing the `rgeos` package from source, see my webpage (http://dyerlab.bio.vcu.edu), there is a short tutorial.
 
 ```{r message=FALSE,warning=FALSE, echo=-1}
 library(rgeos) # loads in gConvexHull & gBuffer functions
@@ -778,7 +778,7 @@ This would be a great raster to start looking at ecological separation in since 
 
 ### Extracting Point Data From Rasters
 
-So far, rastes have been confined to representing a single static object.  However, it is not uncommon to need to query a raster and find out the values at particular points.  These points may be pre-defined or they may be dynamic (e.g., you need to point at a location on the map and determine the value there).
+So far, the rasters have been confined to representing a single static object.  However, it is not uncommon to need to query a raster and find out the values at particular points.  These points may be pre-defined or they may be dynamic (e.g., you need to point at a location on the map and determine the value there).
 
 For queries of the first kind, we can use the `extract()` function.  For this I downloaded the average temperature and precipitation rasters from Worldclim.
 
@@ -796,7 +796,7 @@ coords$mean_precip <- extract( baja_prec, coords[,c(2,3)])
 coords[1:10,]
 ```
 
-A note should be made on the temperature and precipitation values.  Temperature is denoted in tenths of a degree Celcius.  Though it does get quite hot at times, it does not average 188&deg;C at population 88!  Similarly, the units for precipitation are mm (or tenths of centimeters if you will...).
+A note should be made on the temperature and precipitation values.  Temperature is denoted in tenths of a degree Celsius.  Though it does get quite hot at times, it does not average 188&deg;C at population 88!  Similarly, the units for precipitation are mm (or tenths of centimeters if you will...).
 
 ```{r warning=FALSE, message=FALSE}
 library(ggrepel)
@@ -806,7 +806,7 @@ p <- p + geom_point() + ylab("Elevation (m)")
 p + geom_text_repel(aes(label=Stratum), color="red") 
 ```
 
-The package `ggrepel` provides a pseudo-smart labelling geometry for ggplot allowing you to have labels that are shifted around the points so as to maximize visibility.
+The package `ggrepel` provides a pseudo-smart labeling geometry for ggplot allowing you to have labels that are shifted around the points so as to maximize visibility.
 
 For inquires of the second type, we can use the function `click()` to retrieve one of several outputs. Here is the help file that describes the various components. 
 
@@ -978,7 +978,7 @@ plot(baja_lcc, legend=FALSE )
 par(mfrow=c(1,1))
 ```
 
-As usual, there is probably a way to plot these values in `ggplot` to make the output just a little bit more awesome. Projections of data in `ggplot` displays can be manipulated by appending a `coord_*` object to the plot as we showed above.  Here are two examples using a mercator and azimuth equal area projection of the state maps.
+As usual, there is probably a way to plot these values in `ggplot` to make the output just a little bit more awesome. Projections of data in `ggplot` displays can be manipulated by appending a `coord_*` object to the plot as we showed above.  Here are two examples using a Mercator and azimuth equal area projection of the state maps.
 
 ```{r message=FALSE, warning=FALSE}
 library(ggplot2)
@@ -995,7 +995,7 @@ Conversely, we can plot it using the equal area Azimuth projection
 map + coord_map("azequalarea")
 ```
 
-or fisheye
+or fish-eye
 
 ```{r}
 map + coord_map("fisheye",par=3)
@@ -1007,9 +1007,9 @@ or any other projection available listed in the `mapproject()` function.
 
 ## Questions
 
-1. The [WorldClim](http://worldclim.org) organization makes a set of bioclimatic data avaialbe for free.  Grab the raster layers for Tile 22 (they are in the <tt>LGDA-Data</tt> folder) and crop them down to an extent that covers the entirety of sampling locations for the *arapat* data set.
+1. The [WorldClim](http://worldclim.org) organization makes a set of bioclimatic data available for free.  Grab the raster layers for Tile 22 (they are in the <tt>LGDA-Data</tt> folder) and crop them down to an extent that covers the entirety of sampling locations for the *arapat* data set.
 
-2. Using the population locations in the *arapat* dataset, extract the value for each layer.  To what extent are these variables correlated with eachother?  At what point will we need to be concerned if we are using them as input into statistical models?
+2. Using the population locations in the *arapat* dataset, extract the value for each layer.  To what extent are these variables correlated with each other?  At what point will we need to be concerned if we are using them as input into statistical models?
 
 ```{r eval=FALSE, echo=FALSE}
 library(raster)

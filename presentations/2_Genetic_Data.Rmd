@@ -15,7 +15,7 @@ theme_set( theme_bw() )
 
 ## Synopsis
 
-This afternoon's activity is focused on understanding how to work with genetic marker data in R.  As a base data type, genotypes are neither normal nor multinomial, but follow an algebra befined by Mendelian inheritance and dictated by mating system and ploidy levels.  Here we cover some of the basic material on working with genetic data then dive right into the basis of population genetics---Hardy-Weinberg Equilibrium.  
+This afternoon's activity is focused on understanding how to work with genetic marker data in R.  As a base data type, genotypes are neither normal nor multinomial, but follow an algebra defined by Mendelian inheritance and dictated by mating system and ploidy levels.  Here we cover some of the basic material on working with genetic data then dive right into the basis of population genetics---Hardy-Weinberg Equilibrium.  
 
 ## Objectives
 
@@ -39,11 +39,11 @@ This afternoon's activity is focused on understanding how to work with genetic m
 
 ## Genetic Markers, Types and Usage
 
-There are several kinds of genetic markers that can be used in landscape genetic analyses, though some are more practical than others.  The limiting factor in deciding on an appropriate marker is the amount of genetic variance in the marker system relative to the features we are testing against.  For example, mtDNA markers are rather common in phylogeography and species and subspecies delimination studies but they evolve at a rate that may be too slow if we are trying to understand contemporary movement patterns.  They will not be able to sptially track variation in a way that a more variable and faster mutating marker type would.
+There are several kinds of genetic markers that can be used in landscape genetic analyses, though some are more practical than others.  The limiting factor in deciding on an appropriate marker is the amount of genetic variance in the marker system relative to the features we are testing against.  For example, mtDNA markers are rather common in phylogeography and species and subspecies delimitation studies but they evolve at a rate that may be too slow if we are trying to understand contemporary movement patterns.  They will not be able to spatially track variation in a way that a more variable and faster mutating marker type would.
 
 For the purposes of this work, we are going to focus on genetic markers rather than sequence data.  These are most commonly nuclear markers---though there are cpDNA microsat markers in some species that make them very amenable to landscape genetic studies.  
 
-In R, there is not a default data type for genetic markers, and as such we will rely upon one derived in a package created by R. Dyer called *gstudio*.  This package provides not only a default data type `locus` but also the accompanying functions and routines that are commonly used in the spatial analysis of population genetic data (a subset of which we use in Landscape studies).  There are other packages available for genetic analyses, though not all are intercompatible.  In the *gstudio* package, the `locus` object is treated just as any other kind of data and can be inserted contained within `data.frame`, `list`, and `vector` containers just like any other kind of data.  In doing so, it allows the analysis workflow to proceed in a more streamline fashion.
+In R, there is not a default data type for genetic markers, and as such we will rely upon one derived in a package created by R. Dyer called *gstudio*.  This package provides not only a default data type `locus` but also the accompanying functions and routines that are commonly used in the spatial analysis of population genetic data (a subset of which we use in Landscape studies).  There are other packages available for genetic analyses, though not all are inter-compatible.  In the *gstudio* package, the `locus` object is treated just as any other kind of data and can be inserted contained within `data.frame`, `list`, and `vector` containers just like any other kind of data.  In doing so, it allows the analysis workflow to proceed in a more streamline fashion.
 
 Here are some basic constructs for how to create and manipulate `locus` objects.  A locus is constructed by passing it zero or more alleles.  
 
@@ -53,7 +53,7 @@ loc0 <- locus()
 loc0
 ```
 
-A locus without alleles is recorded as missing data.^[No need to use negative numbers or any other kind of metric, it is just missing as if you didn't get the observation.]  Alleles within a locus can be defined as charater types, 
+A locus without alleles is recorded as missing data.^[No need to use negative numbers or any other kind of metric, it is just missing as if you didn't get the observation.]  Alleles within a locus can be defined as a character types, 
 
 ```{r}
 
@@ -128,9 +128,9 @@ summary( arapat )
 
 This species also has a data set for AFLP markers we will use in the very last day of the workshop.  These were derived from a subset of populations for reasons we will cover over the week.
 
-In working with data in R, the *gstudio* library has added several conviencence functions that help in manipulation and analyses.  Many of the functions in the package make some assumptions about how you have configured your data.  These assumptions are here only because I am a very lazy typist and the less I have to type the better my life is.  By default, I use the convention that the column of data designating your population labels is called <tt>Population</tt>.  I also assume that spatial coordinates are in decimal degrees and are labeled as <tt>Longitude</tt> and <tt>Latitude</tt>.  If you use names other than these, you will have to specify what the 'stratum' variable is and what the coordinate labels are for your `data.frame` of genotypes.  However, if you use those conventions then you do not need to specify anything and any function that needs stratum or coordinates will have it already set as a default.  Here are some easy convienence functions.
+In working with data in R, the *gstudio* library has added several convenience functions that help in manipulation and analyses.  Many of the functions in the package make some assumptions about how you have configured your data.  These assumptions are here only because I am a very lazy typist and the less I have to type the better my life is.  By default, I use the convention that the column of data designating your population labels is called <tt>Population</tt>.  I also assume that spatial coordinates are in decimal degrees and are labeled as <tt>Longitude</tt> and <tt>Latitude</tt>.  If you use names other than these, you will have to specify what the 'stratum' variable is and what the coordinate labels are for your `data.frame` of genotypes.  However, if you use those conventions then you do not need to specify anything and any function that needs stratum or coordinates will have it already set as a default.  Here are some easy convenience functions.
 
-Spatial coordinates for strata can be extracted using `strata_coordinates()`, which takes the centroid of all coordinates in each locale.  In the *arapat* data set, all the individuals in the same popualtion have the same spatial coordinate. Here is what those data look like.  Also look at the use of the datatable here, if you present your data in HTML5, you get interactivity!  This can be very helpful in your anlayses and interactions with colleagues, advisors, and students.
+Spatial coordinates for strata can be extracted using `strata_coordinates()`, which takes the centroid of all coordinates in each locale.  In the *arapat* data set, all the individuals in the same population have the same spatial coordinate. Here is what those data look like.  Also look at the use of the datatable here, if you present your data in HTML5, you get interactivity!  This can be very helpful in your analyses and interactions with colleagues, advisers, and students.
 
 ```{r}
 library(DT)
@@ -179,9 +179,9 @@ freqs_mv <- frequency_matrix( arapat, locus = c("LTRS","ZMP") )
 datatable( freqs_mv, rownames=FALSE)
 ```
 
-creates a wide data.frame format for analyses. Also notice that I included a specification on which loci I wasn interested in using---by default it uses all of them for most analysis functions.  If you don't need all the data, no need to calculate all the parameters and then shuffle through all the output.
+creates a wide data.frame format for analyses. Also notice that I included a specification on which loci I was interested in using---by default it uses all of them for most analysis functions.  If you don't need all the data, no need to calculate all the parameters and then shuffle through all the output.
 
-Individual stratum-level visualization may help interpret landscape-level patterns of genetic structure.  To estiamte allele frequenies along partitions in your data, you must specify the stratum to use a populations. Here I use the frequency of one of the two alleles at the LTRS locus, estimate by "Population".
+Individual stratum-level visualization may help interpret landscape-level patterns of genetic structure.  To estimate allele frequencies along partitions in your data, you must specify the stratum to use a populations. Here I use the frequency of one of the two alleles at the LTRS locus, estimate by "Population".
 
 ```{r}
 f <- frequencies(arapat,loci="LTRS",stratum="Population")
@@ -189,7 +189,7 @@ f <- f[ f$Allele=="01",]
 head(f)
 ```
 
-whose values can be used diretly in `ggplot` as once we merge in the two `data.frame` objects, combining coordinates and frequencies (to use `merge` you must have a common column in your data.frame that can serve as an index).  The frequency can be displayed as the size of the point
+whose values can be used directly in `ggplot` as once we merge in the two `data.frame` objects, combining coordinates and frequencies (to use `merge` you must have a common column in your data.frame that can serve as an index).  The frequency can be displayed as the size of the point
 
 ```{r warning=FALSE, message=FALSE}
 coords <- merge( coords, f[,c(1,4)])
@@ -204,7 +204,7 @@ ggmap( map ) + geom_point( aes(x=Longitude,y=Latitude,color=Frequency),data=coor
 
 depending upon what you think may be more effective at displaying the spatial patterns.
 
-Another useful display involves taking your frequency data and overlaying it onto google maps as pie charts.  This give you a wide view of all your data.  It does, however, require an internet connection...
+Another useful display involves taking your frequency data and overlaying it onto Google maps as pie charts.  This give you a wide view of all your data.  It does, however, require an internet connection...
 
 ```{r eval=FALSE}
 pies_on_map( arapat, locus="LTRS")
@@ -214,7 +214,7 @@ This should pop up a browser window and show you the output.
 
 <iframe width="640" height="480" src="./pies_on_map.html" frameborder="0" allowfullscreen></iframe>
 
-Note the messages about the approximation.  This is because the google maps API has an integer for zoom factor and at times it is not able to get all the points into the field of view using an integer zoom.  If this happens to you, you can manually specify the *zoom* as an optional argument to either function `pies_on_map()` or `population_map()`.  You also need to be careful with the `pies_on_map()` function because the way it works is that the background tile is plotted and then I plot the pies ontop of it.  If you reshape your plot window outside equal x- and y- coordinates (e.g., make it a non-square figure), the spatial location of the pie charts will move!  This is a very frustrating thing but it has to do with the way viewports are overlain onto graphical objects in R and I have absolutely **no** control over it.  So, the best option is to make the plot square, export it as PNG or TIFF or whaterver, then crop as necessary.
+Note the messages about the approximation.  This is because the Google maps API has an integer for zoom factor and at times it is not able to get all the points into the field of view using an integer zoom.  If this happens to you, you can manually specify the *zoom* as an optional argument to either function `pies_on_map()` or `population_map()`.  You also need to be careful with the `pies_on_map()` function because the way it works is that the background tile is plotted and then I plot the pies on top of it.  If you reshape your plot window outside equal x- and y- coordinates (e.g., make it a non-square figure), the spatial location of the pie charts will move!  This is a very frustrating thing but it has to do with the way viewports are overlain onto graphical objects in R and I have absolutely **no** control over it.  So, the best option is to make the plot square, export it as PNG or TIFF or whatever, then crop as necessary.
 
 
 
@@ -247,7 +247,7 @@ summary( data)
 
 ### Genetic Assumptions
  
-Implicit in the description above is a characterization of what constitutes a genotype.  For simplicity, as this is the way it was originally defined, we will assume that the species we are looking at is diploid, carrying homologous chromosomes from both parents.  Diploidy means that in the adult life stage, each individual has two copies of each allele, one from each parental individual. If diploidy is true, we can denote the genotype as $AA$ for the diploid homozygote, $AB$ for the heterozygote, and $BB$ for the other diploid homozygote.  If it is not true and the species (at least at that life stage) is haploid, then will will represent the genotype as $A$ or $B$. Higher levels of ploidy (triploid, tetraploid, hexaploid, etc.) are also possible in many taxa.  While the math that follows is essentially the same for these ploidy levels, the actual algebra is a bit more messy.  If you are working on taxa with higher ploidy levels, you can do many of the same operations we will focus on in gstudio, consult the documentation for more information.  To check the ploidy level in your data (e.g., the number of alleles at a locus) we can use the `ploidy()` function
+Implicit in the description above is a characterization of what constitutes a genotype.  For simplicity, as this is the way it was originally defined, we will assume that the species we are looking at is diploid, carrying homologous chromosomes from both parents.  Diploidy means that in the adult life stage, each individual has two copies of each allele, one from each parental individual. If diploid is true, we can denote the genotype as $AA$ for the diploid homozygote, $AB$ for the heterozygote, and $BB$ for the other diploid homozygote.  If it is not true and the species (at least at that life stage) is haploid, then will will represent the genotype as $A$ or $B$. Higher levels of ploidy (triploid, tetraploid, hexaploid, etc.) are also possible in many taxa.  While the math that follows is essentially the same for these ploidy levels, the actual algebra is a bit more messy.  If you are working on taxa with higher ploidy levels, you can do many of the same operations we will focus on in *gstudio*, consult the documentation for more information.  To check the ploidy level in your data (e.g., the number of alleles at a locus) we can use the `ploidy()` function
 
 ```{r}
 ploidy(data$Locus )
@@ -261,17 +261,17 @@ Finally, we will invoke both of Mendel's Laws of Inheritance.  His first law sta
 
 ### Punnet Squares
 
-A Punnet square is a simple tool used to teach transition probabilities in basic genetics and biology courses.  Here is an interactive example using the 2-allele locus (though the tool can handle other ploidy levels) that you can play with to see the kinds of offspring genotypes produced by individual matings.  
+A Punnet square is a simple tool used to teach transition probabilities in basic genetics and biology courses.  Here is an interactive example using the 2-allele locus (though the tool can handle other ploidy levels) that you can play with to see the kinds of offspring genotypes produced by individual mating.  
 
 The population we are examining need to have some specific demographic parameters for HWE to be valid.  The most basal assumption that is invoked is that the population size must be very large.  In a fact, most of the work of R.A. Fisher and J.B.S. Haldane in developing the modern synthesis relied upon this assumption as well.  If population size, $N$, is too small, then the stochastic change (what we call genetic drift) can have serious influences on allele frequencies.  
 
-As a simulation tool, it is very important to undertand that when doing stocahastic approximations, $N$ has a huge effect.  Consider the following:
+As a simulation tool, it is very important to understand that when doing stochastic approximations, $N$ has a huge effect.  Consider the following:
 
 ```{r}
 genotype_frequencies( data$Locus )
 ```
 
-Here the expected counts are $Np^2$, $N2pq$, and $Nq^2$, conforming to the expectations from HWE, though they do differ a smidge (vernacular for small amount) from the true expectations.  When you do simulation work, you need to accept this variability as a component of the system.  However, reality also conforms to these same issues, populations are not infinite, populations are finite in size, etc. Perhaps the issue is our portrayal of the natural world using conventions like $N=\infty$, the genetic neighbrohood is defined by a perfect circle with a constant radius, and dispersal follows a continuous and isotropic distance function...  These are great to make the equations better for theoreticians but may not capture the kinds of dynamic processes that are most important to landscape genetic studies.
+Here the expected counts are $Np^2$, $N2pq$, and $Nq^2$, conforming to the expectations from HWE, though they do differ a smidge (vernacular for small amount) from the true expectations.  When you do simulation work, you need to accept this variability as a component of the system.  However, reality also conforms to these same issues, populations are not infinite, populations are finite in size, etc. Perhaps the issue is our portrayal of the natural world using conventions like $N=\infty$, the genetic neighborhood is defined by a perfect circle with a constant radius, and dispersal follows a continuous and isotropic distance function...  These are great to make the equations better for theoreticians but may not capture the kinds of dynamic processes that are most important to landscape genetic studies.
 
 Next, and perhaps this is more for our laziness than any other reason, we assume that the generations do not overlap.  This means that the during a single generation, all individuals participate in the mating events, each of which is equally likely to be selected as one participating in a mating event (e.g., random mating).  For simplicity, lets denote the frequencies of these genotypes as $f(AA) = P$, $f(AB) = Q$, and $f(BB) = R$. If these individuals are really mating randomly with respect to their genotypes, then the probability of union between any pair is simply the product of their population frequencies.  
 
@@ -316,7 +316,7 @@ $f(B) = R + \frac{Q}{2} = q$
 
 using the lower case versions of $p$ and $q$.  This is exactly what the `frequencies` function actually does.  Be careful about mixing up the upper and lower case variables. The population geneticist [John Nason](http://jnason.eeob.iastate.edu), makes the connection that this is what it means to “mind our p's and q's" though I suspect the etiology of this statement has more to do with liquid volume measurements than population genetics...  
 
-Intuitively the formulation denoted above for $p$ and $q$ makes sense as the heterozygote genotype ($AB$) frequency, $Q$, is split evenly between the homozygote genotype frequencies, $P$ (for $AA$) and $R$ (for $BB$). This can be programatically shown as via the `transition_probability()` function (takes offspring, mom and dad gentoypes):
+Intuitively the formulation denoted above for $p$ and $q$ makes sense as the heterozygote genotype ($AB$) frequency, $Q$, is split evenly between the homozygote genotype frequencies, $P$ (for $AA$) and $R$ (for $BB$). This can be programatically shown as via the `transition_probability()` function (takes offspring, mom and dad genotypes):
 
 ```{r}
 AA <- locus( c("A","A") )
@@ -362,7 +362,7 @@ Q_{t+1} &= \frac{P_tQ_t}{2} + 2P_tR_t + \frac{Q^2_t}{2} + Q_tR_t\\
 \end{aligned}
 $$
 
-Putting these together, we have an expectation that the genotypes $AA$, $AB$, and $BB$ will occur at frequencies of $p^2$, $2pq$, and $q^2$, which is exactly what HWE is.  More importantly, it takes only one generation of mating under the assumptions of HWE to return all genotype frequencies to HWE!  However, the real population frequences differ a bit due in part (mostly) the finite size of populations.  Here we can simulate a generation of mating in the previous data as:
+Putting these together, we have an expectation that the genotypes $AA$, $AB$, and $BB$ will occur at frequencies of $p^2$, $2pq$, and $q^2$, which is exactly what HWE is.  More importantly, it takes only one generation of mating under the assumptions of HWE to return all genotype frequencies to HWE!  However, the real population frequencies differ a bit due in part (mostly) the finite size of populations.  Here we can simulate a generation of mating in the previous data as:
 
 ```{r}
 next_gen <- mate( data, N=1 )
@@ -402,7 +402,7 @@ At a more meta level, one could see the entirety of this topic and population ge
 
 At a base level, genetic diversity is the fundamental components upon which evolution operates. Without diversity, there is no evolution and as such species cannot respond to selective pressure. Genetic diversity is a property of sampling locales.  It is created and maintained by demographic and evolutionary processes and the history of the organisms being examined.  It is also used as a surrogate measure for the consequences of several microevolutionary processes. In this section, we will examine how to estimate genetic diversity within a sample of individuals.
 
-Genetic diversity is estimated in R using the function `genetic_diversity()` contained within the gstudio library.  Here is the documentation for this function.  We will walk through the various parameters and illustrate their use with this dataset.
+Genetic diversity is estimated in R using the function `genetic_diversity()` contained within the gstudio library.  Here is the documentation for this function.  We will walk through the various parameters and illustrate their use with this data set.
 
 <div style="height:250px;white-space:pre-wrap;overflow:scroll;padding:8px;background:#eee;outline: 1px #eee;font-size:small"><pre>
 genetic_diversity {gstudio} 						R Documentation
@@ -453,7 +453,7 @@ genetic_diversity( df, mode="Ae")
 
 ### Allelic Diversity
 
-At the base level, a collection of alleles in a dataset provides an estimate of the breadth of genetic variation present. There are many measures commonly used in population genetics, though $A$, $A_{95}$, and $A_e$ are quite commonly encountered.  These terms are defined as:
+At the base level, a collection of alleles in a data set provides an estimate of the breadth of genetic variation present. There are many measures commonly used in population genetics, though $A$, $A_{95}$, and $A_e$ are quite commonly encountered.  These terms are defined as:
 
 *Frequency Independent Diversity* - The parameter $A$ measures the raw count of the number of alleles present in the sample.  This is a frequency independent estimate of diversity as it does not matter if the allele is only seen once or is seen hundreds of times in the sample.  
 
@@ -475,7 +475,7 @@ or a `data.frame` that has one or more columns of data that are locus objects as
 genetic_diversity( arapat, mode="A" )
 ```
 
-The concern associated with using a parameter such as $A$ is that it throws away any information about relative abundance.  For example, a dataset with alleles found at an abundance of $N_A = 999$ and $N_B = 1$ would have the exact same frequency independent diversity as another sample with $N_A = N_B = 500$, namely $A = 2$.  
+The concern associated with using a parameter such as $A$ is that it throws away any information about relative abundance.  For example, a data set with alleles found at an abundance of $N_A = 999$ and $N_B = 1$ would have the exact same frequency independent diversity as another sample with $N_A = N_B = 500$, namely $A = 2$.  
 
 *Frequency Dependent Diversity* - A slightly more stringent approach may be to estimate the diversity of alleles in a frequency dependent fashion, specifying a particular cutoff.  The parameter $A_{95}$ is a common parameter that provides a count of the number of alleles present in a sample whose frequencies exceed a threshold of 5%.  
 
@@ -497,7 +497,7 @@ mp20.A95 <- genetic_diversity( arapat$MP20, mode="A95")
 mp20.A95
 ```
 
-Here 15 of the alleles we observed in the full dataset occurred at a frequency less than 5%!
+Here 15 of the alleles we observed in the full data set occurred at a frequency less than 5%!
 
 *Effective Number of Alleles* - Given the arbitrary nature of the cutoff for $A_{95}$, a more parsimonious approach may by one that measures the contribution of each allele to diversity in proportion to its frequency.  This is $A_e$ and it is defined as:
 
@@ -527,7 +527,7 @@ where $N_{ij}$ is the count of all heterozygous genotypes.  The `mode="Ho"` opti
 genetic_diversity(arapat, mode="Ho")
 ```
 
-The second parameter, expected heterozygosity ($H_e$), is slightly different in that it is a parameter that needs to be estimated from data.  It represents the fraction of genotypes in the dataset that are expected to be heterozygous, if the sample is in equilibrium.  The value for this function depends upon the data that you are estimating and how it is configured.  If it is estimated from a single locale, then the parameter can be estimated directly as the expected fraction that are not homozygous.
+The second parameter, expected heterozygosity ($H_e$), is slightly different in that it is a parameter that needs to be estimated from data.  It represents the fraction of genotypes in the data set that are expected to be heterozygous, if the sample is in equilibrium.  The value for this function depends upon the data that you are estimating and how it is configured.  If it is estimated from a single locale, then the parameter can be estimated directly as the expected fraction that are not homozygous.
 
 \[
 H_E = 1 - \sum_{i=1}^\ell p_i^2
@@ -540,13 +540,13 @@ genetic_diversity( arapat$LTRS , mode="he")
 genetic_diversity( arapat$MP20, mode="he" ) 
 ```
 
-In an ideal world, we would be able to have enough resources to sample for these parameters with so many individuals, they would be well behaved.  Unfortunately, we do not live in the real world and in many cases our ability to sample lots of individuals is limited.  This problem is not a new thing, we estimate the sums of square and divide by $N-1$ instead of $N$ because if we we use the later, we are producing a biased estimate.  Unless you are working with *all* the samples, every time we make population genetic inferences we will be doing so on a subsample of the total data available.  The `arapat` data set is no where near a major component of the species, it is only a sample.  From this sample, we *estimate* allele frequencies on which we derive our *estimates* of parameters such as $H_E$.  As such, if we used the formulas above to estimate everything in every study, we would have biased estimators of... pretty much everything.  However, the fix is not one that is too difficult to put in, and it has a pretty well established set of behaviors.  As such, if we are estimating these parameters in a single locale (for more than one location, we have further corrections to make), we should probably apply a small sample size correction.  In general, this correction is:
+In an ideal world, we would be able to have enough resources to sample for these parameters with so many individuals, they would be well behaved.  Unfortunately, we do not live in the real world and in many cases our ability to sample lots of individuals is limited.  This problem is not a new thing, we estimate the sums of square and divide by $N-1$ instead of $N$ because if we we use the later, we are producing a biased estimate.  Unless you are working with *all* the samples, every time we make population genetic inferences we will be doing so on a sub-sample of the total data available.  The `arapat` data set is no where near a major component of the species, it is only a sample.  From this sample, we *estimate* allele frequencies on which we derive our *estimates* of parameters such as $H_E$.  As such, if we used the formulas above to estimate everything in every study, we would have biased estimators of... pretty much everything.  However, the fix is not one that is too difficult to put in, and it has a pretty well established set of behaviors.  As such, if we are estimating these parameters in a single locale (for more than one location, we have further corrections to make), we should probably apply a small sample size correction.  In general, this correction is:
 
 \[
 \hat{H}_e = \frac{2N}{2N-1}\left[ 1-\sum_{i=1}^\ell p_i^2 \right]
 \]
 
-The front part is a small sample size correction factor.  Its importance in your estimation diminishes as $N \to \infty$ as shown in Figure \@ref(fig:biasCorrection).  Once you get above $N=9$ individuals, there is an inflation of the estimated heterozygosity at a magnitude of less than 5%. 
+The front part is a small sample size correction factor.  Its importance in your estimation diminishes as $N \to \infty$ as shown below.  Once you get above $N=9$ individuals, there is an inflation of the estimated heterozygosity at a magnitude of less than 5%. 
 
 ```{r biasCorrection, echo=FALSE, fig.cap="Magnitude of the correction factor for small sample size estimations as a function of N.", message=FALSE}
 library(ggplot2)
@@ -560,7 +560,7 @@ ggplot( df, aes(N,CF) ) + geom_line()
 
 ### Samples from Several Locales 
 
-In addition to problems associated with estimating allele freqeuncies incorrectly (and requiring a sample size correction), when we estimate data from several locations, we also have a problem assocaited with the subset of locales relative to the total popualtion size, resulting in a furhter correction to account of the several biased samples you are taking.
+In addition to problems associated with estimating allele frequencies incorrectly (and requiring a sample size correction), when we estimate data from several locations, we also have a problem associated with the subset of locales relative to the total population size, resulting in a further correction to account of the several biased samples you are taking.
 
 \[
 H_S = \frac{\tilde{N}}{\tilde{N}-1}\left[ 1 - \sum_{i=1}^\ell \frac{p_i^2}{K} - \frac{H_O}{2\tilde{N}} \right]
@@ -582,7 +582,7 @@ p <- format(round(cor(df$He,df$Hes),2),nsmall=3)
 ```
 
 
-They are pretty close (Pearson's $\rho =$ `r p`), even when there are only `r nrow(pops)` individuals in the sample.^[The `NA` in the $H_{ES}$ parameter is because there are no smaples in one of the populations and a harmonic mean with a zero in it results in a divide-by-zero error.]  But they are off and this is a vitally important distinction because if you do not account for these differences you will percolate these errors up through your subsequent analyses (and this is a bad thing).
+They are pretty close (Pearson's $\rho =$ `r p`), even when there are only `r nrow(pops)` individuals in the sample.^[The `NA` in the $H_{ES}$ parameter is because there are no samples in one of the populations and a harmonic mean with a zero in it results in a divide-by-zero error.]  But they are off and this is a vitally important distinction because if you do not account for these differences you will percolate these errors up through your subsequent analyses (and this is a bad thing).
 
 ### Multilocus Diversity
 
@@ -605,7 +605,7 @@ This is a pretty crude measurement but later when we examine models based upon c
 
 ### Inbreeding 
 
-Inbreeding is one of the most common deviations from random mating (and hence Hardy-Weinberg Equilibrium) that we encounter in natural populations.  Inbreeding is defined, sensu stricto, as mating between two related individuals.  This ranges from complete selfing, where one parent alone produces offspring, to consanguineous mating, where individuals with some degree of relatedness produce offspring.  The genetic consequences of inbreeding are entirely in how alleles are arranged into genotypes, not in changing allele frequencies.
+Inbreeding is one of the most common deviations from random mating (and hence Hardy-Weinberg Equilibrium) that we encounter in natural populations.  Inbreeding is defined, *sensu stricto*, as mating between two related individuals.  This ranges from complete selfing, where one parent alone produces offspring, to consanguineous mating, where individuals with some degree of relatedness produce offspring.  The genetic consequences of inbreeding are entirely in how alleles are arranged into genotypes, not in changing allele frequencies.
 
 The primary consequence of inbreeding is a reduction in the frequency of the heterozygous genotype.  Consider the following Punnet square where a heterozygote is producing a selfed offspring.
 

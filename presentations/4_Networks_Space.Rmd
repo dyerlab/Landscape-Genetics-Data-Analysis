@@ -2,6 +2,367 @@
 
 [](../media/ch_euphorbia.jpg)
 
+
+## Synopsis
+
+
+## Objectives 
+
+This activity is divided between two different topics, explicitly spatial analyses of genetic structure and network approaches.  The objective here are to:
+
+1. Explore fine scale structure using both Moran's I and the Correlogram approach from Smouse & Peakall
+
+
+## Spatial Autocorrelation
+
+
+
+
+## Admixture
+
+Admixture is the mixing of two or more populations whose frequency spectra may differ.  If they differ considerably, then the admixed population may be examined to determine relative contributions of each population.
+
+```{r admixture, echo=FALSE, fig.cap="Hypothetical pedigree of an individual whose parents come from two separate populations.  Stretches of chromosome are depicted in differing colors to highlight parentage as well as demonstrate admixture in the offspring."}
+knitr::include_graphics("../media/Admixture.png")
+```
+
+An ubiquitous feature of modern population genetic analyses is the presence of a model-based clustering analysis such as those provided by programs such as STRUCTURE and TESS.  The general idea of these approachs is to examine the current distribution of genotypes ($X$) within individuals and populations and try to describe it in terms of historical mixing of populations ($Z$), at specified mixing rates ($Q$), whose allele frequency spectra ($P$) may differ.  
+
+\[
+P(X|Z,P,Q) = \prod_{i=1}^N\prod_{j=1}^LP_{z_{ij},\;p_j,\;x_{ij}}
+\]
+
+Estimating the particular values $Z$, $P$, and $Q$ (realized for each of the $N$ individuals across $L$ loci), has to be done numerically. This  process can provide some valuable insights to partitioning of your data.  However, if you data are distributed along a gradient, these approaches are not quite as powerful.
+ 
+To use STRUCTURE, you need to reformat your data, either by hand or by exporting it through *gstudio*. The format for STRUCTURE requires that population designations to be  numeric values, alleles have to be encoded in a particular way, files need to be formatted in a particular way, etc.  Total pain.  However, we can do this in R as:
+
+```{r eval=FALSE}
+library(gstudio)
+data(arapat)
+write_population(arapat, file="arapat_structure.txt", 
+                 mode="structure", stratum="Population")
+```
+
+which will take your R `data.frame` with loci and other information in it and save it as a text file in the appropriate directory in the STRUCTURE format.  
+
+You run STRUCTURE using either the command-line approach or via a GUI that comes with it.  Most people will prefer the GUI.  After starting it, do the following:
+
+Create a folder for the project. For some reason the Java GUI that STRUCTURE uses disallows the creation of new folders on OSX (don't know if it does the same on windows). Put your data file (the `arapat_structure.txt` file from the previous code block) in that folder. 
+
+Create a new project in STRUCTURE using $File \to New\;Project$:
+
+Walk through the setup pages. The salient numerical information you will need is:  
+- Number of Individuals: 363 
+- Number of loci: 8
+- Missing data value: -9
+
+You should also check the following boxes:  
+- Individual ID for each individual 
+- Putative population origin for each individual
+
+This should have you set up and ready to go. For an initial run through the data, you need to specify some parameters for the simulations. You do this by selecting $Parameter\;Set \to New$. 
+
+The default values on the parameters are a good place to start, though you have to put in the Length of the burn in and the number of reps; 100,000 & 10,000 should get you started so that you see how the program runs. You can name this parameter set whatever you like.
+
+To make an actual run, you need to hit the *run* button (it has the exclamation mark on it). It will ask you how many groups are you going to run, this is the $K$ parameter from the equation above, input 3 and let it go. It will chug along for a while, dumping out some output on the bottom of the interface. When finished it will give you an output of the run showing the parameter set. 
+
+On the left, select the `Results` folder and then the $K=3$ option to see the specifics of that particular run.  Salient information on the output includes:
+
+- The number of individuals per cluster before analyses (by population assignment),  
+- The allele frequency differences per cluster,  
+- The probability of the data give K=3, and  
+- The allele frequencies of each cluster
+
+Perhaps more interpretive are the plots of individuals as they were assigned to each group.  You can visualize this by selecting the *Bar Plot* menu at the top of the Simulation Results pane. 
+
+If you select it to Sort by $Q$ it should look something like Figure below.  This figure is based upon 363 columns of admixture information, one column for each individual.  The colors are defined by the number of groups, here $K=3$.  You can see some individual columns (=individuals genotypes) who are entirely one color.  These are individuals whose genotypes suggest they are the most likely from the group associated with that color.  You can also see that there are some individuals who may be admixed between two or even three groups ad indicated by a column with more than one color.
+
+```{r structureByQ, echo=FALSE, fig.cap="Output from STRUCTURE using the *Araptus attenuatus* when setting $K=3$."}
+knitr::include_graphics("../media/structure_by_q.png")
+```
+
+This output is a hypothesis about admixture.  As such, it is only one simulation and as we've done many times thus far, we should probably run several of these to generate a level of confidence for any value we specified as $K$.  Here is where it gets a little dicey.  We specified $K=3$ and as such we found out what the $P(X|Z,P,Q)$ by specifying $K=3$ implicitly.  In the output of our data, we see can find the log likelihood of our data given these parameters.  However, $K$ may be some value other than three.  Running this simulation with specified values only tells us the likelihood of the data for that value and for that simulation, it does not determine if the specified $K$ is the correct one.  
+
+Inferences on which $K$ is actually correct can only be made by running the program for several iterations for each value of $K$ (to understand the variability in the simulations for that particular value) and running several different values for $K$ itself so we can compare the probability of the data we observed for different numbers of clusters.
+
+The data below depict some runs of the data for $K$ assuming values ranging from 2 to 6.  These are the raw values for the probability of the data for specific values of $K$.  If you are doing this on your data for real, you should do more than three runs, but this provides a base approach for understanding the output.
+
+
+```{r message=FALSE, warning=FALSE, echo=FALSE, fig.cap="Probability of the observed data for the numbers of clusters ($K$) ranging from 2 to 6 using STRUCTURE.  A total of 10 replicates were run for each level of $K$."}
+library(ggplot2)
+K <- c(2,2,2,3,3,3,4,4,4,5,5,5,6,6,6)
+LData <- c( -4885.4, -4882.3,-4892.8, 
+            -4256.6,-4261.3,-4367.9, 
+            -3659.7, -3657.1, -3660.4, 
+            -3605.2, -3594.0,-3607.3,
+            -3308.7,-3492.7,-3493.7)
+df <- data.frame( K=factor(K), Prob=LData )
+ggplot(df, aes(x=K,y=Prob)) + geom_boxplot() + xlab("Number of Clusters (K)") + ylab("Ln Probability of the Data")
+```
+
+The output shows that as we assume more clusters, the $log(P(Data))$ tends towards an asymptote.  There are a couple things to look at here for this output, and this is where the interpretive power of you the researcher needs to step in. The overall notion among many is that the way in which the probability of the data changes with an increasing number of clusters should be informative as to the ‘correct' number of clusters found. This may or may not be true depending upon your data, your sampling, and the actual history of your organism. However, if it were true then the rationale suggests that when the probability of the data levels off, that may be a good place to look at other sources of inference to see if this may be supported as a plausible number of clusters. In the Figure, this looks like $K=4$ may be a good place to start.
+
+If I go back to STRUCTURE and plot examine the barplot of individuals from the $K=4$ data (setting "Group by PopID"), you see something like Figure \@ref(fig:structureByPop).
+
+```{r structureByPop, echo=FALSE, fig.cap="STRUCTURE output for *Araptus attenuatus* for $K=4$ sorted by population."}
+knitr::include_graphics("../media/structure_by_pop.png")
+```
+
+
+Here they are sorted into populations and colored by group (green, yellow, blue, red).  From this display, we can make a few inferences:  
+
+1. There is a pretty good indication that some of the ‘populations' that I sampled appear to be filled with individuals of a single definite type.  
+2. If I look at the groupings as it is presented, the 1^^st^^, 2^^nd^^, and 21^^st^^ populations mainly consist of a single type (the green type). If I look at the original data set that we put out, these correspond to populations 101, 102, and 32. These are the three mainland populations that have consistently been found to be different.  
+3. The rest are populations in Peninsular Baja.  As we saw in the hierarchical clustering example, these populations may be further subdivided into different groups, Cape vs. the rest and perhaps more nested structure therein.  In actuality, if you pull out the mtDNA types for Peninsula only and run STRUCTURE on it, you will find there is most likely a three separate groupings in the data (this is where the Cluster column in the arapat data set comes from).
+
+Determining the proper $K$ is not a trivial thing.  From the output of estimates of $P(X|Z,P,Q)$ given a particular $K$, we can examine how our data probability changes with different values of $K$.  We can also examine the allocation of individuals into groups and see if it makes sense, biologically.  
+
+One way that is commonly used to get an idea of the magnitude of $K$ is by looking at how $P(X|Z,P,Q)$ changes with increasing values of $K$.  This is often referred to as the $\delta K$ approach.  There is an argument to be made that the best assignment of $K$ would be where there is a large change in $\delta K$ followed by a plateau.  This is interpretive and not a definite heuristic.  
+
+```{r deltaK, echo=FALSE, fig.cap="Estimates of $\\delta K$ for the STRUCTURE output run on *Araptus attenuatus*."}
+mean.K <- as.numeric(by( df$Prob, df$K, mean))
+delta.K <- mean.K[2:5] - mean.K[1:4]
+df <- data.frame( K=3:6, deltaK=delta.K)
+ggplot(df,aes(x=K,y=deltaK)) + geom_line() + geom_point() + xlab("Number of Clusters (K)") + ylab("Change in Ln Probability of the Data")
+```
+
+What we see is that the largest value of $\delta K$ followed by a steep reduction is when $K=4$.  This may indicate to us that as it stands, the totality of the data contains four groups and we can map them back onto our data set and evaluate the biological support for these groupings.
+
+
+
+# Autocorrelation
+
+
+
+
+
+
+```{r}
+library(gstudio)
+data(arapat)
+data <- droplevels( arapat[ arapat$Species == "Peninsula",] )
+groups <- data.frame( unique( cbind(as.character(data$Population), as.character(data$Cluster))))
+names(groups) <- c("Stratum","Cluster")
+```
+
+
+
+```{r message=FALSE, message=FALSE}
+library(ggplot2)
+library( ggmap) 
+library( ggrepel )
+coords <- strata_coordinates(data)
+map <- population_map(coords, zoom=7)
+coords <- merge( coords, groups )
+ggmap( map) + geom_point( aes(x=Longitude, y=Latitude, label=Stratum, color=Cluster), data=coords)  + geom_text_repel( aes(x=Longitude, y=Latitude, label=Stratum, color=Cluster), data=coords) + xlab("Longitude") + ylab("Latitude")
+```
+
+
+## PCA
+
+```{r}
+library(ade4)
+freqs <- to_mv_freq(data)
+fit.pca <- dudi.pca( freqs, scale=FALSE, scannf=FALSE, nf=10)
+summary(fit.pca)
+```
+
+```{r}
+library(ggplot2)
+df <- data.frame( Axis=1:length(fit.pca$eig), Lambda=fit.pca$eig)
+df$Lambda <- df$Lambda / sum( df$Lambda )
+ggplot( df, aes(x=Axis,y=Lambda)) + geom_bar( stat="identity") + xlab("PCA Axis") + ylab("Proportion of Variation Explained") + theme_bw()
+```
+
+```{r}
+df <- data.frame( PC1=fit.pca$li$Axis1, PC2=fit.pca$li$Axis2, Stratum=rownames(fit.pca$li))
+df <- merge( df, groups)
+ggplot( df, aes(x=PC1,y=PC2, label=Stratum, color=Cluster)) + geom_text() + theme_bw()
+```
+
+
+
+### PCoA
+
+```{r}
+D <- genetic_distance(data, mode = "Nei")
+D <- quasieuclid( as.dist( D ) )
+fit.pcoa <- dudi.pco(D,scannf = FALSE,full = TRUE, nf=10)
+summary( fit.pcoa )
+```
+
+
+```{r}
+df <- data.frame( Axis=1:length(fit.pcoa$eig), Lambda=fit.pcoa$eig)
+df$Lambda <- df$Lambda / sum( df$Lambda )
+ggplot( df, aes(x=Axis,y=Lambda)) + geom_bar( stat="identity") + xlab("PCA Axis") + ylab("Proportion of Variation Explained") + theme_bw()
+```
+
+
+
+
+```{r}
+df <- data.frame( PC1=fit.pcoa$li$A1, PC2=fit.pcoa$li$A2, Stratum=rownames(fit.pcoa$li))
+df <- merge( df, groups)
+ggplot( df, aes(x=PC1,y=PC2, label=Stratum, color=Cluster)) + geom_text() + theme_bw()
+```
+
+  
+
+
+
+
+
+
+
+## Ordination
+
+There are several ways that we can look for natural groupings in our data.  Barriers and sources of vicariance across the landscape create discontinuities in the genetic structure.  As we begin to analyze the spatial structure of the data itself, one of the first things that needs to be done is to allow the data to tell the analyst how it is internally structured.  This is a deviation from common approaches in statistical analyses.  Typically, we start with a model and then see the extent to which the data fit into a model framework, potentially testing many different models.  However, just because you get a significant model does not mean it is the best or even the correct one describing the underlying processes.  In Dyer & Nason (2004), we examined the spatial genetic structure of Lophocereus schottii (Cactaceae) and found that while the Sea of Cortéz has acted to separate mainland populations from those on peninsular Baja California, there is a particular population at the very northern extent of the range that is really a peninsular population even though it is spatially on the mainland.  The differences, in aggregate, between peninsula and mainland populations are so large that even if we allocated an individual stratum into the wrong region, we still were able to derive a significant model.  This is where model-free approaches are most powerful, they let the data tell us how it is distributed as opposed to asking if there is enough structure to fit into some pre-conceived model.
+
+A popular way to examine how individuals and populations are configured is to use an ordination approach or apply a multivariate rotation on the data.  In what follows, I'll describe a principal components analysis (though it is not really an analysis, it is more of a projection).  These approaches are common in multivariate statistics and have very little to do with population genetic processes or assumptions.  Fortunately, there are several approaches amenable to transforming population genetic data into a form that is usable in normal multivariate statistics, the one used most often is discretizing the data.  To demonstrate, consider the case where we have four individuals genotyped for a single locus as depicted below.
+
+```{r ordination1, message=FALSE, warning=FALSE}
+library(gstudio)
+x <- c( locus(c(1,2)), locus( c(1,1) ), locus(c(1,3)), locus(c(3,3)))
+x
+```
+
+We can convert these data into a matrix of data, where each row in the matrix represents an individual and each column determines the frequency of alleles in that individuals genotype.  In this case, the resulting matrix should have four rows (one for each individual) and three columns (one for each of the three alleles present in the whole data).  This conversion is done using the function `to_mv()`.
+
+
+```{r}
+X <- to_mv(x)
+X
+```
+
+When using multiple loci, we can essentially bind onto this matrix additional columns of predictor variables.  This matrix can be used as an input to most multivariate analyses.  Depending upon the analysis being used, you may need to modify it a bit.  Many statistical approaches require that you invert the covariance matrix.  For example, the regression coefficients are found as:
+
+\[
+\beta = (X'X)^{-1}X'Y
+\]
+
+where the $X$ matrix is the predictor data and the $Y$ is the response variables.  That $(\cdot)^{-1}$ exponent represents inversion of the matrix resulting from the multiplication.  The problem with the above [~] matrix derived from the genotypes is that the rows are all linearly related in that they all sum to unity.
+
+```{r}
+rowSums(X)
+```
+
+which is a problem for matrix inversion as it throws a zero into the mix and dividing by zero is still a problematic endeavor.  To fix this, we need to drop a column from each locus we use to estimate.  This is an optional flag in the `to_mv()` function.
+
+```{r}
+X <- to_mv(x,drop.allele = TRUE)
+X
+```
+
+Once we have the proper data, we can do a principal component (PC) rotation.  A PC rotation is one that takes the original columns of data and performs a rotation on the values to align onto new ‘synthetic' axes.  Consider the example in the next figure.  Here, some bivariate data is plot in 2-space, though this can be done for much higher dimensions of data as well—in fact it is more beneficial with more columns of data and this can be used as a way of reducing the dimensionality of the data while loosing very little (or no) content (more later on this).  The axes of a PC rotation are taken as linear combinations of the existing axes and define a new coordinate set onto which the points are plot.  All points are rigidly constrained to keep the same relationship and there is no loss of information.  The PC axes are defined by determining the most variable stretch through the data. In the figure on the next page, we see the raw data plot onto the X- and Y-axes.  The axis of highest variance does not align with either of the original ones, and instead can be defined as a combination of both X- and Y- coordinates.  If we take the blue axis as the first PC axis, the coordinate of the points would be taken along that new synthetic axis.  The next PC axis is defined as being perpendicular to the previous one(s) and is identified as covering the largest variance in the data as before.  This process continues until there are no more axes.  In our case, the second axis would be at a right angle from the blue line (above).  You can, at maximum, have as many PC axes as there are columns of data.  However, the later axes may not explain any significant chunk of the underlying data, the process of rotating based upon axes of maximal variation may be able to capture the complete dataset with fewer axes than the total set.  This is where a technique like this may be helpful in reducing the dimensionality of the data.
+
+To perform this on genetic data, we first translate the raw genotypes into multivariate data, dropping an allele from each locus.
+
+```{r}
+data(arapat)
+x <- to_mv(arapat, drop.allele = TRUE)
+```
+
+The full arapat data, with 363 individuals has 50 independent allele columns to it, after dropping one for each locus. Passing this to the princomp() function we get the results.
+
+
+```{r}
+fit.pca <- princomp(x, cor = TRUE)
+```
+
+
+Here are the first 8 (out of 50 potential) axes for the arapat data set.
+
+```{r}
+summary(fit.pca)
+```
+
+This output has two important components to it.  First, it shows the axes, in decreasing order of importance and how much of the total variation they describe.  The first Comp.1 axis explains 14.2% of the variance, the second explains 9.5%, etc.  Second, it shows the cumulative proportion of the variation explained.  From the 50 axes we started with, we can explain 49% of the variance by using just the first eight PC axes.
+
+Where this becomes meaningful for us is in how we can project our original data onto these new coordinate locations and look at the distribution to see if there are any obvious trends, partitions, gradients, etc.  
+
+```{r warning=FALSE, message=FALSE}
+library(ggplot2)
+pred <- predict(fit.pca)
+df <- data.frame(PC1 = pred[, 1], PC2 = pred[, 2])
+df$Species <- arapat$Species
+df$Clade <- arapat$Cluster
+df$Pop = arapat$Population
+ggplot(df) + geom_point(aes(x = PC1, y = PC2, shape = Species, color = Clade), size = 3, alpha = 0.75)
+```
+
+We can see from the plot (I've added some designations to the points) that the 363 samples are clustered in an obvious way.  The designation of ‘Species' as depicted by the shape of the points, is defined by the mtDNA clade for each individual, independent of the nuclear marker data we are using here.  Still, it shows a broad separation between the Cape, Mainland, and Peninsula groups.  The colors of the points found within the Peninsula group, come more formal clustering approaches, as defined in the next two sections.
+ 
+
+
+
+## Hierarchical Clustering
+
+In the previous section, we defined a new coordinate space for all individuals in the dataset.  The rotation of the 50 allele encoding columns was able to describe over 95% of the observed variation using only the first 34 PC axes.  In this section, we are going to use the rotated coordinates to evaluate population-level differences using a hierarchical clustering method.  Hierarchical clustering are very helpful in understanding groupings in the data, particularly if there is a ‘nesting' structure.  While there are many ways to do it, they all generally proceed as follows:  
+1. Define a numeric metric that measured the distances between all K groups.  
+2. Find the two groups that have the smallest distance and coalesce them together into a pair.  
+3. Assume that the coalesced pair now constitutes a single entity, estimate the numeric metric among all K-1 groups in the data set.  
+4. Go to #2 and repeat until you have coalesced all the groups together.
+
+Here again, it is the data that is telling us how it is structured rather than us imposing a model onto the data to see if it fits.
+
+To do this, the rotated coordinates are used to define the centroid of each population.  Here I use the tapply() function as a short-cut to estimate the mean of each population.  If you are not familiar with this approach, it essentially applies a particular function (in this case taking the mean), to a set of data  in a matrix (the predicted coordinates from the PCA) based upon a set of factor levels (the populations).  This is quite an efficient way to do what would take you a bit of looping to get through.
+
+```{r}
+p <- ncol(pred)
+pops <- arapat$Population
+pop.means <- tapply( pred, list(rep(pops,p),col(pred)),mean)
+dim(pop.means)
+```
+
+The result is a matrix where each row represents a population and each column represents the mean location of all individuals for each of the 50 PCA axes variables.  These 50-dimensional coordinates can be used to define a pairwise distance metric using the dist() function.  By default, this measures the euclidean distance (e.g., straight-line distance) between each populations 50-dimensional coordinate.
+
+```{r}
+pop_pw <- dist(pop.means)
+h <- hclust( pop_pw)
+plot(h)
+```
+
+The plot of this shows the nesting structure of the populations as depicted in the PC-derived data.  
+
+There are some interesting things to notice here.   
+- The main separation between mainland populations (32, 101, 102) and peninsular populations (the rest) seems to be the largest difference.  As indicated in the mtDNA (not used for this analysis), there seems to be a clear division between those two groups, consistent with the idea that the Sea of Cortéz has acted as a source of vicariance.
+- There seems to be a deep division within the peninsular populations separating out the group of populations including 98, Mat, 157, 73, 75, Aqu, ESan, 156, and 48.  If we look at where these populations are found, we see that they are all located in the southern portion of Baja California—the Cape groupings...
+- Then there is the rest of the populations, some of which appear to be partitioned into at least two groups, though there may be more.
+
+This approach is pretty good at pulling apart components within the data set that represent different genetic clusters.
+
+## Interactive Tree Display
+
+Another network approach that could be used is defining bifurcating networks.  Here we will examine the *A. attenuatus* data set using Nei's genetic distance metric.
+
+\[
+D_{nei} = -\ln( L )
+\]
+
+where
+
+\[
+L = \frac{\sum_l\sum_u x_uy_u}{\sqrt{(\sum_l\sum_u x_u^2)(\sum_l\sum_u y_u^2)}}
+\]
+
+I make the among stratum distance matrix and then turn it into a `dist` object to do a hierarchal clustering on the populations. I then plot it and make the node colors equal to the grouping of the dendrogram *if* there were 4 groups in the dataset.  This is also zoomable, for large trees, so if you want to figure out the relationships at the leaves, where the internal edges are smaller, zoom in with the mouse.
+
+```{r message=FALSE, error=FALSE, warning=FALSE}
+library(networkD3)
+d <- genetic_distance(arapat,stratum = "Population", mode="Nei")
+d <- as.dist( d )
+hc <- hclust(d)
+dendroNetwork(hc, height=600, 
+              zoom=TRUE, 
+              textColour = c("red","green","orange","blue")[ cutree(hc,4)])
+```
+
+
+
+
+## Networks
+
 In R, a network can be derived from several different kinds of data. For simplicity, lets start with an *adjacency matrix*, which represents the patterns of connectivity among nodes in a network.  Here our nodes may represent individuals, locales, populations, regions, or any other clumping of our data.  The adjacency matrix has as many rows and columns as there are distinct sampling units.  Lets consider the case where we have 5 locales, from which we derived some measure of connectivity.  The matrix has five rows and columns and a non-zero entry in each element where connectivity has been inferred.  In R, we can set it up as:
 
 ```{r}
@@ -1020,235 +1381,8 @@ test_congruence(lopho,upiga, method="combinatorial")
 Hope this provides enough of an overview of the **popgraph** package to get you started.  If you have any questions feel free to email [mailto://rjdyer@vcu.edu].
 
 
+## Questions
 
-
-
-# Autocorrelation
-
-
-
-
-
-
-```{r}
-library(gstudio)
-data(arapat)
-data <- droplevels( arapat[ arapat$Species == "Peninsula",] )
-groups <- data.frame( unique( cbind(as.character(data$Population), as.character(data$Cluster))))
-names(groups) <- c("Stratum","Cluster")
-```
-
-
-
-```{r message=FALSE, message=FALSE}
-library(ggplot2)
-library( ggmap) 
-library( ggrepel )
-coords <- strata_coordinates(data)
-map <- population_map(coords, zoom=7)
-coords <- merge( coords, groups )
-ggmap( map) + geom_point( aes(x=Longitude, y=Latitude, label=Stratum, color=Cluster), data=coords)  + geom_text_repel( aes(x=Longitude, y=Latitude, label=Stratum, color=Cluster), data=coords) + xlab("Longitude") + ylab("Latitude")
-```
-
-
-## PCA
-
-```{r}
-library(ade4)
-freqs <- to_mv_freq(data)
-fit.pca <- dudi.pca( freqs, scale=FALSE, scannf=FALSE, nf=10)
-summary(fit.pca)
-```
-
-```{r}
-library(ggplot2)
-df <- data.frame( Axis=1:length(fit.pca$eig), Lambda=fit.pca$eig)
-df$Lambda <- df$Lambda / sum( df$Lambda )
-ggplot( df, aes(x=Axis,y=Lambda)) + geom_bar( stat="identity") + xlab("PCA Axis") + ylab("Proportion of Variation Explained") + theme_bw()
-```
-
-```{r}
-df <- data.frame( PC1=fit.pca$li$Axis1, PC2=fit.pca$li$Axis2, Stratum=rownames(fit.pca$li))
-df <- merge( df, groups)
-ggplot( df, aes(x=PC1,y=PC2, label=Stratum, color=Cluster)) + geom_text() + theme_bw()
-```
-
-
-
-### PCoA
-
-```{r}
-D <- genetic_distance(data, mode = "Nei")
-D <- quasieuclid( as.dist( D ) )
-fit.pcoa <- dudi.pco(D,scannf = FALSE,full = TRUE, nf=10)
-summary( fit.pcoa )
-```
-
-
-```{r}
-df <- data.frame( Axis=1:length(fit.pcoa$eig), Lambda=fit.pcoa$eig)
-df$Lambda <- df$Lambda / sum( df$Lambda )
-ggplot( df, aes(x=Axis,y=Lambda)) + geom_bar( stat="identity") + xlab("PCA Axis") + ylab("Proportion of Variation Explained") + theme_bw()
-```
-
-
-
-
-```{r}
-df <- data.frame( PC1=fit.pcoa$li$A1, PC2=fit.pcoa$li$A2, Stratum=rownames(fit.pcoa$li))
-df <- merge( df, groups)
-ggplot( df, aes(x=PC1,y=PC2, label=Stratum, color=Cluster)) + geom_text() + theme_bw()
-```
-
-  
-
-
-
-
-
-
-
-## Ordination
-
-There are several ways that we can look for natural groupings in our data.  Barriers and sources of vicariance across the landscape create discontinuities in the genetic structure.  As we begin to analyze the spatial structure of the data itself, one of the first things that needs to be done is to allow the data to tell the analyst how it is internally structured.  This is a deviation from common approaches in statistical analyses.  Typically, we start with a model and then see the extent to which the data fit into a model framework, potentially testing many different models.  However, just because you get a significant model does not mean it is the best or even the correct one describing the underlying processes.  In Dyer & Nason (2004), we examined the spatial genetic structure of Lophocereus schottii (Cactaceae) and found that while the Sea of Cortéz has acted to separate mainland populations from those on peninsular Baja California, there is a particular population at the very northern extent of the range that is really a peninsular population even though it is spatially on the mainland.  The differences, in aggregate, between peninsula and mainland populations are so large that even if we allocated an individual stratum into the wrong region, we still were able to derive a significant model.  This is where model-free approaches are most powerful, they let the data tell us how it is distributed as opposed to asking if there is enough structure to fit into some pre-conceived model.
-
-A popular way to examine how individuals and populations are configured is to use an ordination approach or apply a multivariate rotation on the data.  In what follows, I'll describe a principal components analysis (though it is not really an analysis, it is more of a projection).  These approaches are common in multivariate statistics and have very little to do with population genetic processes or assumptions.  Fortunately, there are several approaches amenable to transforming population genetic data into a form that is usable in normal multivariate statistics, the one used most often is discretizing the data.  To demonstrate, consider the case where we have four individuals genotyped for a single locus as depicted below.
-
-```{r ordination1, message=FALSE, warning=FALSE}
-library(gstudio)
-x <- c( locus(c(1,2)), locus( c(1,1) ), locus(c(1,3)), locus(c(3,3)))
-x
-```
-
-We can convert these data into a matrix of data, where each row in the matrix represents an individual and each column determines the frequency of alleles in that individuals genotype.  In this case, the resulting matrix should have four rows (one for each individual) and three columns (one for each of the three alleles present in the whole data).  This conversion is done using the function `to_mv()`.
-
-
-```{r}
-X <- to_mv(x)
-X
-```
-
-When using multiple loci, we can essentially bind onto this matrix additional columns of predictor variables.  This matrix can be used as an input to most multivariate analyses.  Depending upon the analysis being used, you may need to modify it a bit.  Many statistical approaches require that you invert the covariance matrix.  For example, the regression coefficients are found as:
-
-\[
-\beta = (X'X)^{-1}X'Y
-\]
-
-where the $X$ matrix is the predictor data and the $Y$ is the response variables.  That $(\cdot)^{-1}$ exponent represents inversion of the matrix resulting from the multiplication.  The problem with the above [~] matrix derived from the genotypes is that the rows are all linearly related in that they all sum to unity.
-
-```{r}
-rowSums(X)
-```
-
-which is a problem for matrix inversion as it throws a zero into the mix and dividing by zero is still a problematic endeavor.  To fix this, we need to drop a column from each locus we use to estimate.  This is an optional flag in the `to_mv()` function.
-
-```{r}
-X <- to_mv(x,drop.allele = TRUE)
-X
-```
-
-Once we have the proper data, we can do a principal component (PC) rotation.  A PC rotation is one that takes the original columns of data and performs a rotation on the values to align onto new ‘synthetic' axes.  Consider the example in the next figure.  Here, some bivariate data is plot in 2-space, though this can be done for much higher dimensions of data as well—in fact it is more beneficial with more columns of data and this can be used as a way of reducing the dimensionality of the data while loosing very little (or no) content (more later on this).  The axes of a PC rotation are taken as linear combinations of the existing axes and define a new coordinate set onto which the points are plot.  All points are rigidly constrained to keep the same relationship and there is no loss of information.  The PC axes are defined by determining the most variable stretch through the data. In the figure on the next page, we see the raw data plot onto the X- and Y-axes.  The axis of highest variance does not align with either of the original ones, and instead can be defined as a combination of both X- and Y- coordinates.  If we take the blue axis as the first PC axis, the coordinate of the points would be taken along that new synthetic axis.  The next PC axis is defined as being perpendicular to the previous one(s) and is identified as covering the largest variance in the data as before.  This process continues until there are no more axes.  In our case, the second axis would be at a right angle from the blue line (above).  You can, at maximum, have as many PC axes as there are columns of data.  However, the later axes may not explain any significant chunk of the underlying data, the process of rotating based upon axes of maximal variation may be able to capture the complete dataset with fewer axes than the total set.  This is where a technique like this may be helpful in reducing the dimensionality of the data.
-
-To perform this on genetic data, we first translate the raw genotypes into multivariate data, dropping an allele from each locus.
-
-```{r}
-data(arapat)
-x <- to_mv(arapat, drop.allele = TRUE)
-```
-
-The full arapat data, with 363 individuals has 50 independent allele columns to it, after dropping one for each locus. Passing this to the princomp() function we get the results.
-
-
-```{r}
-fit.pca <- princomp(x, cor = TRUE)
-```
-
-
-Here are the first 8 (out of 50 potential) axes for the arapat data set.
-
-```{r}
-summary(fit.pca)
-```
-
-This output has two important components to it.  First, it shows the axes, in decreasing order of importance and how much of the total variation they describe.  The first Comp.1 axis explains 14.2% of the variance, the second explains 9.5%, etc.  Second, it shows the cumulative proportion of the variation explained.  From the 50 axes we started with, we can explain 49% of the variance by using just the first eight PC axes.
-
-Where this becomes meaningful for us is in how we can project our original data onto these new coordinate locations and look at the distribution to see if there are any obvious trends, partitions, gradients, etc.  
-
-```{r warning=FALSE, message=FALSE}
-library(ggplot2)
-pred <- predict(fit.pca)
-df <- data.frame(PC1 = pred[, 1], PC2 = pred[, 2])
-df$Species <- arapat$Species
-df$Clade <- arapat$Cluster
-df$Pop = arapat$Population
-ggplot(df) + geom_point(aes(x = PC1, y = PC2, shape = Species, color = Clade), size = 3, alpha = 0.75)
-```
-
-We can see from the plot (I've added some designations to the points) that the 363 samples are clustered in an obvious way.  The designation of ‘Species' as depicted by the shape of the points, is defined by the mtDNA clade for each individual, independent of the nuclear marker data we are using here.  Still, it shows a broad separation between the Cape, Mainland, and Peninsula groups.  The colors of the points found within the Peninsula group, come more formal clustering approaches, as defined in the next two sections.
- 
-
-
-
-## Hierarchical Clustering
-
-In the previous section, we defined a new coordinate space for all individuals in the dataset.  The rotation of the 50 allele encoding columns was able to describe over 95% of the observed variation using only the first 34 PC axes.  In this section, we are going to use the rotated coordinates to evaluate population-level differences using a hierarchical clustering method.  Hierarchical clustering are very helpful in understanding groupings in the data, particularly if there is a ‘nesting' structure.  While there are many ways to do it, they all generally proceed as follows:  
-1. Define a numeric metric that measured the distances between all K groups.  
-2. Find the two groups that have the smallest distance and coalesce them together into a pair.  
-3. Assume that the coalesced pair now constitutes a single entity, estimate the numeric metric among all K-1 groups in the data set.  
-4. Go to #2 and repeat until you have coalesced all the groups together.
-
-Here again, it is the data that is telling us how it is structured rather than us imposing a model onto the data to see if it fits.
-
-To do this, the rotated coordinates are used to define the centroid of each population.  Here I use the tapply() function as a short-cut to estimate the mean of each population.  If you are not familiar with this approach, it essentially applies a particular function (in this case taking the mean), to a set of data  in a matrix (the predicted coordinates from the PCA) based upon a set of factor levels (the populations).  This is quite an efficient way to do what would take you a bit of looping to get through.
-
-```{r}
-p <- ncol(pred)
-pops <- arapat$Population
-pop.means <- tapply( pred, list(rep(pops,p),col(pred)),mean)
-dim(pop.means)
-```
-
-The result is a matrix where each row represents a population and each column represents the mean location of all individuals for each of the 50 PCA axes variables.  These 50-dimensional coordinates can be used to define a pairwise distance metric using the dist() function.  By default, this measures the euclidean distance (e.g., straight-line distance) between each populations 50-dimensional coordinate.
-
-```{r}
-pop_pw <- dist(pop.means)
-h <- hclust( pop_pw)
-plot(h)
-```
-
-The plot of this shows the nesting structure of the populations as depicted in the PC-derived data.  
-
-There are some interesting things to notice here.   
-- The main separation between mainland populations (32, 101, 102) and peninsular populations (the rest) seems to be the largest difference.  As indicated in the mtDNA (not used for this analysis), there seems to be a clear division between those two groups, consistent with the idea that the Sea of Cortéz has acted as a source of vicariance.
-- There seems to be a deep division within the peninsular populations separating out the group of populations including 98, Mat, 157, 73, 75, Aqu, ESan, 156, and 48.  If we look at where these populations are found, we see that they are all located in the southern portion of Baja California—the Cape groupings...
-- Then there is the rest of the populations, some of which appear to be partitioned into at least two groups, though there may be more.
-
-This approach is pretty good at pulling apart components within the data set that represent different genetic clusters.
-
-## Interactive Tree Display
-
-Another network approach that could be used is defining bifurcating networks.  Here we will examine the *A. attenuatus* data set using Nei's genetic distance metric.
-
-\[
-D_{nei} = -\ln( L )
-\]
-
-where
-
-\[
-L = \frac{\sum_l\sum_u x_uy_u}{\sqrt{(\sum_l\sum_u x_u^2)(\sum_l\sum_u y_u^2)}}
-\]
-
-I make the among stratum distance matrix and then turn it into a `dist` object to do a hierarchal clustering on the populations. I then plot it and make the node colors equal to the grouping of the dendrogram *if* there were 4 groups in the dataset.  This is also zoomable, for large trees, so if you want to figure out the relationships at the leaves, where the internal edges are smaller, zoom in with the mouse.
-
-```{r message=FALSE, error=FALSE, warning=FALSE}
-library(networkD3)
-d <- genetic_distance(arapat,stratum = "Population", mode="Nei")
-d <- as.dist( d )
-hc <- hclust(d)
-dendroNetwork(hc, height=600, 
-              zoom=TRUE, 
-              textColour = c("red","green","orange","blue")[ cutree(hc,4)])
-```
-
+1. Take the individuals in the *arapat* data set partition out those that are designated as `Cluster="Peninsula"`.  Save these individuals to a text file formatted for STRUCTURE.  In small groups, perform a set of replicate runs in STRUCTURE from K=1 to K=5.  What do you conclude about this analysis?  How does this fit into the whole data *arapat* data set?
+2. 
 
