@@ -5,7 +5,7 @@ date: "Scotland, October 2016"
 output: html_document
 ---
 
-![](../media/ch_newt2.jpg)
+![](./media/ch_newt2.jpg)
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -479,7 +479,7 @@ Common raster formats include GeoTiff, essentially an image file with some metad
 From Worldclim, I downloaded the elevation raster for Tile 22 and can load it into R using the `raster()` function as:
 
 ```{r warning=FALSE, message=FALSE}
-alt <- raster("../spatial_data/alt.tif")
+alt <- raster("./spatial_data/alt.tif")
 alt
 ```
 
@@ -505,8 +505,8 @@ plot( alt, xlab="Longitude", ylab="Latitude" )
 
 We can modify rasters just as easily as we can modify matrices.  The square bracket indexing you use for matrices are just as effective as before.  In the next example, I mask the landscape based upon elevation.  I create a copy of the original raster and then make everything whose elevation is less than 500m as missing data.  Plotting this over the top of the original raster shows only locations where elevation exceeds this cutoff.  
 
-```{r echo=-1}
-alt <- raster("../spatial_data/alt.tif")
+```{r }
+alt <- raster("LGDA-Data/bioclim/alt_22.tif")
 e <- extent( c(-115,-109,22,30) )
 baja_california <- crop( alt, e )
 baja_california
@@ -529,7 +529,7 @@ plot( bc, add=TRUE, legend=FALSE)
 It is not uncommon to be working with many different raster layers at the same time.  Instead of loading them individually, the `raster` library has a `RasterStack` object that can hold several rasters at one time and can be used in places where we would use individual rasters.  Here is an example using the elevation and temperature rasters for tile 22.
 
 ```{r}
-files <- c("../spatial_data/alt.tif", "../spatial_data/bio1.tif", "../spatial_data/bio5.tif", "../spatial_data/bio6.tif")
+files <- c("./spatial_data/alt.tif", "./spatial_data/bio1.tif", "./spatial_data/bio5.tif", "./spatial_data/bio6.tif")
 bio_layers <- stack( files )
 bio_layers
 ```
@@ -671,7 +671,7 @@ Here is one way of going this.  I first define an extent, which consists of a ve
 ```{r}
 library(sp)
 library(raster)
-alt <- raster("../spatial_data/alt.tif")
+alt <- raster("./spatial_data/alt.tif")
 e <- extent( c(-115,-109,22,30) )
 baja_california <- crop( alt, e )
 plot(baja_california, xlab="Longitude",ylab="Latitude")
@@ -689,7 +689,7 @@ plot(baja, xlab="Longitude",ylab="Latitude", legend=FALSE)
 
 Onto this map, we can plot our populations.  For this, we convert the raw coordinates into a `SpatialPoints` object and then overlay onto the map.  I use two `points()` commands to make the symbol for each population.
 
-```{r echo=-1}
+```{r }
 library(gstudio)
 data(arapat)
 coords <- strata_coordinates(arapat)
@@ -715,7 +715,7 @@ pts
 
 From these points, we construct a `SpatialPolygons` object (see \@ref{polygons} for more info on this convoluted construction) and then can overlay onto the map to make sure it in the correct vicinity (here we are eyeballing it a bit).  For more on why this next line of code looks so crazy, see \@ref(polygons).
 
-```{r echo=-1}
+```{r}
 polys <- SpatialPolygons(list(Polygons(list(Polygon(pts)),"Polygon")))
 plot(baja, legend=FALSE)
 plot(polys, add=TRUE)
@@ -736,7 +736,7 @@ Cropping by a polygon like demonstrated in the previous example is a 'by hand' a
 
 For this example, I'm going to use the populations found along the peninsula and find the minimal area encompassing those points. 
 
-```{r message=FALSE, warning=FALSE, echo=-1}
+```{r message=FALSE, warning=FALSE}
 baja_coords <- coords[ !(coords$Stratum %in% c("101","102","32")), ]
 baja_pts <- SpatialPoints( baja_coords[,2:3])
 plot(baja, legend=FALSE)
@@ -746,7 +746,7 @@ plot(baja_pts,add=T,col="darkred",pch=16)
 
 The methods for finding the hull and adding a buffer around it are found in the `rgeos` package.  These are pretty easy functions to use and are very helpful.  If you are having trouble installing the `rgeos` package from source, see my webpage (http://dyerlab.bio.vcu.edu), there is a short tutorial.
 
-```{r message=FALSE,warning=FALSE, echo=-1}
+```{r message=FALSE,warning=FALSE}
 library(rgeos) # loads in gConvexHull & gBuffer functions
 hull <- gConvexHull(baja_pts)
 plot(baja, legend=FALSE)
@@ -757,7 +757,7 @@ plot(hull,add=T,border="red")
 
 The function `gConvexHull()` returns an object of type *SpatialPolygons*, just like we created before.  However, we now have a polygon that has each of our most 'outward' populations on the very edge of the polygon.  It may be beneficial for us to add a buffer around this polygon.
 
-```{r echo=-1}
+```{r}
 hull_plus_buffer <- gBuffer(hull,width=.2)
 plot(baja, legend=FALSE)
 plot(baja_pts,add=T,col="darkred")
@@ -767,7 +767,7 @@ plot(hull_plus_buffer, add=T, border="red")
 
 Now, we can mask and trim it to include only the area of interest.
 
-```{r echo=-1}
+```{r}
 pop_hull <- trim( mask(baja,hull_plus_buffer) )
 plot(pop_hull, legend=FALSE, xlab="Longitude", ylab="Latitude")
 plot(baja_pts,add=T,col="darkred",pch=16)
@@ -783,8 +783,8 @@ So far, the rasters have been confined to representing a single static object.  
 For queries of the first kind, we can use the `extract()` function.  For this I downloaded the average temperature and precipitation rasters from Worldclim.
 
 ```{r}
-baja_temp <- raster("../spatial_data/bio1.tif")
-baja_prec <- raster("../spatial_data/bio12.tif")
+baja_temp <- raster("./spatial_data/bio1.tif")
+baja_prec <- raster("./spatial_data/bio12.tif")
 ```
 
 And then extract the values from each of these layers into the `coords` data we already have set up.
@@ -885,7 +885,7 @@ and after you have selected the points, you get something like.
 
 ![Raster points around the Cape region identified manually.](../media/click_raster_example.png)
 ```{r echo=FALSE}
-load("../spatial_data/click_raster_example_pts.rda")
+load("./spatial_data/click_raster_example_pts.rda")
 ```
 
 with the data as:
@@ -1019,7 +1019,7 @@ data(arapat)
 coords <- strata_coordinates(arapat)
 pts <- SpatialPoints( coords[,2:3])
 for( layer in layers ) {
-  r <- raster( paste("../spatial_data/",layer,sep=""))
+  r <- raster( paste("./spatial_data/",layer,sep=""))
   coords[[layer]] <- extract( r, pts)  
 }
 coords <- coords[ coords$Stratum != "165", ]
