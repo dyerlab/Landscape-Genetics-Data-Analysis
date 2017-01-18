@@ -739,7 +739,7 @@ plot(baja_pts,add=T,col="darkred")
 plot(baja_pts,add=T,col="darkred",pch=16)
 ```
 
-The methods for finding the hull and adding a buffer around it are found in the `rgeos` package.  These are pretty easy functions to use and are very helpful.  If you are having trouble installing the `rgeos` package from source, see my webpage (http://dyerlab.bio.vcu.edu), there is a short tutorial.
+The methods for finding the hull and adding a buffer around it are found in the `rgeos` package.  These are pretty easy functions to use and are very helpful.  If you are having trouble installing the `rgeos` package from source, see my webpage (http://dyerlab.com), there is a short tutorial.
 
 ```{r message=FALSE,warning=FALSE}
 library(rgeos) # loads in gConvexHull & gBuffer functions
