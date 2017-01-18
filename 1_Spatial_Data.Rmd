@@ -3,7 +3,7 @@
 ![](./media/ch_newt2.jpg)
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, error = FALSE)
 library(ggplot2)
 theme_set( theme_bw() )
 ```
@@ -556,7 +556,7 @@ And visualized normally.
 
 ```{r}
 library( GGally )
-ggpairs(df)
+ggpairs(as.data.frame(df))
 ```
 
 
