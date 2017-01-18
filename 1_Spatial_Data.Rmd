@@ -5,7 +5,7 @@
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, error = FALSE)
 library(ggplot2)
-theme_set( theme_bw(), message=FALSE, warnings = FALSE )
+theme_set( theme_bw() )
 ```
 
 
