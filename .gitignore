@@ -10,5 +10,5 @@
 .Ruserdata
 Icon*
 LGDA.Rmd
-LGDA_files*
 .DS_Store
+_bookdown_files/*
