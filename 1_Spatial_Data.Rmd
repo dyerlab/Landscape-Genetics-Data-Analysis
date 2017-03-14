@@ -32,7 +32,7 @@ Since this is the first hands-on practicum, it makes sense to standardize a few 
 
 If you are not in the habit of using RStudio, I would recommend that you use it for this course.  Please make a project for this course and use that project throughout the week so we can minimize the problems associated with setting working directories, finding proper paths, etc.  If you need some help on this, please ask, we are here to help.
 
-I am also going to assume that the data we have provided is located in a folder called <tt>LGDA-Data</tt> that is in the same directory as this document.  When loading data in this and subsequent activities, I will assume that this is your working directory.
+I am also going to assume that the data we have provided is located in a folder called <tt>data</tt> that is in the same directory as this document.  When loading data in this and subsequent activities, I will assume that this is your working directory.
 
 If at any point, you have questions, feel free to ask.
 
@@ -154,7 +154,7 @@ The `sp` Library is a large and complicated library that you will learn incremen
 knitr::include_graphics("../media/sp_levels.png")
 ```
 
-In the following sections, I go through three basic data types, `Point`, `Line`, and `Polygon`, providing examples that we create *de novo* as well as extract from the *Araptus attenuatus* data set (in `gstudio`) and from [WorldClim](http://worldclim.org) (also present in the <tt>LGDA-Data</tt> folder.)
+In the following sections, I go through three basic data types, `Point`, `Line`, and `Polygon`, providing examples that we create *de novo* as well as extract from the *Araptus attenuatus* data set (in `gstudio`) and from [WorldClim](http://worldclim.org) (also present in the <tt>data</tt> folder.)
 
 ### Points
 
@@ -501,7 +501,7 @@ plot( alt, xlab="Longitude", ylab="Latitude" )
 We can modify rasters just as easily as we can modify matrices.  The square bracket indexing you use for matrices are just as effective as before.  In the next example, I mask the landscape based upon elevation.  I create a copy of the original raster and then make everything whose elevation is less than 500m as missing data.  Plotting this over the top of the original raster shows only locations where elevation exceeds this cutoff.  
 
 ```{r }
-alt <- raster("LGDA-Data/bioclim/alt_22.tif")
+alt <- raster("data/bioclim/alt_22.tif")
 e <- extent( c(-115,-109,22,30) )
 baja_california <- crop( alt, e )
 baja_california
@@ -949,7 +949,7 @@ length( data[[1]])
 When working with rasters, we can reproject these onto other projections rather easily.  Here is an example from the worldclim elevation tile we used previously.
 
 ```{r message=FALSE, warning=FALSE}
-alt <- raster("LGDA-Data/bioclim/alt_22.tif")
+alt <- raster("data/bioclim/alt_22.tif")
 e <- extent( c(-115,-109,22,30) )
 baja_california <- crop( alt, e )
 baja_california
@@ -1002,7 +1002,7 @@ or any other projection available listed in the `mapproject()` function.
 
 ## Questions
 
-1. The [WorldClim](http://worldclim.org) organization makes a set of bioclimatic data available for free.  Grab the raster layers for Tile 22 (they are in the <tt>LGDA-Data</tt> folder) and crop them down to an extent that covers the entirety of sampling locations for the *arapat* data set.
+1. The [WorldClim](http://worldclim.org) organization makes a set of bioclimatic data available for free.  Grab the raster layers for Tile 22 (they are in the <tt>data</tt> folder) and crop them down to an extent that covers the entirety of sampling locations for the *arapat* data set.
 
 2. Using the population locations in the *arapat* dataset, extract the value for each layer.  To what extent are these variables correlated with each other?  At what point will we need to be concerned if we are using them as input into statistical models?
 
