@@ -32,13 +32,13 @@ The data set that we are going to be using consists of several a set of *Cornus 
   - Roads (rd)  
   - Cornus canopies (cf)  
 
-These layers are provided in the <tt>LGDA-Data/dogwood_costs</tt> folder as *.asc raster files.  
+These layers are provided in the <tt>LGDA-Data/dogwood</tt> folder as *.asc raster files.  
 
 Resistance is a cost associated with movement across a landscape.  In the context of landscape genetics, we assume that this parameter is what is influencing connectivity.  As a raster, resistance is represented by the values stored in a raster.  A feature on the landscape may either promote or retard movement.  The greater the value, the more effects that may have on movement across the pixel.  The example below shows conifer canopy structure across the study area.  It can be that movement is hindered under the conifer canopy (left) *or* it could be restricted moving outside the conifer canopy (right).
 
 ```{r echo=FALSE,fig.cap="Mirror resistance rasters based upon the presence of conifer canopy structure."}
 require(raster)
-pines <- raster("./LGDA-Data/dogwood_costs/pines.asc")
+pines <- raster("./LGDA-Data/dogwood/pines.asc")
 dfp <- data.frame( rasterToPoints(pines) )
 dfp <- dfp[ dfp$pines > 0 , ]
 dfp$Ratio <- "Pine 1 : Not Pine 0"
@@ -215,7 +215,7 @@ You can also estimate all paths distance using the program CircuitScape by Brad 
 To demonstrate the use of CircuitScape, we will use a slightly larger data set for the point locations.  This raster **must** be identical in both extent and granularity for the analysis to work.  The function `rasterize` takes some points and a raster and returns a correctly scaled raster with the points indicated as the only non-`NA` pixels on the raster.
 
 ```{r}
-trees <- read.table("./LGDA-Data/dogwood_costs/tree_coords.txt")
+trees <- read.table("./LGDA-Data/dogwood/tree_coords.txt")
 trees <- SpatialPoints( trees[,2:3] )
 trees_raster <- rasterize( x=trees, y=pines )
 trees_raster
@@ -462,14 +462,14 @@ mantel(veg.dist, env.dist)
 mantel(veg.dist, env.dist, method="spear")
 [Package vegan version 2.4-0 Index]</pre></div>
 
-Since it takes a bit of time to extract the distance matrices from the rasters, we have provided some pre-configured distance matrices for the trees identified above.  These rasters are located in the <tt>LGDA-Data/dogwood_costs</tt> folder.  For these rasters we estimate cost distance across a range of values representing both avoidance (10:1, 7:1, 5:1, and 2:1) and preference (1:2, 1:5, 1:7 1:10) of the feature.
+Since it takes a bit of time to extract the distance matrices from the rasters, we have provided some pre-configured distance matrices for the trees identified above.  These rasters are located in the <tt>LGDA-Data/dogwood</tt> folder.  For these rasters we estimate cost distance across a range of values representing both avoidance (10:1, 7:1, 5:1, and 2:1) and preference (1:2, 1:5, 1:7 1:10) of the feature.
 
 Each distance matrix is in a single file, the name of which records the algorithm (lcp vs. ct), the feature (cf, cv, rd, fd, mh from above), and the costs of <tt>out.in</tt>.  For example, the file <tt>ct.cf.1.5.rda</tt> is the Circuit Theory, *Cornus florida* feature with costs of 1 in the feature and 5 outside of it. 
 
 In the following code, I loop through the files estimated using the least cost path approach (`pattern='lcp*'`).  For each file, I break apart the file name and record the feature type, the in cost, the out cost, the algorithm used to estimate distances, and the correlation.
 
 ```{r}
-lcp.files <- list.files("./LGDA-Data/dogwood_costs/", pattern="lcp*", full.names = TRUE)
+lcp.files <- list.files("./LGDA-Data/dogwood/", pattern="lcp*", full.names = TRUE)
 library(vegan)
 df <- data.frame( File=lcp.files,
                   Feature=NA,
@@ -478,7 +478,7 @@ df <- data.frame( File=lcp.files,
                   Type="Least Cost",
                   Correlation=NA, 
                   P=NA)
-load( "./LGDA-Data/dogwood_costs/G.rda")
+load( "./LGDA-Data/dogwood/G.rda")
 for( path in lcp.files) {
   file <- strsplit( path, split="/")[[1]][5]
   components <- strsplit(file, split=".",fixed=TRUE)[[1]]
@@ -508,7 +508,7 @@ ggplot( df, aes(x=Ratio, y=Correlation, color=Feature)) + geom_line() + geom_poi
 Compared as a whole, we see that some features change very little across the landscape (*cf*, *rd*, and *fd*) while others clearly do a better job of explaining genetic covariance (*mh* and *cv*).  These observations suggest that a feature like *mh* with a cost of 7x more in the feature as outside of it.  We can see the best model as:
 
 ```{r}
-load("LGDA-Data/dogwood_costs/lcp.mh.7.1.rda")
+load("LGDA-Data/dogwood/lcp.mh.7.1.rda")
 MH <- D
 fit.mh <- mantel( as.dist(G), as.dist(MH), permutations = 10000 )
 fit.mh
@@ -553,7 +553,7 @@ ggplot( dfp, aes(x=Ratio, y=Correlation, color=Feature)) + geom_line() + geom_po
 From these results, we would conclude that both *mh* and *cv* are the best features we examined.
 
 ```{r}
-load("LGDA-Data/dogwood_costs/lcp.cv.1.10.rda")
+load("LGDA-Data/dogwood/lcp.cv.1.10.rda")
 CV <- D
 fit <- mantel.partial(as.dist(G), as.dist(MH), as.dist(CV), permutations = 10000)
 fit
@@ -626,7 +626,7 @@ LOAR10.mrm <- MRM(dist(LOAR10) ~ dist(sitelocation) + dist(forestpct), data=graz
 Building upon the previous example, we can build up a MRM regression model, first fitting *mh* with a resistance of 7:1 to the genetic data.
 
 ```{r}
-load("LGDA-Data/dogwood_costs/lcp.mh.7.1.rda")
+load("LGDA-Data/dogwood/lcp.mh.7.1.rda")
 X1 <- D
 model.1 <- MRM( dist(G) ~ dist(X1) )
 model.1
@@ -639,7 +639,7 @@ Model development is done by hand using MRM, building up the regression manually
 After fitting the first term, we then examine the properties of the model after fitting the second term we identified using partial mantel.
 
 ```{r}
-load("LGDA-Data/dogwood_costs/lcp.cv.10.1.rda")
+load("LGDA-Data/dogwood/lcp.cv.10.1.rda")
 X2 <- D
 model.2 <- MRM( dist(G) ~ dist(X1) + dist(X2)  )
 model.2
@@ -648,7 +648,7 @@ model.2
 From the output, we see that the probability associated with $X2$ does not suggest that this is adding significantly to the explanation of the genetic data.  This suggests that in terms of developing a linear model with these data, could be defined spatially by making the mixed hardwoods raster 7:1 then fitting in the intercept and slope term from `model.1`, creating the expected connectivity cost raster.
 
 ```{r}
-load("LGDA-Data/dogwood_costs/mixedhardwoods.rda")
+load("LGDA-Data/dogwood/mixedhardwoods.rda")
 mh <- mh * 6 + 1
 mh <- model.1$coef[1,1] + mh * model.1$coef[2,1] 
 df <- data.frame( rasterToPoints( mh ) )
