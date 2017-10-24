@@ -1,6 +1,6 @@
 # Quantitative Genetics {.imageChapter}
 
-![](./media/ch_cactus.jpg)
+![](../media/ch_cactus.jpg)
 
 
 ```{r setup, include=FALSE}

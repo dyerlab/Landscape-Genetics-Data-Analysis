@@ -1,6 +1,6 @@
 # Spatial Data
 
-![](./media/ch_newt2.jpg)
+![](../media/ch_newt2.jpg)
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, error = FALSE)

@@ -1,6 +1,6 @@
 # Space & Networks {.imageChapter}
 
-![](./media/ch_euphorbia.jpg)
+![](../media/ch_euphorbia.jpg)
 
 
 ## Synopsis
@@ -1212,7 +1212,7 @@ This will take a bit of time to complete.  The options that I provided were:
 - `df=TRUE` - Return the answer as a `data.frame` object instead of just a vector.
 
 ```{r eval=TRUE, echo=FALSE}
-load("./spatial_data/edge_values.rmd")
+load("../spatial_data/edge_values.rmd")
 ```
 
 This `data.frame` has two columns, one for edge number and the other for value.  I'm going to put an additional pair of columns with the names of the nodes the edges are connected to into this `data.frame`
@@ -1409,6 +1409,6 @@ Hope this provides enough of an overview of the **popgraph** package to get you 
 
 1. Take the individuals in the *arapat* data set partition out those that are designated as `Cluster="Peninsula"`.  Save these individuals to a text file formatted for STRUCTURE.  In small groups, perform a set of replicate runs in STRUCTURE from K=1 to K=5.  What do you conclude about this analysis?  How does this fit into the whole data *arapat* data set?
 2. In the decomposition of the genetic distance graph, does the pattern of fragmentation mimic the way in which we found the subcomponents using STRUCTURE and the various principal component groups?
-3. 
+3. TODO: ADD MORE QUESTIONS HERE ABOUT GENETIC NETWORKS
  
 

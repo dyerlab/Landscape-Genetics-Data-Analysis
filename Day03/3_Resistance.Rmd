@@ -1,7 +1,7 @@
 # Resistance Models
 
 
-![](./media/ch_mountain.jpg)
+![](../media/ch_mountain.jpg)
 
 ## Synopsis
 
@@ -75,7 +75,7 @@ Depending on the data source, certain classifications may have already been assi
 There are two example \*.las files, <tt>lowvegetation.las</tt> and <tt>mediumvegetation.las</tt> in the folder <tt>data/lidar/</tt> that you can look at later.  Given the size of these files and the time it takes to translate them into rasters, we have provided pre-existing rasters with 0.5 m spatial resolution in the same folder.  There are three, <tt>High05.asc</tt>, <tt>Med05.asc</tt> and <tt>Low05.asc</tt> and they can be loaded in just like any other raster.  Here is the medium vegetation layer, depicting LiDAR returns in a band that is between 3.5 - 11m above the ground, presumably the space through which the pollinators will be moving.  The values in the cells of this raster are the elevation of the LiDAR return and are only salient to us if we make them all the same, indicating the presence/absence of a return rather than the elevation that it was recorded as.
 
 ```{r echo=FALSE}
-medVeg <- raster("data/lidar/Med05.asc")
+medVeg <- raster("../data/lidar/Med05.asc")
 medVeg[ medVeg != 0] <- 1.0
 medVeg
 ```
@@ -215,7 +215,7 @@ You can also estimate all paths distance using the program CircuitScape by Brad 
 To demonstrate the use of CircuitScape, we will use a slightly larger data set for the point locations.  This raster **must** be identical in both extent and granularity for the analysis to work.  The function `rasterize` takes some points and a raster and returns a correctly scaled raster with the points indicated as the only non-`NA` pixels on the raster.
 
 ```{r}
-trees <- read.table("./data/dogwood/tree_coords.txt")
+trees <- read.table("../data/dogwood/tree_coords.txt")
 trees <- SpatialPoints( trees[,2:3] )
 trees_raster <- rasterize( x=trees, y=pines )
 trees_raster
@@ -648,7 +648,7 @@ model.2
 From the output, we see that the probability associated with $X2$ does not suggest that this is adding significantly to the explanation of the genetic data.  This suggests that in terms of developing a linear model with these data, could be defined spatially by making the mixed hardwoods raster 7:1 then fitting in the intercept and slope term from `model.1`, creating the expected connectivity cost raster.
 
 ```{r}
-load("data/dogwood/mixedhardwoods.rda")
+load("../data/dogwood/mixedhardwoods.rda")
 mh <- mh * 6 + 1
 mh <- model.1$coef[1,1] + mh * model.1$coef[2,1] 
 df <- data.frame( rasterToPoints( mh ) )
