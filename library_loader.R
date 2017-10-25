@@ -13,9 +13,11 @@
 # Email: rjdyer@vcu.edu
 # Web: http://dyerlab.com
 # This file contains the code to install all the libraries needed for the 
-#   landscape genetics data analysis workshop in Scotlad, October 2016.  Simply
-#   source this file and the libraries will be downloaded and installed.
-
+#   landscape genetics data analysis workshop.  Simply source this file and
+#   the libraries will be downloaded and installed on your machine.  If there are
+#   any errors that occur, read the error message and install the package that 
+#   you are told was not included in the list. 
+#
 # To load this file, execute the following code in an R session.
 # install.packages("devtools")
 # url <- "https://raw.githubusercontent.com/dyerlab/Landscape-Genetics-Data-Analysis/master/library_loader.R"
