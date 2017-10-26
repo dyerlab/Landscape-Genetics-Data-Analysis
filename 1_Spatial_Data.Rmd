@@ -4,14 +4,48 @@
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, error = FALSE)
-library(ggplot2)
-theme_set( theme_bw() )
+ggplot2::theme_set( ggplot2::theme_bw() )
 ```
 
 
-## Synopsis
+## Introduction to Landscape Genetics Workshop
 
-The goal of this activity is to introduce you to spatial data types and their manipulation and analysis.  Functionally, we will be working with two kinds of spatial data: vector and raster data.  Vector data can be considered as a finite set of points that may or may not be connected.  In R, these points can be used directly, as a numeric data type, or as a *Spatial* class object.  The *sp* library contains a lot of functions that help deal with points, lines, and polygons and this is going to be a short overview of how they can be derived and manipulated in the pursuit of landscape genetic studies.
+This lecture focuses on providing a background in what landscape genetics is at this time.  In doing so, we set the stage for the content to be covered in this workshop.  The raw slides are available by clicking on the image below.
+
+<div class="card">
+<a href="Lectures/LG1_1_Introduction/index.html" target="new">
+  <img src="media/LG1_1.png" alt="Slide Title" style="width:100%">
+</a>
+</div>
+
+
+
+
+<p>&nbsp;</p>
+
+
+
+## Spatial Data In R
+
+
+In R, we have to deal with both genetic and environmental data types and we will attack the latter first and the first later.  The slides for this content are linked below by clicking on the image of the title slide.
+
+<div class="card">
+<a href="Lectures/LG1_2_Introduction/index.html" target="new">
+  <img src="media/LG1_2.png" alt="Slide Title" style="width:100%">
+</a>
+</div>
+
+
+
+
+<p>&nbsp;</p>
+
+
+
+## Activity Synopsis
+
+With the general synopsis of content covered, we can now dig into the meat of the subject starting with this activity.  The goal of this activity is to introduce you to spatial data types and their manipulation and analysis.  Functionally, we will be working with two kinds of spatial data: vector and raster data.  Vector data can be considered as a finite set of points that may or may not be connected.  In R, these points can be used directly, as a numeric data type, or as a *Spatial* class object.  The *sp* library contains a lot of functions that help deal with points, lines, and polygons and this is going to be a short overview of how they can be derived and manipulated in the pursuit of landscape genetic studies.
 
 Rasters are a form of data that is georeferenced and (somewhat) more continuous.  Raster data is perhaps best envisioned as a matrix of values, whose entries represent spatially referenced data points (pixels).  The raster itself can be visualized as you could for normal matrix output.  What makes a raster different, however, is that it is (or should be) georeferenced. This means that each element of the matrix represents some measurement on the ground having a specific location and spread---sometimes referred to as granularity.  This is analogous to an image, where if you zoom in on it enough, you will be able to differentiate between individual pixels, each with its own color value.  Raster representation specifies each pixel in terms of a location and size associated with that value that we can map onto the earth.
 

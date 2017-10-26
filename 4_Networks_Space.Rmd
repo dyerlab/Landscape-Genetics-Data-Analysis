@@ -1,9 +1,34 @@
-# Space & Networks {.imageChapter}
+# Space & Networks
 
 ![](./media/ch_euphorbia.jpg)
 
+## Spatial Analyses
 
-## Synopsis
+In addition to resistance modeling, there are several additional approaches we can apply while conducting *Landscape Genetic* studies.  In this lecture, we explore some of the more common approaches to determine how the inferences we gain from them may help us understand the processes that shape and maintain spatial and ecolgical genetic structure.
+
+<div class="card">
+<a href="Lectures/LG4_1_Spatial_Analyses/index.html" target="new">
+  <img src="media/LG4_1.png" alt="Slide Title" style="width:100%">
+</a>
+</div>
+
+<p>&nbsp;</p>
+
+
+## Network Approaches
+
+Given the equivallence of different mathematical systems, much of what we have been doing using distance matrieces can be generalized into Graph Theoretical contexts.  After all, a distance matrix is simply the algebraic equivallent of a network.  Here we explore some of the ways that networks have been applied to the genetic data we collect.
+
+<div class="card">
+<a href="Lectures/LG4_2_Network_Approaches/index.html" target="new">
+  <img src="media/LG4_2.png" alt="Slide Title" style="width:100%">
+</a>
+</div>
+
+<p>&nbsp;</p>
+
+
+## Activity Synopsis
 
 In this activity we explore two different topics, admixture & ordination approaches and network approaches, both of which are focuses on describing spatial population genetic structure. 
 
@@ -20,7 +45,7 @@ This activity is divided between two different topics, explicitly spatial analys
 Admixture is the mixing of two or more populations whose frequency spectra may differ.  If they differ considerably, then the admixed population may be examined to determine relative contributions of each population.
 
 ```{r admixture, echo=FALSE, fig.cap="Hypothetical pedigree of an individual whose parents come from two separate populations.  Stretches of chromosome are depicted in differing colors to highlight parentage as well as demonstrate admixture in the offspring."}
-knitr::include_graphics("../media/Admixture.png")
+knitr::include_graphics("./media/Admixture.png")
 ```
 
 An ubiquitous feature of modern population genetic analyses is the presence of a model-based clustering analysis such as those provided by programs such as STRUCTURE and TESS.  The general idea of these approaches is to examine the current distribution of genotypes ($X$) within individuals and populations and try to describe it in terms of historical mixing of populations ($Z$), at specified mixing rates ($Q$), whose allele frequency spectra ($P$) may differ.  
@@ -75,7 +100,7 @@ Perhaps more interpretive are the plots of individuals as they were assigned to 
 If you select it to Sort by $Q$ it should look something like Figure below.  This figure is based upon 363 columns of admixture information, one column for each individual.  The colors are defined by the number of groups, here $K=3$.  You can see some individual columns (=individuals genotypes) who are entirely one color.  These are individuals whose genotypes suggest they are the most likely from the group associated with that color.  You can also see that there are some individuals who may be admixed between two or even three groups ad indicated by a column with more than one color.
 
 ```{r structureByQ, echo=FALSE, fig.cap="Output from STRUCTURE using the *Araptus attenuatus* when setting $K=3$."}
-knitr::include_graphics("../media/structure_by_q.png")
+knitr::include_graphics("./media/structure_by_q.png")
 ```
 
 This output is a hypothesis about admixture.  As such, it is only one simulation and as we've done many times thus far, we should probably run several of these to generate a level of confidence for any value we specified as $K$.  Here is where it gets a little dicey.  We specified $K=3$ and as such we found out what the $P(X|Z,P,Q)$ by specifying $K=3$ implicitly.  In the output of our data, we see can find the log likelihood of our data given these parameters.  However, $K$ may be some value other than three.  Running this simulation with specified values only tells us the likelihood of the data for that value and for that simulation, it does not determine if the specified $K$ is the correct one.  
@@ -102,7 +127,7 @@ The output shows that as we assume more clusters, the $log(P(Data))$ tends towar
 If I go back to STRUCTURE and plot examine the barplot of individuals from the $K=4$ data (setting "Group by PopID").
 
 ```{r structureByPop, echo=FALSE, fig.cap="STRUCTURE output for *Araptus attenuatus* for $K=4$ sorted by population."}
-knitr::include_graphics("../media/structure_by_pop.png")
+knitr::include_graphics("./media/structure_by_pop.png")
 ```
 
 
@@ -174,7 +199,7 @@ X
 Once we have the proper data, we can perform a principal component (PC) rotation.  A PC rotation is one that takes the original columns of data and performs a rotation on the values to align onto new ‘synthetic' axes.  Consider the example in the next figure.  Here, some bivariate data is plot in 2-space, though this can be done for much higher dimensions of data as well—in fact it is more beneficial with more columns of data and this can be used as a way of reducing the dimensionality of the data while loosing very little (or no) content (more later on this).  
 
 ```{r echo=FALSE, dpi=300, fig.cap="A rotation of 2-dimenational data from the original coordinate space (represented by the x- and y-axes) onto synthetic principal component (the red axes).  The rotation itself maximizes the distributional width of the data (depicted as density plots in grey for the original axes and red for the rotated axes)."}
-knitr::include_graphics("../media/pc_rotation.png")
+knitr::include_graphics("./media/pc_rotation.png")
 ```
 
 The axes of a PC rotation are taken as linear combinations of the existing axes and define a new coordinate set onto which the points are plot.  All points are rigidly constrained to keep the same relationship and there is no loss of information.  The PC axes are defined by determining the most variable stretch through the data. In the figure on the next page, we see the raw data plot onto the X- and Y-axes.  The axis of highest variance does not align with either of the original ones, and instead can be defined as a combination of both X- and Y- coordinates.  If we take the blue axis as the first PC axis, the coordinate of the points would be taken along that new synthetic axis.  The next PC axis is defined as being perpendicular to the previous one(s) and is identified as covering the largest variance in the data as before.  This process continues until there are no more axes.  In our case, the second axis would be at a right angle from the blue line (above).  You can, at maximum, have as many PC axes as there are columns of data.  However, the later axes may not explain any significant chunk of the underlying data, the process of rotating based upon axes of maximal variation may be able to capture the complete data set with fewer axes than the total set.  This is where a technique like this may be helpful in reducing the dimensionality of the data.
@@ -280,7 +305,7 @@ plot.pcoa
   
 It is interesting to compare the output from rotations on frequencies and genetic distance matrices.
 
-```{r, fig.cap="Comparison of population-level (A) principal component and (B) principal coordiante rotations on the same data set.  Colors indicate the STRUCTURE clustering for each population."}
+```{r, fig.cap="Comparison of population-level (A) principal component and (B) principal coordiante rotations on the same data set.  Colors indicate the STRUCTURE clustering for each population.", message=FALSE}
 library(cowplot)
 # this removes the legend from each plot so that the side-by-side
 #  plots are not smunched together.
@@ -908,6 +933,7 @@ Here is an example using the *Lopohcereus* graph.  We begin by making a `ggplot(
 library(ggplot2)
 p <- ggplot() 
 p <- p + geom_edgeset( aes(x=Longitude,y=Latitude), lopho ) 
+p <- p + coord_equal()
 p
 ```
 
@@ -915,16 +941,16 @@ I broke up the plotting into several lines to improve readability, it is not nec
 
 ```{r}
 p <- p +  geom_nodeset( aes(x=Longitude, y=Latitude), lopho, size=4)
-p
+p 
 ```
 
 And then you can add additional options to the plot, like axis labels and a less exciting background theme (the `theme_empty()` provided by **popgraph** is actually transparent so you can save the image and throw it into a presentation as necessary).
 
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 p <- ggplot() + geom_edgeset( aes(x=Longitude,y=Latitude), lopho, color="darkgrey" )
 p <- p + geom_nodeset( aes(x=Longitude, y=Latitude, color=Region, size=size), lopho) 
-p <- p + xlab("Longitude") + ylab("Latitude") 
+p <- p + xlab("Longitude") + ylab("Latitude") + coord_equal()
 p + theme_empty()
 ```
 
@@ -1303,10 +1329,12 @@ cor.test( df$Phys, df$cGD, method="spearman")
 We can plot these values and make a trend line pretty easily.  Here is a plot using **ggplot2** (a very nice plotting library; you could use `plot()` to do the normal plotting but I think **ggplot2** does such a nice job I encourage its use).  
 
 ```{r,message=FALSE}
-qplot( Phys, cGD, geom="point", data=df) + stat_smooth(method="loess") + xlab("Physical Distance") + ylab("Conditional Genetic Distance")
+qplot( Phys, cGD, geom="point", data=df) + 
+  stat_smooth(method="lm",formula=y~poly(x,2)) + 
+  xlab("Physical Distance") + ylab("Conditional Genetic Distance")
 ```
 
-The trend line is the Loess predicted line with confidence interval.  
+The trend line is a second degre polynomial with confidence intervals indicated by the shaded regions around it.  
 
 
 #### Node Specific Parameters
@@ -1401,8 +1429,6 @@ Another way is to ask about the pattern of connectivity. Based upon the number o
 test_congruence(lopho,upiga, method="combinatorial")
 ```
 
-
-Hope this provides enough of an overview of the **popgraph** package to get you started.  If you have any questions feel free to email [mailto://rjdyer@vcu.edu].
 
 
 ## Questions

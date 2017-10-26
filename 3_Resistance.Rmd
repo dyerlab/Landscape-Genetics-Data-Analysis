@@ -1,9 +1,35 @@
 # Resistance Models
 
-
 ![](./media/ch_mountain.jpg)
 
-## Synopsis
+## Resistance Models
+
+If forced, most practitioners would have to admit that the *sine qua non* of landscape genetics is the use of ecological resistance in their analyese.  At a base level, if it weren't for resistance modeling, there is literally nothing to distinguish what we do in landscape genetics from the activities normally ascribed to population genetics (see Dyer 2015).  In this lecture, we introduce how to create ecological/spatial/environmental resistance models that we will subsequently include in our analyses as sets of potential predictor variables with the genetic response data.
+
+<div class="card">
+<a href="Lectures/LG3_1_Resistance_Models/index.html" target="new">
+  <img src="media/LG3_1.png" alt="Slide Title" style="width:100%">
+</a>
+</div>
+
+<p>&nbsp;</p>
+
+
+## Statistical Inferences
+
+This lecture pulls it all together, taking the spatial/ecological data and the genetic data and start formulating the statistical mechanisms by which we attempt to determine which subset and under which conditions landscape features influence genetic connectivity.
+
+<div class="card">
+<a href="Lectures/LG3_2_Statistical_Inferences/index.html" target="new">
+  <img src="media/LG3_2.png" alt="Slide Title" style="width:100%">
+</a>
+</div>
+
+<p>&nbsp;</p>
+
+
+
+## Activity Synopsis
 
 One of the characteristics of landscape genetics studies, maybe even a defining feature, is its use of resistance and distance approaches to understanding the spatial distribution of genetic structure and *hopefully* to use it in support of characterizing landscape mediated connectivity.  In this activity, we will explore how to characterize and estimate separation and delve into a approaches for understanding how we can analyze similarly defined genetic distances.
 
@@ -36,8 +62,9 @@ These layers are provided in the <tt>data/dogwood</tt> folder as *.asc raster fi
 
 Resistance is a cost associated with movement across a landscape.  In the context of landscape genetics, we assume that this parameter is what is influencing connectivity.  As a raster, resistance is represented by the values stored in a raster.  A feature on the landscape may either promote or retard movement.  The greater the value, the more effects that may have on movement across the pixel.  The example below shows conifer canopy structure across the study area.  It can be that movement is hindered under the conifer canopy (left) *or* it could be restricted moving outside the conifer canopy (right).
 
-```{r echo=FALSE,fig.cap="Mirror resistance rasters based upon the presence of conifer canopy structure."}
+```{r echo=FALSE,fig.cap="Mirror resistance rasters based upon the presence of conifer canopy structure.", message=FALSE}
 require(raster)
+require(ggplot2)
 pines <- raster("./data/dogwood/pines.asc")
 dfp <- data.frame( rasterToPoints(pines) )
 dfp <- dfp[ dfp$pines > 0 , ]

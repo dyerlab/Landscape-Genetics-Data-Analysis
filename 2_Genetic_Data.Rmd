@@ -3,7 +3,38 @@
 ![](./media/ch_pepsis.jpg)
 
 
-## Synopsis
+
+## TL;DR Population Genetics
+
+The *Genetics* part of *Landscape Genetics* is the object being modified by the spatial components we denote as *Landscape*.  As such, it is in your best interest to have a fairily good understanding of the parts of population genetics that we will be using.  Population Genetics is an old field of study, originating in the minds of such luminaries as Fisher, Wright, and Haldane, who formed the New Synthesis of Evolutionary Thought.  In this lecture, we examine the basis of population genetics by exploring Hardy-Weinberg Equilibrium, Inbreeding, and the consequences of Population Subdivision.
+
+<div class="card">
+<a href="Lectures/LG2_1_Genetic_Data/index.html" target="new">
+  <img src="media/LG2_1.png" alt="Slide Title" style="width:100%">
+</a>
+</div>
+
+<p>&nbsp;</p>
+
+
+## Distance, Diversity, & Structure
+
+The main features we will be extracting from genetic marker data are parameters describing Genetic Distance, Genetic Diversity, and Genetic Structure.  In this lecture, we explore each of these propoerties of our data sets providing a foundation upon which we can leater evaluate if one is more or less informative in our analyses.
+
+
+<div class="card">
+<a href="Lectures/LG2_2_Distance_Structure/index.html" target="new">
+  <img src="media/LG2_2.png" alt="Slide Title" style="width:100%">
+</a>
+</div>
+
+<p>&nbsp;</p>
+
+
+
+
+
+## Activity Synopsis
 
 This afternoon's activity is focused on understanding how to work with genetic marker data in R.  As a base data type, genotypes are neither normal nor multinomial, but follow an algebra defined by Mendelian inheritance and dictated by mating system and ploidy levels.  Here we cover some of the basic material on working with genetic data then dive right into the basis of population genetics---Hardy-Weinberg Equilibrium.  
 
