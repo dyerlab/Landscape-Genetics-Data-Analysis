@@ -1,4 +1,3 @@
-
 ################################################################################
 #                                                                              #
 #                         _                 _       _                          #
@@ -60,9 +59,14 @@ need_inst <- setdiff( files_from_cran, rownames(installed.packages()) )
 if( length( need_inst ) ) 
   install.packages( need_inst, dependencies = TRUE)
 
+
 library(devtools)
-install_github("dyerlab/popgraph")
-install_github("dyerlab/gstudio")
+if( !require(popgraph)) {
+  install_github("dyerlab/popgraph")
+}
+if( !require(gstudio) ) {
+  install_github("dyerlab/gstudio")
+}
 
 print("Download STRUCTURE from the Pritchard Laboratory webpage")
 system("open http://web.stanford.edu/group/pritchardlab/structure.html")
