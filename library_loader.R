@@ -23,8 +23,6 @@
 # library(devtools)
 # source_url( url )
 
-
-
 files_from_cran <- c("cowplot",
                      "DT",
                      "ecodist",
@@ -67,7 +65,7 @@ install_github("dyerlab/popgraph")
 install_github("dyerlab/gstudio")
 
 print("Download STRUCTURE from the Pritchard Laboratory webpage")
-system("open http://pritchardlab.stanford.edu/structure.html")
+system("open http://web.stanford.edu/group/pritchardlab/structure.html")
 
 print("Download Circuitscape from Brad McRae's webpage")
 system("open http://www.circuitscape.org")
