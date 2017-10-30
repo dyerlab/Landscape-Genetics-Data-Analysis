@@ -1,3 +1,4 @@
+
 ################################################################################
 #                                                                              #
 #                         _                 _       _                          #
@@ -53,6 +54,7 @@ files_from_cran <- c("cowplot",
                      "rmarkdown",
                      "SDMTools",
                      "sp",
+                     "tidyverse",
                      "vegan")
 
 need_inst <- setdiff( files_from_cran, rownames(installed.packages()) )
