@@ -136,6 +136,14 @@ plot(medVeg10, legend=FALSE, axes=FALSE)
 
 The salient point here is that the aggregate factor itself may be a parameter that we need to estimate during our analyses. The easiest way to do this is to build your rasters across a range of granularity and let the analyses sort out which is the most salient scale to use.  We will see this approach again when we discuss the magnitude of raster costs.
 
+
+## Getting Plot-Level Parameters
+
+TODO: Add plot-level parameters here.
+
+
+
+
 ## Estimating Distances on Resistance Rasters
 
 Once we have defined one or more rasters quantifying resistance costs, we can go and estimate the distance among points on those rasters.  There are several ways available for us to estimate distance.  The differences in these methods are based upon the algorithm used to estimate separation and the extent of the raster used to apply these algorithms.  These methods are buttressed on each end by:
