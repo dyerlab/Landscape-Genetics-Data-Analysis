@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Landscape Genetic Data Analysis</title>
   <meta name="description" content="A textbook for the use of R in spatial genetic data analysis.">
-  <meta name="generator" content="bookdown 0.3.12 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="Landscape Genetic Data Analysis" />
   <meta property="og:type" content="book" />
@@ -35,6 +35,7 @@
 <link rel="next" href="spatial-data.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -46,15 +47,17 @@
 
 
 
-<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
-<script src="libs/datatables-binding-0.2/datatables.js"></script>
-<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.5/datatables.js"></script>
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <script src="libs/d3-4.5.0/d3.min.js"></script>
-<script src="libs/dendroNetwork-binding-0.3/dendroNetwork.js"></script>
-<script src="libs/simpleNetwork-binding-0.3/simpleNetwork.js"></script>
-<script src="libs/forceNetwork-binding-0.3/forceNetwork.js"></script>
+<script src="libs/dendroNetwork-binding-0.4/dendroNetwork.js"></script>
+<script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
 
 
 <style type="text/css">
@@ -274,11 +277,11 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="header">
 <h1 class="title">Landscape Genetic Data Analysis</h1>
-<h4 class="author"><em>Rodney J. Dyer</em></h4>
+<p class="author"><em>Rodney J. Dyer</em></p>
 </div>
 <div id="frontmatter" class="section level1 unnumbered white_letters">
 <h1>Frontmatter</h1>
-<p>Build Date: <strong>Tue Mar 14 16:30:30 2017</strong></p>
+<p>Build Date: <strong>Mon Mar 11 19:42:28 2019</strong></p>
 <p>The content of this text was created to assist in the teaching of a course entitled <em>Landscape Genetic Data Analysis</em>, organized by <a href="http://prstatistics.com">PRStatistics</a>. All content for this book is contained on Github at <a href="https://github.com/dyerlab/applied_landscape_genetics" class="uri">https://github.com/dyerlab/applied_landscape_genetics</a>.</p>
 <p><a href="http://dyerlab.com"> <img src="media/LGDA-Titlepage-Small.png" width="100" /> </a></p>
 <p>© 2016 by R.J. Dyer.</p>
@@ -303,18 +306,18 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
 <script>
-require(["gitbook"], function(gitbook) {
+gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
 "github": false,
 "facebook": false,
 "twitter": false,
 "google": false,
+"linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "weibo", "instapaper"],
-"instapaper": false
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -322,6 +325,10 @@ gitbook.start({
 "size": 2
 },
 "edit": {
+"link": null,
+"text": null
+},
+"history": {
 "link": null,
 "text": null
 },
@@ -340,9 +347,11 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

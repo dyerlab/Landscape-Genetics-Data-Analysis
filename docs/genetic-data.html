@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Landscape Genetic Data Analysis</title>
+  <title>2 Genetic Data | Landscape Genetic Data Analysis</title>
   <meta name="description" content="A textbook for the use of R in spatial genetic data analysis.">
-  <meta name="generator" content="bookdown 0.3.12 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Landscape Genetic Data Analysis" />
+  <meta property="og:title" content="2 Genetic Data | Landscape Genetic Data Analysis" />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="dyerlab/AMG" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Landscape Genetic Data Analysis" />
+  <meta name="twitter:title" content="2 Genetic Data | Landscape Genetic Data Analysis" />
   
   <meta name="twitter:description" content="A textbook for the use of R in spatial genetic data analysis." />
   
@@ -35,6 +35,7 @@
 <link rel="next" href="resistance-models.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -46,15 +47,17 @@
 
 
 
-<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
-<script src="libs/datatables-binding-0.2/datatables.js"></script>
-<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.5/datatables.js"></script>
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <script src="libs/d3-4.5.0/d3.min.js"></script>
-<script src="libs/dendroNetwork-binding-0.3/dendroNetwork.js"></script>
-<script src="libs/simpleNetwork-binding-0.3/simpleNetwork.js"></script>
-<script src="libs/forceNetwork-binding-0.3/forceNetwork.js"></script>
+<script src="libs/dendroNetwork-binding-0.4/dendroNetwork.js"></script>
+<script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
 
 
 <style type="text/css">
@@ -373,7 +376,7 @@ loci</code></pre></div>
 <p>Here are some examples data files that are included in the <em>gstudio</em> package and how they can be loaded in. The <code>path</code> variable in the following code chunks is the path to the example <em>.csv file that is located in the </em>gstudio* package. For your data, change out the path. In all cases, the structure that is loaded into R is a <code>data.frame</code>.</p>
 <p>Here is a raw AFLP file that comes with the <em>gstudio</em> package</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;data_aflp.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;gstudio&quot;</span>)
-data &lt;-<span class="st"> </span><span class="kw">read_population</span>( path, <span class="dt">type=</span><span class="st">&quot;aflp&quot;</span>, <span class="dt">locus.columns =</span> <span class="dv">4</span>:<span class="dv">7</span> )
+data &lt;-<span class="st"> </span><span class="kw">read_population</span>( path, <span class="dt">type=</span><span class="st">&quot;aflp&quot;</span>, <span class="dt">locus.columns =</span> <span class="dv">4</span><span class="op">:</span><span class="dv">7</span> )
 <span class="kw">summary</span>(data)</code></pre></div>
 <pre><code>##   Population           Latitude       Longitude       Loc1   Loc2  
 ##  Length:5           Min.   :37.74   Min.   :-122.89   0 :3   0 :3  
@@ -391,7 +394,7 @@ data &lt;-<span class="st"> </span><span class="kw">read_population</span>( path
 ## </code></pre>
 <p>And a two-column microsatellite data file</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;data_2_column.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;gstudio&quot;</span>)
-data &lt;-<span class="st"> </span><span class="kw">read_population</span>( path, <span class="dt">type=</span><span class="st">&quot;column&quot;</span>, <span class="dt">locus.columns =</span> <span class="dv">4</span>:<span class="dv">7</span> )
+data &lt;-<span class="st"> </span><span class="kw">read_population</span>( path, <span class="dt">type=</span><span class="st">&quot;column&quot;</span>, <span class="dt">locus.columns =</span> <span class="dv">4</span><span class="op">:</span><span class="dv">7</span> )
 <span class="kw">summary</span>(data)</code></pre></div>
 <pre><code>##   Population           Latitude       Longitude           Loc1  
 ##  Length:5           Min.   :37.74   Min.   :-122.89   10:10 :1  
@@ -443,14 +446,14 @@ data &lt;-<span class="st"> </span><span class="kw">read_population</span>( path
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(DT)
 coords &lt;-<span class="st"> </span><span class="kw">strata_coordinates</span>( arapat )
 <span class="kw">datatable</span>(coords, <span class="dt">rownames =</span> <span class="ot">FALSE</span>)</code></pre></div>
-<div id="htmlwidget-dd63c6f56fb66653c133" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-dd63c6f56fb66653c133">{"x":{"filter":"none","data":[["88","9","84","175","177","173","171","89","159","SFr","160","162","12","161","93","165","169","58","166","64","168","51","Const","77","164","75","163","ESan","153","48","156","157","73","Aqu","Mat","98","101","32","102"],[-114.29353,-113.94486,-113.66787,-113.48973,-113.99141,-112.86985,-113.18263,-113.39991,-113.31609,-112.964,-112.52959,-112.408,-112.66552,-112.986,-112.04613,-112.40948,-111.37833,-111.35475,-112.08062,-111.32638,-111.21563,-111.60056,-111.675,-110.69175,-111.5441,-110.74599,-110.951,-110.36857,-110.46236,-110.27252,-109.989,-110.096,-109.85071,-110.10429,-110.1091,-109.64869,-110.57436,-109.327,-109.12633],[29.32541,29.01457,28.96651,28.72796,28.66056,28.40846,28.22308,28.03661,27.52944,27.3632,27.40498,27.2028,27.18232,27.0367,26.94589,26.24905,26.20876,26.0155,25.91409,25.60521,25.55757,25.34819,25.0247,24.87611,24.74642,24.58843,24.2115,24.45879,24.13389,24.21441,24.0438,24.0195,24.00789,23.2855,23.08984,23.0757,27.90509,26.63783,26.38014]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Stratum<\/th>\n      <th>Longitude<\/th>\n      <th>Latitude<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row"}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-4bb55c790b67aa93e13b" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4bb55c790b67aa93e13b">{"x":{"filter":"none","data":[["88","9","84","175","177","173","171","89","159","SFr","160","162","12","161","93","165","169","58","166","64","168","51","Const","77","164","75","163","ESan","153","48","156","157","73","Aqu","Mat","98","101","32","102"],[-114.29353,-113.94486,-113.66787,-113.48973,-113.99141,-112.86985,-113.18263,-113.39991,-113.31609,-112.964,-112.52959,-112.408,-112.66552,-112.986,-112.04613,-112.40948,-111.37833,-111.35475,-112.08062,-111.32638,-111.21563,-111.60056,-111.675,-110.69175,-111.5441,-110.74599,-110.951,-110.36857,-110.46236,-110.27252,-109.989,-110.096,-109.85071,-110.10429,-110.1091,-109.64869,-110.57436,-109.327,-109.12633],[29.32541,29.01457,28.96651,28.72796,28.66056,28.40846,28.22308,28.03661,27.52944,27.3632,27.40498,27.2028,27.18232,27.0367,26.94589,26.24905,26.20876,26.0155,25.91409,25.60521,25.55757,25.34819,25.0247,24.87611,24.74642,24.58843,24.2115,24.45879,24.13389,24.21441,24.0438,24.0195,24.00789,23.2855,23.08984,23.0757,27.90509,26.63783,26.38014]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Stratum<\/th>\n      <th>Longitude<\/th>\n      <th>Latitude<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p>Creating maps of locales are also such a common feature that <em>gstudio</em> has integration with online mapping providers, allowing you to grab some map tiles from Google, OSM, and other map providers and use them to overlay your data. Just as we did yesterday, the <em>ggplot</em> package provides the basic plotting and <em>gstudio</em> provided two geometry layers, <code>geom_strata</code> and <code>geom_strata_label</code> to help out. Notice here also that for both of these layers, you just pass the raw <code>data.frame</code> object to it and as long as you have “Population”, “Latitude”, and “Longitude” columns in it, the functions take care of the plotting for you.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>( ggmap )
 <span class="kw">library</span>( ggplot2 ) 
 map &lt;-<span class="st"> </span><span class="kw">population_map</span>(coords)
 p &lt;-<span class="st"> </span><span class="kw">ggmap</span>( map )
-p &lt;-<span class="st"> </span>p +<span class="st"> </span><span class="kw">geom_strata</span>(<span class="dt">data=</span>arapat) +<span class="st"> </span><span class="kw">geom_strata_label</span>( <span class="dt">data=</span>arapat )
+p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="kw">geom_strata</span>(<span class="dt">data=</span>arapat) <span class="op">+</span><span class="st"> </span><span class="kw">geom_strata_label</span>( <span class="dt">data=</span>arapat )
 p</code></pre></div>
 <p><img src="LGDA_files/figure-html/unnamed-chunk-93-1.png" width="672" /></p>
 <!-- ########################################################################
@@ -470,17 +473,17 @@ p</code></pre></div>
 <p>At a base level, the frequency of alleles constitute the most basic type of data relevant to population genetic analyses. You can estimate allele frequencies at several different levels from your data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">freqs &lt;-<span class="st"> </span><span class="kw">frequencies</span>( arapat )
 <span class="kw">datatable</span>( freqs, <span class="dt">rownames =</span> <span class="ot">FALSE</span> )</code></pre></div>
-<div id="htmlwidget-b61f3e243d0fa4e0c7cc" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b61f3e243d0fa4e0c7cc">{"x":{"filter":"none","data":[["LTRS","LTRS","WNT","WNT","WNT","WNT","WNT","EN","EN","EN","EN","EN","EF","EF","ZMP","ZMP","AML","AML","AML","AML","AML","AML","AML","AML","AML","AML","AML","AML","AML","ATPS","ATPS","ATPS","ATPS","ATPS","ATPS","ATPS","ATPS","ATPS","ATPS","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20"],["01","02","01","02","03","04","05","01","02","03","04","05","01","02","01","02","01","02","03","04","05","06","07","08","09","10","11","12","13","01","02","03","04","05","06","07","08","09","10","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19"],[0.523415977961432,0.476584022038567,0.357954545454545,0.181818181818182,0.430397727272727,0.0269886363636364,0.00284090909090909,0.715277777777778,0.180555555555556,0.0805555555555556,0.0180555555555556,0.00555555555555556,0.678670360110803,0.321329639889197,0.216666666666667,0.783333333333333,0.00147058823529412,0.00147058823529412,0.0191176470588235,0.126470588235294,0.0705882352941176,0.0720588235294118,0.235294117647059,0.255882352941176,0.145588235294118,0.0147058823529412,0.0397058823529412,0.0161764705882353,0.00147058823529412,0.00275482093663912,0.0909090909090909,0.195592286501377,0.00550964187327824,0.433884297520661,0.00413223140495868,0.0275482093663912,0.0247933884297521,0.210743801652893,0.00413223140495868,0.00139664804469274,0.00837988826815642,0.00837988826815642,0.00837988826815642,0.270949720670391,0.0810055865921788,0.262569832402235,0.0251396648044693,0.00279329608938547,0.0167597765363128,0.0474860335195531,0.0293296089385475,0.0223463687150838,0.00418994413407821,0.00139664804469274,0.00139664804469274,0.0377094972067039,0.162011173184358,0.00837988826815642]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Locus<\/th>\n      <th>Allele<\/th>\n      <th>Frequency<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":2}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row"}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-fc365052409634b25b4e" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fc365052409634b25b4e">{"x":{"filter":"none","data":[["LTRS","LTRS","WNT","WNT","WNT","WNT","WNT","EN","EN","EN","EN","EN","EF","EF","ZMP","ZMP","AML","AML","AML","AML","AML","AML","AML","AML","AML","AML","AML","AML","AML","ATPS","ATPS","ATPS","ATPS","ATPS","ATPS","ATPS","ATPS","ATPS","ATPS","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20","MP20"],["01","02","01","02","03","04","05","01","02","03","04","05","01","02","01","02","01","02","03","04","05","06","07","08","09","10","11","12","13","01","02","03","04","05","06","07","08","09","10","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19"],[0.523415977961432,0.476584022038567,0.357954545454545,0.181818181818182,0.430397727272727,0.0269886363636364,0.00284090909090909,0.715277777777778,0.180555555555556,0.0805555555555556,0.0180555555555556,0.00555555555555556,0.678670360110803,0.321329639889197,0.216666666666667,0.783333333333333,0.00147058823529412,0.00147058823529412,0.0191176470588235,0.126470588235294,0.0705882352941176,0.0720588235294118,0.235294117647059,0.255882352941176,0.145588235294118,0.0147058823529412,0.0397058823529412,0.0161764705882353,0.00147058823529412,0.00275482093663912,0.0909090909090909,0.195592286501377,0.00550964187327824,0.433884297520661,0.00413223140495868,0.0275482093663912,0.0247933884297521,0.210743801652893,0.00413223140495868,0.00139664804469274,0.00837988826815642,0.00837988826815642,0.00837988826815642,0.270949720670391,0.0810055865921788,0.262569832402235,0.0251396648044693,0.00279329608938547,0.0167597765363128,0.0474860335195531,0.0293296089385475,0.0223463687150838,0.00418994413407821,0.00139664804469274,0.00139664804469274,0.0377094972067039,0.162011173184358,0.00837988826815642]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Locus<\/th>\n      <th>Allele<\/th>\n      <th>Frequency<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":2}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p>By default, function in <em>gstudio</em> return the data in a normal <code>data.frame</code> object (most cases) or as a <code>matrix</code> (in the case of genetic distances). This ensures that your workflow can proceed in a normal fashion. However, at times, things like allele frequencies are best handled as matrix objects (e.g., if you are going to use the allele frequencies in multivariate analyses or ordination). For that purpose in particular, we can use the function <code>frequency_matrix</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">freqs_mv &lt;-<span class="st"> </span><span class="kw">frequency_matrix</span>( arapat, <span class="dt">locus =</span> <span class="kw">c</span>(<span class="st">&quot;LTRS&quot;</span>,<span class="st">&quot;ZMP&quot;</span>) )
 <span class="kw">datatable</span>( freqs_mv, <span class="dt">rownames=</span><span class="ot">FALSE</span>)</code></pre></div>
-<div id="htmlwidget-7468cf9aa75a45fea236" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-7468cf9aa75a45fea236">{"x":{"filter":"none","data":[["101","102","12","153","156","157","159","160","161","162","163","164","165","166","168","169","171","173","175","177","32","48","51","58","64","73","75","77","84","88","89","9","93","98","Aqu","Const","ESan","Mat","SFr"],[0.277777777777778,0.3125,0.8,0.15,0,0,0.888888888888889,0.8,0.95,0.95,0.1,0.35,0.7,0.7,0.75,0.65,0.9,0.9,1,1,0.236842105263158,0,0.142857142857143,0.222222222222222,0.7,0,0.0909090909090909,0.6,1,1,0.9,1,0.7,0,0.1875,0.181818181818182,0,0.1,0.777777777777778],[0.722222222222222,0.6875,0.2,0.85,1,1,0.111111111111111,0.2,0.05,0.05,0.9,0.65,0.3,0.3,0.25,0.35,0.1,0.1,0,0,0.763157894736842,1,0.857142857142857,0.777777777777778,0.3,1,0.909090909090909,0.4,0,0,0.1,0,0.3,1,0.8125,0.818181818181818,1,0.9,0.222222222222222],[1,0,0.2,0.1,0,0,0,0.25,0,0.0714285714285714,0,0.4,0.25,0.15,0.7,0.25,0.111111111111111,0.3,0.285714285714286,0.5,0,0,0.428571428571429,0.222222222222222,0.7,0,0,0,0.9375,0.944444444444444,0,1,0.125,0,0,0.1,0,0,0.0555555555555556],[0,0,0.8,0.9,1,1,1,0.75,1,0.928571428571429,1,0.6,0.75,0.85,0.3,0.75,0.888888888888889,0.7,0.714285714285714,0.5,1,1,0.571428571428571,0.777777777777778,0.3,1,1,1,0.0625,0.0555555555555556,1,0,0.875,1,1,0.9,1,1,0.944444444444444]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Stratum<\/th>\n      <th>LTRS-01<\/th>\n      <th>LTRS-02<\/th>\n      <th>ZMP-01<\/th>\n      <th>ZMP-02<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4]}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row"}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-d58721464992fdc22ca2" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d58721464992fdc22ca2">{"x":{"filter":"none","data":[["101","102","12","153","156","157","159","160","161","162","163","164","165","166","168","169","171","173","175","177","32","48","51","58","64","73","75","77","84","88","89","9","93","98","Aqu","Const","ESan","Mat","SFr"],[0.277777777777778,0.3125,0.8,0.15,0,0,0.888888888888889,0.8,0.95,0.95,0.1,0.35,0.7,0.7,0.75,0.65,0.9,0.9,1,1,0.236842105263158,0,0.142857142857143,0.222222222222222,0.7,0,0.0909090909090909,0.6,1,1,0.9,1,0.7,0,0.1875,0.181818181818182,0,0.1,0.777777777777778],[0.722222222222222,0.6875,0.2,0.85,1,1,0.111111111111111,0.2,0.05,0.05,0.9,0.65,0.3,0.3,0.25,0.35,0.1,0.1,0,0,0.763157894736842,1,0.857142857142857,0.777777777777778,0.3,1,0.909090909090909,0.4,0,0,0.1,0,0.3,1,0.8125,0.818181818181818,1,0.9,0.222222222222222],[1,0,0.2,0.1,0,0,0,0.25,0,0.0714285714285714,0,0.4,0.25,0.15,0.7,0.25,0.111111111111111,0.3,0.285714285714286,0.5,0,0,0.428571428571429,0.222222222222222,0.7,0,0,0,0.9375,0.944444444444444,0,1,0.125,0,0,0.1,0,0,0.0555555555555556],[0,0,0.8,0.9,1,1,1,0.75,1,0.928571428571429,1,0.6,0.75,0.85,0.3,0.75,0.888888888888889,0.7,0.714285714285714,0.5,1,1,0.571428571428571,0.777777777777778,0.3,1,1,1,0.0625,0.0555555555555556,1,0,0.875,1,1,0.9,1,1,0.944444444444444]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Stratum<\/th>\n      <th>LTRS-01<\/th>\n      <th>LTRS-02<\/th>\n      <th>ZMP-01<\/th>\n      <th>ZMP-02<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p>creates a wide data.frame format for analyses. Also notice that I included a specification on which loci I was interested in using—by default it uses all of them for most analysis functions. If you don’t need all the data, no need to calculate all the parameters and then shuffle through all the output.</p>
 <p>Individual stratum-level visualization may help interpret landscape-level patterns of genetic structure. To estimate allele frequencies along partitions in your data, you must specify the stratum to use a populations. Here I use the frequency of one of the two alleles at the LTRS locus, estimate by “Population”.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span><span class="kw">frequencies</span>(arapat,<span class="dt">loci=</span><span class="st">&quot;LTRS&quot;</span>,<span class="dt">stratum=</span><span class="st">&quot;Population&quot;</span>)
-f &lt;-<span class="st"> </span>f[ f$Allele==<span class="st">&quot;01&quot;</span>,]
+f &lt;-<span class="st"> </span>f[ f<span class="op">$</span>Allele<span class="op">==</span><span class="st">&quot;01&quot;</span>,]
 <span class="kw">head</span>(f)</code></pre></div>
 <pre><code>##    Stratum Locus Allele Frequency
 ## 1      101  LTRS     01 0.2777778
@@ -491,10 +494,10 @@ f &lt;-<span class="st"> </span>f[ f$Allele==<span class="st">&quot;01&quot;</sp
 ## 13     160  LTRS     01 0.8000000</code></pre>
 <p>whose values can be used directly in <code>ggplot</code> as once we merge in the two <code>data.frame</code> objects, combining coordinates and frequencies (to use <code>merge</code> you must have a common column in your data.frame that can serve as an index). The frequency can be displayed as the size of the point</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">coords &lt;-<span class="st"> </span><span class="kw">merge</span>( coords, f[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span>)])
-<span class="kw">ggmap</span>( map ) +<span class="st"> </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">x=</span>Longitude,<span class="dt">y=</span>Latitude,<span class="dt">size=</span>Frequency),<span class="dt">data=</span>coords)</code></pre></div>
+<span class="kw">ggmap</span>( map ) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">x=</span>Longitude,<span class="dt">y=</span>Latitude,<span class="dt">size=</span>Frequency),<span class="dt">data=</span>coords)</code></pre></div>
 <p><img src="LGDA_files/figure-html/unnamed-chunk-97-1.png" width="672" /></p>
 <p>or the color of the point</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggmap</span>( map ) +<span class="st"> </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">x=</span>Longitude,<span class="dt">y=</span>Latitude,<span class="dt">color=</span>Frequency),<span class="dt">data=</span>coords)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggmap</span>( map ) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">x=</span>Longitude,<span class="dt">y=</span>Latitude,<span class="dt">color=</span>Frequency),<span class="dt">data=</span>coords)</code></pre></div>
 <p><img src="LGDA_files/figure-html/unnamed-chunk-98-1.png" width="672" /></p>
 <p>depending upon what you think may be more effective at displaying the spatial patterns.</p>
 <p>Another useful display involves taking your frequency data and overlaying it onto Google maps as pie charts. This give you a wide view of all your data. It does, however, require an internet connection…</p>
@@ -520,9 +523,9 @@ f &lt;-<span class="st"> </span>f[ f$Allele==<span class="st">&quot;01&quot;</sp
 <p>In this section, we delve in to what that means, where it comes from, and how we can gain biological inferences from data that do not conform to these expectations. The underlying idea of Hardy-Weinberg Equilibrium (HWE for brevity) is that genotypes should occur at frequencies as predicted by probability theory alone IF (and this is the big part), the population we are looking at is mating in particular ways. Lets spend a little time talking about what that means and what these assumptions actually are.</p>
 <p>In addition to analyzing your data, you can simulate data in <em>gstudio</em> to mimic several of the processes we will discuss in this section. We will start with the frequencies we calculated in the previous example for the ZMP locus and create a random population with those frequencies.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">freqs &lt;-<span class="st"> </span><span class="kw">frequencies</span>( arapat, <span class="dt">stratum=</span><span class="st">&quot;Species&quot;</span>, <span class="dt">loci=</span><span class="st">&quot;ZMP&quot;</span>)
-freqs &lt;-<span class="st"> </span>freqs[ freqs$Stratum ==<span class="st"> &quot;Peninsula&quot;</span>,]
+freqs &lt;-<span class="st"> </span>freqs[ freqs<span class="op">$</span>Stratum <span class="op">==</span><span class="st"> &quot;Peninsula&quot;</span>,]
 locus1 &lt;-<span class="st"> </span><span class="kw">make_loci</span>(freqs, <span class="dt">N =</span> <span class="dv">100</span>)
-data &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">ID=</span><span class="dv">1</span>:<span class="dv">100</span>, <span class="dt">Locus=</span>locus1 ) 
+data &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">ID=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">Locus=</span>locus1 ) 
 <span class="kw">summary</span>( data)</code></pre></div>
 <pre><code>##        ID            Locus   
 ##  Min.   :  1.00   01:01 : 9  
@@ -534,7 +537,7 @@ data &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span cla
 <div id="genetic-assumptions" class="section level3">
 <h3><span class="header-section-number">2.5.1</span> Genetic Assumptions</h3>
 <p>Implicit in the description above is a characterization of what constitutes a genotype. For simplicity, as this is the way it was originally defined, we will assume that the species we are looking at is diploid, carrying homologous chromosomes from both parents. Diploidy means that in the adult life stage, each individual has two copies of each allele, one from each parental individual. If diploid is true, we can denote the genotype as <span class="math inline">\(AA\)</span> for the diploid homozygote, <span class="math inline">\(AB\)</span> for the heterozygote, and <span class="math inline">\(BB\)</span> for the other diploid homozygote. If it is not true and the species (at least at that life stage) is haploid, then will will represent the genotype as <span class="math inline">\(A\)</span> or <span class="math inline">\(B\)</span>. Higher levels of ploidy (triploid, tetraploid, hexaploid, etc.) are also possible in many taxa. While the math that follows is essentially the same for these ploidy levels, the actual algebra is a bit more messy. If you are working on taxa with higher ploidy levels, you can do many of the same operations we will focus on in <em>gstudio</em>, consult the documentation for more information. To check the ploidy level in your data (e.g., the number of alleles at a locus) we can use the <code>ploidy()</code> function</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ploidy</span>(data$Locus )</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ploidy</span>(data<span class="op">$</span>Locus )</code></pre></div>
 <pre><code>##   [1] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
 ##  [36] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
 ##  [71] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2</code></pre>
@@ -547,7 +550,7 @@ data &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span cla
 <p>A Punnet square is a simple tool used to teach transition probabilities in basic genetics and biology courses. Here is an interactive example using the 2-allele locus (though the tool can handle other ploidy levels) that you can play with to see the kinds of offspring genotypes produced by individual mating.</p>
 <p>The population we are examining need to have some specific demographic parameters for HWE to be valid. The most basal assumption that is invoked is that the population size must be very large. In a fact, most of the work of R.A. Fisher and J.B.S. Haldane in developing the modern synthesis relied upon this assumption as well. If population size, <span class="math inline">\(N\)</span>, is too small, then the stochastic change (what we call genetic drift) can have serious influences on allele frequencies.</p>
 <p>As a simulation tool, it is very important to understand that when doing stochastic approximations, <span class="math inline">\(N\)</span> has a huge effect. Consider the following:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">genotype_frequencies</span>( data$Locus )</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">genotype_frequencies</span>( data<span class="op">$</span>Locus )</code></pre></div>
 <pre><code>##   Genotype Observed Expected
 ## 1    01:01        9   8.7025
 ## 2    01:02       41  41.5950
@@ -693,14 +696,14 @@ Q_{t+1} &amp;= \frac{P_tQ_t}{2} + 2P_tR_t + \frac{Q^2_t}{2} + Q_tR_t\\
 \]</span></p>
 <p>Putting these together, we have an expectation that the genotypes <span class="math inline">\(AA\)</span>, <span class="math inline">\(AB\)</span>, and <span class="math inline">\(BB\)</span> will occur at frequencies of <span class="math inline">\(p^2\)</span>, <span class="math inline">\(2pq\)</span>, and <span class="math inline">\(q^2\)</span>, which is exactly what HWE is. More importantly, it takes only one generation of mating under the assumptions of HWE to return all genotype frequencies to HWE! However, the real population frequencies differ a bit due in part (mostly) the finite size of populations. Here we can simulate a generation of mating in the previous data as:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">next_gen &lt;-<span class="st"> </span><span class="kw">mate</span>( data, <span class="dt">N=</span><span class="dv">1</span> )
-<span class="kw">table</span>( data$Locus ) /<span class="st"> </span><span class="kw">nrow</span>( data )</code></pre></div>
+<span class="kw">table</span>( data<span class="op">$</span>Locus ) <span class="op">/</span><span class="st"> </span><span class="kw">nrow</span>( data )</code></pre></div>
 <pre><code>## 
 ## 01:01 01:02 02:02 
 ##  0.09  0.41  0.50</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>( next_gen$Locus ) /<span class="st"> </span><span class="kw">nrow</span>( data )</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>( next_gen<span class="op">$</span>Locus ) <span class="op">/</span><span class="st"> </span><span class="kw">nrow</span>( data )</code></pre></div>
 <pre><code>## 
 ## 01:01 01:02 02:02 
-##  0.10  0.48  0.42</code></pre>
+##  0.10  0.36  0.54</code></pre>
 </div>
 <div id="consequences-of-hwe" class="section level3">
 <h3><span class="header-section-number">2.5.6</span> Consequences of HWE</h3>
@@ -801,7 +804,7 @@ genetic_diversity( df, mode="Ae")
 A = \ell
 \]</span></p>
 <p>where <span class="math inline">\(\ell\)</span> is the number of observed alleles. We can estimate allelic diversity by passing the function either a vector of locus objects</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">genetic_diversity</span>( arapat$MP20, <span class="dt">mode=</span><span class="st">&quot;A&quot;</span> )</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">genetic_diversity</span>( arapat<span class="op">$</span>MP20, <span class="dt">mode=</span><span class="st">&quot;A&quot;</span> )</code></pre></div>
 <pre><code>##   Locus  A
 ## 1 Locus 19</code></pre>
 <p>or a <code>data.frame</code> that has one or more columns of data that are locus objects as determined by the <code>column_class()</code> function.</p>
@@ -821,12 +824,12 @@ A = \ell
 A_{95} = \left| A_{freq(\ell)&gt;0.05} \right|
 \]</span></p>
 <p>This threshold is entirely arbitrary in the same way that we use <span class="math inline">\(\alpha=0.05\)</span> as a cutoff in the teaching of formalized hypothesis testing. It could just as easily be 3%, 1%, or 10% but has a historical trajectory in its current form. The <span class="math inline">\(A_{95}\)</span> parameter does remove some of the problems associated with rare alleles in our data sets as is shown by comparing the diversity of the most allele rich locus MP20 using <span class="math inline">\(A\)</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mp20.A &lt;-<span class="st"> </span><span class="kw">genetic_diversity</span>( arapat$MP20, <span class="dt">mode=</span><span class="st">&quot;A&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mp20.A &lt;-<span class="st"> </span><span class="kw">genetic_diversity</span>( arapat<span class="op">$</span>MP20, <span class="dt">mode=</span><span class="st">&quot;A&quot;</span>)
 mp20.A</code></pre></div>
 <pre><code>##   Locus  A
 ## 1 Locus 19</code></pre>
 <p>and <span class="math inline">\(A_{95}\)</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mp20.A95 &lt;-<span class="st"> </span><span class="kw">genetic_diversity</span>( arapat$MP20, <span class="dt">mode=</span><span class="st">&quot;A95&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mp20.A95 &lt;-<span class="st"> </span><span class="kw">genetic_diversity</span>( arapat<span class="op">$</span>MP20, <span class="dt">mode=</span><span class="st">&quot;A95&quot;</span>)
 mp20.A95</code></pre></div>
 <pre><code>##   Locus A95
 ## 1 Locus   4</code></pre>
@@ -870,10 +873,10 @@ H_O = \frac{N_{ij}}{N}
 H_E = 1 - \sum_{i=1}^\ell p_i^2
 \]</span></p>
 <p>(where <span class="math inline">\(\ell\)</span> is the number of alleles at the locus). Here is an example of expected heterozygosity for the LTRS and MP20 loci.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">genetic_diversity</span>( arapat$LTRS , <span class="dt">mode=</span><span class="st">&quot;he&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">genetic_diversity</span>( arapat<span class="op">$</span>LTRS , <span class="dt">mode=</span><span class="st">&quot;he&quot;</span>)</code></pre></div>
 <pre><code>##   Locus        he
 ## 1 Locus 0.4989034</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">genetic_diversity</span>( arapat$MP20, <span class="dt">mode=</span><span class="st">&quot;he&quot;</span> ) </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">genetic_diversity</span>( arapat<span class="op">$</span>MP20, <span class="dt">mode=</span><span class="st">&quot;he&quot;</span> ) </code></pre></div>
 <pre><code>##   Locus        he
 ## 1 Locus 0.8185723</code></pre>
 <p>In an ideal world, we would be able to have enough resources to sample for these parameters with so many individuals, they would be well behaved. Unfortunately, we do not live in the real world and in many cases our ability to sample lots of individuals is limited. This problem is not a new thing, we estimate the sums of square and divide by <span class="math inline">\(N-1\)</span> instead of <span class="math inline">\(N\)</span> because if we we use the later, we are producing a biased estimate. Unless you are working with <em>all</em> the samples, every time we make population genetic inferences we will be doing so on a sub-sample of the total data available. The <code>arapat</code> data set is no where near a major component of the species, it is only a sample. From this sample, we <em>estimate</em> allele frequencies on which we derive our <em>estimates</em> of parameters such as <span class="math inline">\(H_E\)</span>. As such, if we used the formulas above to estimate everything in every study, we would have biased estimators of… pretty much everything. However, the fix is not one that is too difficult to put in, and it has a pretty well established set of behaviors. As such, if we are estimating these parameters in a single locale (for more than one location, we have further corrections to make), we should probably apply a small sample size correction. In general, this correction is:</p>
@@ -895,9 +898,9 @@ Figure 2.1: Magnitude of the correction factor for small sample size estimations
 H_S = \frac{\tilde{N}}{\tilde{N}-1}\left[ 1 - \sum_{i=1}^\ell \frac{p_i^2}{K} - \frac{H_O}{2\tilde{N}} \right]
 \]</span></p>
 <p>where <span class="math inline">\(\tilde{N}\)</span> is the harmonic mean number of genotypes sampled across each of the <span class="math inline">\(K\)</span> strata. Notice here I use the term <span class="math inline">\(H_S\)</span> instead of <span class="math inline">\(H_E\)</span> so that there isn’t any doubt about the differences when we write and talk about these parameters. This formulation (after Nei 1987) corrects for the sampling across separate locations. To indicate that your estimate is being made using subdivided groups of samples, pass the <code>stratum=</code> parameter to <code>genetic_diversity()</code> and set `mode=“Hes”. We can see the magnitude of the correction by looking at a single population and comparing the estimates of <span class="math inline">\(H_S\)</span> for corrected and non-corrected parameters.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pops &lt;-<span class="st"> </span>arapat[ arapat$Population %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;32&quot;</span>,<span class="st">&quot;101&quot;</span>,<span class="st">&quot;102&quot;</span>),]
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pops &lt;-<span class="st"> </span>arapat[ arapat<span class="op">$</span>Population <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;32&quot;</span>,<span class="st">&quot;101&quot;</span>,<span class="st">&quot;102&quot;</span>),]
 he &lt;-<span class="st"> </span><span class="kw">genetic_diversity</span>( pops, <span class="dt">mode=</span><span class="st">&quot;He&quot;</span>)
-hes &lt;-<span class="st"> </span><span class="kw">genetic_diversity</span>(pops, <span class="dt">stratum=</span><span class="st">&quot;Population&quot;</span>, <span class="dt">mode=</span><span class="st">&quot;Hes&quot;</span>)[<span class="dv">1</span>:<span class="dv">8</span>,]
+hes &lt;-<span class="st"> </span><span class="kw">genetic_diversity</span>(pops, <span class="dt">stratum=</span><span class="st">&quot;Population&quot;</span>, <span class="dt">mode=</span><span class="st">&quot;Hes&quot;</span>)[<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>,]
 df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Locus=</span>he[,<span class="dv">1</span>], <span class="dt">He=</span>he[,<span class="dv">2</span>], <span class="dt">Hes=</span>hes[,<span class="dv">2</span>])
 df</code></pre></div>
 <pre><code>##   Locus         He        Hes
@@ -918,11 +921,11 @@ df</code></pre></div>
 D_m = \frac{N_{unique}}{N}
 \]</span></p>
 <p>and can be estimated using the function <code>mulitlocus_diversity()</code>. Looking across the putative species indicated in the data set, we can see that in general, the Cape populations are much less diverse than those individuals samples throughout Baja California.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">multilocus_diversity</span>( arapat[ arapat$Species==<span class="st">&quot;Cape&quot;</span>,])</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">multilocus_diversity</span>( arapat[ arapat<span class="op">$</span>Species<span class="op">==</span><span class="st">&quot;Cape&quot;</span>,])</code></pre></div>
 <pre><code>## [1] 0.56</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">multilocus_diversity</span>( arapat[ arapat$Species==<span class="st">&quot;Mainland&quot;</span>,] )</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">multilocus_diversity</span>( arapat[ arapat<span class="op">$</span>Species<span class="op">==</span><span class="st">&quot;Mainland&quot;</span>,] )</code></pre></div>
 <pre><code>## [1] 0.9722222</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">multilocus_diversity</span>( arapat[ arapat$Species==<span class="st">&quot;Peninsula&quot;</span>,] )</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">multilocus_diversity</span>( arapat[ arapat<span class="op">$</span>Species<span class="op">==</span><span class="st">&quot;Peninsula&quot;</span>,] )</code></pre></div>
 <pre><code>## [1] 0.9007937</code></pre>
 <p>This is a pretty crude measurement but later when we examine models based upon conditional multilocus genetic distances, we need to make sure that the samples are both allelic rich and multilocus diverse and this approach is a nice way to do that.</p>
 </div>
@@ -986,7 +989,7 @@ F &amp;= \frac{H_e - H_o}{H_e} \\
 <p>Here is an example of the problem sampling may interject into your analyses. Consider a single locus with four alleles.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(gstudio)
 <span class="kw">data</span>(arapat)
-f &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">Allele=</span>LETTERS[<span class="dv">1</span>:<span class="dv">4</span>], <span class="dt">Frequency=</span><span class="fl">0.25</span>)
+f &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">Allele=</span>LETTERS[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>], <span class="dt">Frequency=</span><span class="fl">0.25</span>)
 f</code></pre></div>
 <pre><code>##   Allele Frequency
 ## 1      A      0.25
@@ -1006,13 +1009,13 @@ ae2</code></pre></div>
 <pre><code>##   Locus     Ae
 ## 1 Locus 3.9992</code></pre>
 <p>The difference in estimated diversity among these groups are <code>abs( ae1 - ae2 ) = 0.15</code>. Is this statistically different or are they the same? Is it just because we sampled more individuals in the second set that we get higher values of <span class="math inline">\(A_e\)</span>? Consider the <code>MP20</code> locus in the beetle data set, it has a total of 19 alleles present. If we subsample this data and estimate the number of observed alleles, we see that there is an asymptotic relationship between sampling effort and estimates of allelic diversity. Here is the code for estimating frequency independent diversity, <span class="math inline">\(A\)</span>, using these data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">loci &lt;-<span class="st"> </span>arapat$MP20
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">loci &lt;-<span class="st"> </span>arapat<span class="op">$</span>MP20
 sz &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">15</span>,<span class="dv">20</span>,<span class="dv">50</span>,<span class="dv">100</span>)
 sample_sizes &lt;-<span class="st"> </span><span class="kw">rep</span>( sz, <span class="dt">each=</span><span class="dv">20</span> )
 Ae &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>,<span class="kw">length</span>(sample_sizes))
-for( i in <span class="dv">1</span>:<span class="kw">length</span>(Ae)){
+<span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(Ae)){
   loci &lt;-<span class="st"> </span><span class="kw">sample</span>( loci, <span class="dt">size=</span><span class="kw">length</span>(loci), <span class="dt">replace=</span><span class="ot">FALSE</span>)
-  Ae[i] &lt;-<span class="st"> </span><span class="kw">genetic_diversity</span>( loci[<span class="dv">1</span>:sample_sizes[i]], <span class="dt">mode=</span><span class="st">&quot;Ae&quot;</span> )$Ae
+  Ae[i] &lt;-<span class="st"> </span><span class="kw">genetic_diversity</span>( loci[<span class="dv">1</span><span class="op">:</span>sample_sizes[i]], <span class="dt">mode=</span><span class="st">&quot;Ae&quot;</span> )<span class="op">$</span>Ae
 }</code></pre></div>
 <p><img src="LGDA_files/figure-html/unnamed-chunk-120-1.png" width="672" /></p>
 <p>The ‘curvy’ nature of this relationship shows a few things.</p>
@@ -1020,12 +1023,12 @@ for( i in <span class="dv">1</span>:<span class="kw">length</span>(Ae)){
 <p>For the rare alleles, you really need to grab large at-site samples if estimates of diversity are the main component of what you are doing. Do rare alleles aid in uncovering the biological processes you are interested in studying? They may or may not.</p>
 <p>For most purposes, we will use all the samples we have collected. In many cases though, some locales may not have as many samples as other ones. So, even with these data, if I have one locale with 10 samples and another with 50, how can I determine if the differences observed are due to true differences in the underlying diversity and which are from my sampling? Just as in testing for HWE, we can use our new friend permutation to address the differences.</p>
 <p>Rarefaction is the process of subsampling a larger dataset in smaller chunks such that we can estimate diversity among groups using the same number of individuals. Here is an example in the beetle dataset where I am going to look at differences in diversity among samples (<span class="math inline">\(N = 75\)</span>) collected in the cape regions of Baja California</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ae.cape &lt;-<span class="st"> </span><span class="kw">genetic_diversity</span>( arapat[ arapat$Species==<span class="st">&quot;Cape&quot;</span>, <span class="st">&quot;WNT&quot;</span>] )
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ae.cape &lt;-<span class="st"> </span><span class="kw">genetic_diversity</span>( arapat[ arapat<span class="op">$</span>Species<span class="op">==</span><span class="st">&quot;Cape&quot;</span>, <span class="st">&quot;WNT&quot;</span>] )
 ae.cape</code></pre></div>
 <pre><code>##   Locus       Ae
 ## 1 Locus 1.305052</code></pre>
 <p>and compare those to the genetic diversity observed from a smaller collection of individuals sampled from mainland Mexico (<span class="math inline">\(N=36\)</span>).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ae.mainland &lt;-<span class="st"> </span><span class="kw">genetic_diversity</span>( arapat[ arapat$Species==<span class="st">&quot;Mainland&quot;</span>, <span class="st">&quot;WNT&quot;</span>] )$Ae
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ae.mainland &lt;-<span class="st"> </span><span class="kw">genetic_diversity</span>( arapat[ arapat<span class="op">$</span>Species<span class="op">==</span><span class="st">&quot;Mainland&quot;</span>, <span class="st">&quot;WNT&quot;</span>] )<span class="op">$</span>Ae
 ae.mainland</code></pre></div>
 <pre><code>## [1] 1.033889</code></pre>
 <p>The observed difference in effective allelic diversity, <span class="math inline">\(A_{e,mainland} == A_{e,cape}\)</span>, could be because the Cape region of Baja California is more diverse or it could be because there are twice as many individuals in that sample.</p>
@@ -1038,19 +1041,19 @@ ae.mainland</code></pre></div>
 <li>Compare your observed value in the smallest population to that distribution created by subsampling the larger population.</li>
 </ol>
 <p>From the data set, this is done by</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cape.pop &lt;-<span class="st"> </span>arapat[ arapat$Species==<span class="st">&quot;Cape&quot;</span>,<span class="st">&quot;WNT&quot;</span>]
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cape.pop &lt;-<span class="st"> </span>arapat[ arapat<span class="op">$</span>Species<span class="op">==</span><span class="st">&quot;Cape&quot;</span>,<span class="st">&quot;WNT&quot;</span>]
 null.ae &lt;-<span class="st"> </span><span class="kw">rarefaction</span>( cape.pop, <span class="dt">mode=</span><span class="st">&quot;Ae&quot;</span>,<span class="dt">size=</span><span class="dv">36</span>)
 <span class="kw">mean</span>(null.ae)</code></pre></div>
-<pre><code>## [1] 1.311586</code></pre>
+<pre><code>## [1] 1.311998</code></pre>
 <p>So even if the samples sizes are the same, the mean level of diversity remains relatively constant. The range in diversity</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">range</span>(null.ae)</code></pre></div>
-<pre><code>## [1] 1.000000 1.737265</code></pre>
+<pre><code>## [1] 1.028163 1.769283</code></pre>
 <p>is quite large. Since this estimate is frequency based, random samples of alleles change the underlying estimate of Ae during each permutation.</p>
 <p>The observed estimate of diversity in the Mainland populations does fall within this range. However, the null hypothesis states that <span class="math inline">\(A_{e,mainland} = A_{e,cape}\)</span> and if this is true, once we standardize sample size, we can take the distribution of permuted Ae values as a statement about what we should see if the null hypothesis were true. As such, we can treat it probabilistically and estimate the probability that <span class="math inline">\(A_e\)</span>, Mainland is drawn from this distribution.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">all.ae &lt;-<span class="st"> </span><span class="kw">c</span>( null.ae, ae.mainland)
-P &lt;-<span class="st"> </span><span class="kw">sum</span>(ae.mainland &lt;=<span class="st"> </span>null.ae) /<span class="st"> </span>( <span class="kw">length</span>(all.ae) )
+P &lt;-<span class="st"> </span><span class="kw">sum</span>(ae.mainland <span class="op">&lt;=</span><span class="st"> </span>null.ae) <span class="op">/</span><span class="st"> </span>( <span class="kw">length</span>(all.ae) )
 P</code></pre></div>
-<pre><code>## [1] 0.992</code></pre>
+<pre><code>## [1] 0.995</code></pre>
 <p>Or graphically, it can be depicted as below.</p>
 <p><img src="LGDA_files/figure-html/unnamed-chunk-126-1.png" width="672" /></p>
 <div id="mapping-diversity" class="section level3">
@@ -1060,11 +1063,11 @@ P</code></pre></div>
 <span class="kw">data</span>(arapat)
 diversity &lt;-<span class="st"> </span><span class="kw">genetic_diversity</span>(arapat, <span class="dt">stratum=</span><span class="st">&quot;Population&quot;</span>, <span class="dt">mode=</span><span class="st">&quot;Ae&quot;</span>)
 coords &lt;-<span class="st"> </span><span class="kw">strata_coordinates</span>(arapat)
-coords &lt;-<span class="st"> </span><span class="kw">merge</span>( coords, diversity[ diversity$Locus ==<span class="st"> &quot;AML&quot;</span>, ] )</code></pre></div>
+coords &lt;-<span class="st"> </span><span class="kw">merge</span>( coords, diversity[ diversity<span class="op">$</span>Locus <span class="op">==</span><span class="st"> &quot;AML&quot;</span>, ] )</code></pre></div>
 <p>Then, I grab a map from the Google server and map my populations with diversity depicted as differences in the size of the points. Note that the <code>ggmap()</code> function provides the base map that is retrieved but when we use <code>geom_point()</code> we need to specify the <code>aes()</code> and the <code>data=</code> part as these data are from the <code>data.frame</code> we made, not from the map we grabbed from Google.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggmap)
 map &lt;-<span class="st"> </span><span class="kw">population_map</span>(coords)
-<span class="kw">ggmap</span>(map) +<span class="st"> </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">x=</span>Longitude,<span class="dt">y=</span>Latitude,<span class="dt">size=</span>Ae), <span class="dt">data=</span>coords)</code></pre></div>
+<span class="kw">ggmap</span>(map) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">x=</span>Longitude,<span class="dt">y=</span>Latitude,<span class="dt">size=</span>Ae), <span class="dt">data=</span>coords)</code></pre></div>
 <p><img src="LGDA_files/figure-html/unnamed-chunk-128-1.png" width="672" /></p>
 </div>
 </div>
@@ -1250,9 +1253,9 @@ F_{ST} &amp; = \frac{\sum_{i=1}^\ell \sigma_{q_{S(i)}}^2}{\sum_{i=1}^\ell \left[
 <p>Where <span class="math inline">\(\sum_{i=1}^\ell \sigma_{q_{S(i)}}^2\)</span> is the variance in allele frequencies across subpopulations (the <span class="math inline">\(S(i)\)</span> subscript) using all <span class="math inline">\(\ell\)</span> alleles at the locus, and <span class="math inline">\(q_{T(i)}\)</span> is the average allele frequency across all subpopulations. The parameters <span class="math inline">\(y_{ST}\)</span> and <span class="math inline">\(y_T\)</span> are equivalent to <span class="math inline">\(H_S\)</span> (average expected heterozygosity across subpopulations) and <span class="math inline">\(H_T\)</span> (expected heterozygosity of average allele frequencies) respectively.</p>
 <p>Lets take a simple example and work though this for clarity as the estimators <span class="math inline">\(H_S\)</span> and <span class="math inline">\(H_T\)</span> can be a bit confusing at times. Consider the case where we have three populations assayed for a single bi-allelic locus. Allele frequencies at each of the populations are:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>)
-q &lt;-<span class="st"> </span><span class="dv">1</span>-p</code></pre></div>
+q &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">-</span>p</code></pre></div>
 <p>which give an expected heterozygosity of:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hs &lt;-<span class="st"> </span><span class="dv">2</span>*p*q
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hs &lt;-<span class="st"> </span><span class="dv">2</span><span class="op">*</span>p<span class="op">*</span>q
 hs</code></pre></div>
 <pre><code>## [1] 0.32 0.42 0.48</code></pre>
 <p>Whose average is:</p>
@@ -1261,7 +1264,7 @@ hs</code></pre></div>
 <p>For <span class="math inline">\(H_T\)</span>, we estimate the average of the allele frequencies (<span class="math inline">\(\bar{p}\)</span> and <span class="math inline">\(\bar{q}\)</span>) and then the expectation for heterozygosity (<span class="math inline">\(2\bar{p}\bar{q}\)</span>) as:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pbar &lt;-<span class="st"> </span><span class="kw">mean</span>(p)
 qbar &lt;-<span class="st"> </span><span class="kw">mean</span>(q)
-ht &lt;-<span class="st"> </span><span class="dv">2</span>*pbar*qbar
+ht &lt;-<span class="st"> </span><span class="dv">2</span><span class="op">*</span>pbar<span class="op">*</span>qbar
 ht</code></pre></div>
 <pre><code>## [1] 0.42</code></pre>
 <p>From these values, we can estimate <span class="math inline">\(F_{ST}\)</span> as:</p>
@@ -1301,7 +1304,7 @@ F_{IT} = \frac{H_T - H_I}{H_T}
 <p>Here is an example of the differences we will see if we do not account for these problems (as well as the issue of samples sizes and sampling locations discussed in <a href="genetic-data.html#samples-from-several-locales">2.6.3</a>). In the arapat data set, I’m going to use the two of the mainland populations and estimate <span class="math inline">\(F_{ST}\)</span> from them for a single locus as an example to demonstrate this last issue and show the magnitude of the bias that may be introduced by not considering that each of the stratum have estimated heterozygosity with a bit of error.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(gstudio)
 <span class="kw">data</span>(arapat)
-df &lt;-<span class="st"> </span>arapat[ arapat$Population %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;101&quot;</span>,<span class="st">&quot;102&quot;</span>), <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">13</span>)]
+df &lt;-<span class="st"> </span>arapat[ arapat<span class="op">$</span>Population <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;101&quot;</span>,<span class="st">&quot;102&quot;</span>), <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">13</span>)]
 df &lt;-<span class="st"> </span><span class="kw">droplevels</span>( df )</code></pre></div>
 <p>Here is what that looks like (the <code>droplevels()</code> bit is to remove the non-observed populations from the stratum column in the derived <code>data.frame</code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df</code></pre></div>
@@ -1332,7 +1335,7 @@ df &lt;-<span class="st"> </span><span class="kw">droplevels</span>( df )</code>
 ## 4     102  ATPS     02 0.9375000
 ## 5     102  ATPS     09 0.0625000</code></pre>
 <p>If we estimate heterozygosity directly for each population we see that the individual, population-level, heterozygosity, is estimated as:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">genetic_diversity</span>(df[df$Population==<span class="st">&quot;101&quot;</span>,],<span class="dt">mode=</span><span class="st">&quot;He&quot;</span>)$He, <span class="kw">genetic_diversity</span>(df[df$Population==<span class="st">&quot;102&quot;</span>,],<span class="dt">mode=</span><span class="st">&quot;He&quot;</span>)$He)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">genetic_diversity</span>(df[df<span class="op">$</span>Population<span class="op">==</span><span class="st">&quot;101&quot;</span>,],<span class="dt">mode=</span><span class="st">&quot;He&quot;</span>)<span class="op">$</span>He, <span class="kw">genetic_diversity</span>(df[df<span class="op">$</span>Population<span class="op">==</span><span class="st">&quot;102&quot;</span>,],<span class="dt">mode=</span><span class="st">&quot;He&quot;</span>)<span class="op">$</span>He)
 x</code></pre></div>
 <pre><code>## [1] 0.4938272 0.1171875</code></pre>
 <p>which results in an estimate of <span class="math inline">\(H_S\)</span>:</p>
@@ -1340,11 +1343,11 @@ x</code></pre></div>
 hs</code></pre></div>
 <pre><code>## [1] 0.3055073</code></pre>
 <p>Similarly, the parameter <span class="math inline">\(H_T\)</span> is:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ht &lt;-<span class="st"> </span><span class="kw">genetic_diversity</span>(df,<span class="dt">mode=</span><span class="st">&quot;He&quot;</span>)$He
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ht &lt;-<span class="st"> </span><span class="kw">genetic_diversity</span>(df,<span class="dt">mode=</span><span class="st">&quot;He&quot;</span>)<span class="op">$</span>He
 ht</code></pre></div>
 <pre><code>## [1] 0.3442907</code></pre>
 <p>We can estimate <span class="math inline">\(F_{ST}\)</span> as:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Fst_biased &lt;-<span class="st"> </span><span class="dv">1</span> -<span class="st"> </span>hs/ht
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Fst_biased &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span>hs<span class="op">/</span>ht
 Fst_biased</code></pre></div>
 <pre><code>## [1] 0.1126471</code></pre>
 <p>If we do take into consideration the error associated with estimating these parameters, we find a much smaller value:</p>
@@ -1403,10 +1406,10 @@ SSD_{A} = \sum_{k=1}^K\sum_{l\ne k}^K\frac{\sum_{i=1}^{N_k}\sum_{j=1}^{N_l}\delt
 <p>These sums of squares in this context enter directly into a traditional ANOVA table . From here, it is identical to a normal ANOVA analysis. We have degrees of freedom, mean squares, and variance components. The AMOVA itself, due to the way we sample the individuals and populations is a random-effects model. Our sampling typically consists of us going out and sampling a portion of the potential populations that exist rather than sampling all specified populations. As a statistical consequence, this means that the variance within (the error term) and among (the treatment variance) have to be corrected because we are taking only a sample from all potential populations. For a 1-level analysis, we can perform this in R by first setting up the data as a distance matrix and a vector of population assignments (it appears that the values need to be either numeric or as a factor for populations, though at the time of this writing, I could not get a factor representation to work properly).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">D &lt;-<span class="st"> </span><span class="kw">genetic_distance</span>(arapat, <span class="dt">stratum=</span><span class="st">&quot;Population&quot;</span>, <span class="dt">mode=</span><span class="st">&quot;AMOVA&quot;</span>)
 D &lt;-<span class="st"> </span><span class="kw">as.dist</span>( D )
-pop &lt;-<span class="st"> </span><span class="kw">as.numeric</span>( arapat$Population )</code></pre></div>
+pop &lt;-<span class="st"> </span><span class="kw">as.numeric</span>( arapat<span class="op">$</span>Population )</code></pre></div>
 <p>and then using the <code>amova()</code> function from the pegas library (there are many different implementations of this kind of analysis, decompose the variance into and fill out the AMOVA table as:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pegas)
-fit &lt;-<span class="st"> </span><span class="kw">amova</span>( D ~<span class="st"> </span>pop, <span class="dt">nperm=</span><span class="dv">1000</span> )
+fit &lt;-<span class="st"> </span><span class="kw">amova</span>( D <span class="op">~</span><span class="st"> </span>pop, <span class="dt">nperm=</span><span class="dv">1000</span> )
 fit</code></pre></div>
 <pre><code>## 
 ##  Analysis of Molecular Variance
@@ -1423,6 +1426,10 @@ fit</code></pre></div>
 ## pop   6.2701       0
 ## Error 2.3819        
 ## 
+## Phi-statistics:
+## pop.in.GLOBAL 
+##     0.7247025 
+## 
 ## Variance coefficients:
 ##        a 
 ## 9.293026</code></pre>
@@ -1432,7 +1439,7 @@ The estimated variance components of this model, we can estimate a structure sta
 \Phi_{ST} = \frac{\sigma_A^2}{\sigma_A^2+\sigma_W^2}
 \]</span></p>
 <p>and from the output of the amova() function can be estimated as (don’t know why this isn’t done automagically)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">PhiST &lt;-<span class="st"> </span><span class="dv">1</span> -<span class="st"> </span>fit$varcoef/(fit$varcoef+fit$varcomp[<span class="dv">2</span>,<span class="dv">1</span>])
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">PhiST &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span>fit<span class="op">$</span>varcoef<span class="op">/</span>(fit<span class="op">$</span>varcoef<span class="op">+</span>fit<span class="op">$</span>varcomp[<span class="dv">2</span>,<span class="dv">1</span>])
 PhiST</code></pre></div>
 <pre><code>##         a 
 ## 0.2040154</code></pre>
@@ -1478,18 +1485,18 @@ PhiST</code></pre></div>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
 <script>
-require(["gitbook"], function(gitbook) {
+gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
 "github": false,
 "facebook": false,
 "twitter": false,
 "google": false,
+"linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "weibo", "instapaper"],
-"instapaper": false
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -1497,6 +1504,10 @@ gitbook.start({
 "size": 2
 },
 "edit": {
+"link": null,
+"text": null
+},
+"history": {
 "link": null,
 "text": null
 },
@@ -1515,9 +1526,11 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

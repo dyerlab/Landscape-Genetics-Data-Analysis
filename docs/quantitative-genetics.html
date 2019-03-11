@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Landscape Genetic Data Analysis</title>
+  <title>5 Quantitative Genetics | Landscape Genetic Data Analysis</title>
   <meta name="description" content="A textbook for the use of R in spatial genetic data analysis.">
-  <meta name="generator" content="bookdown 0.3.12 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Landscape Genetic Data Analysis" />
+  <meta property="og:title" content="5 Quantitative Genetics | Landscape Genetic Data Analysis" />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="dyerlab/AMG" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Landscape Genetic Data Analysis" />
+  <meta name="twitter:title" content="5 Quantitative Genetics | Landscape Genetic Data Analysis" />
   
   <meta name="twitter:description" content="A textbook for the use of R in spatial genetic data analysis." />
   
@@ -35,6 +35,7 @@
 <link rel="next" href="references-cited.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -46,15 +47,17 @@
 
 
 
-<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
-<script src="libs/datatables-binding-0.2/datatables.js"></script>
-<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.5/datatables.js"></script>
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <script src="libs/d3-4.5.0/d3.min.js"></script>
-<script src="libs/dendroNetwork-binding-0.3/dendroNetwork.js"></script>
-<script src="libs/simpleNetwork-binding-0.3/simpleNetwork.js"></script>
-<script src="libs/forceNetwork-binding-0.3/forceNetwork.js"></script>
+<script src="libs/dendroNetwork-binding-0.4/dendroNetwork.js"></script>
+<script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
 
 
 <style type="text/css">
@@ -373,10 +376,10 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <p>The relationship among these traits are presented below.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(GGally)
 <span class="kw">library</span>(ggplot2)
-<span class="kw">ggpairs</span>( seedlings, <span class="dt">columns=</span><span class="dv">4</span>:<span class="dv">8</span>)</code></pre></div>
+<span class="kw">ggpairs</span>( seedlings, <span class="dt">columns=</span><span class="dv">4</span><span class="op">:</span><span class="dv">8</span>)</code></pre></div>
 <p><img src="LGDA_files/figure-html/unnamed-chunk-279-1.png" width="672" /></p>
 <p>Like most data, these are imperfect. In particular, there are some families whose seedling mortality resulted in few seeds.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t &lt;-<span class="st"> </span><span class="kw">table</span>( seedlings$Mom )
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t &lt;-<span class="st"> </span><span class="kw">table</span>( seedlings<span class="op">$</span>Mom )
 t</code></pre></div>
 <pre><code>## 
 ## 354 471 590 598 600 645 646 712 819 U09 U11 U12 U13 U14 U15 U17 U18 U19 
@@ -384,14 +387,14 @@ t</code></pre></div>
 ## U20 U23 U24 U25 U26 U27 U29 U31 U32 U36 U39 U40 U44 U46 U47 
 ##   1   5  10   5   3   1   5   7   2   2   2   8   1   3   2</code></pre>
 <p>As a result, before we go forward, lets limit the data to those mothers whose families have at least 5 surviving offspring.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">keepers &lt;-<span class="st"> </span><span class="kw">names</span>(t)[ t &gt;=<span class="st"> </span><span class="dv">4</span> ] 
-seedlings &lt;-<span class="st"> </span>seedlings[ seedlings$Mom %in%<span class="st"> </span>keepers, ]
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">keepers &lt;-<span class="st"> </span><span class="kw">names</span>(t)[ t <span class="op">&gt;=</span><span class="st"> </span><span class="dv">4</span> ] 
+seedlings &lt;-<span class="st"> </span>seedlings[ seedlings<span class="op">$</span>Mom <span class="op">%in%</span><span class="st"> </span>keepers, ]
 seedlings &lt;-<span class="st"> </span><span class="kw">droplevels</span>( seedlings )</code></pre></div>
 <div id="measured-traits" class="section level3">
 <h3><span class="header-section-number">5.2.1</span> Measured Traits</h3>
 <p>Visual summaries of the measured traits are shown below.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw">ggplot</span>(seedlings) +<span class="st"> </span><span class="kw">theme_bw</span>()
-p +<span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>Cold), <span class="dt">alpha=</span><span class="fl">0.75</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw">ggplot</span>(seedlings) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()
+p <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>Cold), <span class="dt">alpha=</span><span class="fl">0.75</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-282"></span>
 <img src="LGDA_files/figure-html/unnamed-chunk-282-1.png" alt="Length of time (in days) of seedling dormancy following cold stratification for seedlings collected from maternal trees in urban (fan) and native (rice) populations." width="672" />
 <p class="caption">
@@ -399,22 +402,22 @@ Figure 5.1: Length of time (in days) of seedling dormancy following cold stratif
 </p>
 </div>
 <p>In the remaining plot, I partion the display of phenotypic variability further by separating out seedlings that were grown in either the SUN (full light) or SHADE (reduced light) treatments.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span>p +<span class="st"> </span><span class="kw">facet_grid</span>(Treatment~.)
-p +<span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>Height), <span class="dt">alpha=</span><span class="fl">0.75</span>) </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="kw">facet_grid</span>(Treatment<span class="op">~</span>.)
+p <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>Height), <span class="dt">alpha=</span><span class="fl">0.75</span>) </code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-283"></span>
 <img src="LGDA_files/figure-html/unnamed-chunk-283-1.png" alt="The height of the seedling measured from the soil to the top of the apical meristem." width="672" />
 <p class="caption">
 Figure 5.2: The height of the seedling measured from the soil to the top of the apical meristem.
 </p>
 </div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p +<span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>Branches), <span class="dt">alpha=</span><span class="fl">0.75</span>) </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>Branches), <span class="dt">alpha=</span><span class="fl">0.75</span>) </code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-284"></span>
 <img src="LGDA_files/figure-html/unnamed-chunk-284-1.png" alt="The number of branches from the main seedling stem." width="672" />
 <p class="caption">
 Figure 5.3: The number of branches from the main seedling stem.
 </p>
 </div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p +<span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>LeafArea), <span class="dt">alpha=</span><span class="fl">0.75</span>) </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>LeafArea), <span class="dt">alpha=</span><span class="fl">0.75</span>) </code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-285"></span>
 <img src="LGDA_files/figure-html/unnamed-chunk-285-1.png" alt="The photosynthetic area measured on the largest leaf from each seedling." width="672" />
 <p class="caption">
@@ -422,7 +425,7 @@ Figure 5.4: The photosynthetic area measured on the largest leaf from each seedl
 </p>
 </div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>Leaves), <span class="dt">alpha=</span><span class="fl">0.75</span>)</code></pre></div>
-<pre><code>## mapping: x = Leaves, fill = Source 
+<pre><code>## mapping: x = ~Leaves, fill = ~Source 
 ## geom_density: na.rm = FALSE
 ## stat_density: na.rm = FALSE
 ## position_identity</code></pre>
@@ -438,7 +441,7 @@ H^2 = \frac{\sigma_G^2}{\sigma_P^2}
 \]</span></p>
 <p>This estimate includes the additive (<span class="math inline">\(\sigma_A^2\)</span>), dominance (<span class="math inline">\(\sigma_D^2\)</span>), and interaction (<span class="math inline">\(\sigma_I^2\)</span>) variance and is the easiest parameter to estimate. A common approach to estimating <span class="math inline">\(H^2\)</span> is to report it as the proportion of variance explained (<span class="math inline">\(R^2\)</span>) from an ANOVA based upon family-level data. Often we treat the family unit as a random effect in an analysis of variance. In <code>R</code> we fit random effects models using the <code>lmer</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lme4)
-h2.cold &lt;-<span class="st"> </span><span class="kw">lmer</span>(Cold ~<span class="st"> </span>(<span class="dv">1</span>|Mom), <span class="dt">data=</span>seedlings)
+h2.cold &lt;-<span class="st"> </span><span class="kw">lmer</span>(Cold <span class="op">~</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Mom), <span class="dt">data=</span>seedlings)
 <span class="kw">summary</span>(h2.cold)</code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
 ## Formula: Cold ~ (1 | Mom)
@@ -461,7 +464,7 @@ h2.cold &lt;-<span class="st"> </span><span class="kw">lmer</span>(Cold ~<span c
 ## (Intercept)    91.96       2.85   32.26</code></pre>
 <p>If you are not familiar with fitting a random effect to a model in R, this may look a bit odd. The formula <code>Cold ~ (1|Mom)</code> is examining differences among the length of dormancy as explained by seedlings grouped by mother. The maternal stratum is treated as a random effect because we are assuming that the mothers we used are a random selection from a much broader population of mothers. The differences between a random and a fixed effects model is in how we estimate the variance components. In a fixed effect model, the expectation for the treatment variance is based solely upon the treatment effect <span class="math inline">\(E[\sigma_A^2] = MSA\)</span>. However, in a random effects model, we assume that since we are sampling on a random subsample of potential mothers, the treatment effect is a bit upwardly biased and we need to correct that variance.</p>
 <p>Here is an example of how those differ. Treating mother as a fixed effect, we can see the estimates of the varince for both Mom and Residuals as the values int he third column.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>( <span class="kw">aov</span>(Cold~Mom,<span class="dt">data=</span>seedlings))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>( <span class="kw">aov</span>(Cold<span class="op">~</span>Mom,<span class="dt">data=</span>seedlings))</code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: Cold
@@ -476,8 +479,8 @@ h2.cold &lt;-<span class="st"> </span><span class="kw">lmer</span>(Cold ~<span c
 ##  Mom      (Intercept) 136.55  
 ##  Residual             116.37</code></pre>
 <p>Then from the formula above, we can estimate the fraction of the total variance that is attributed to the family effect as:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sigmas &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>( <span class="kw">VarCorr</span>( h2.cold) )$vcov
-H2 &lt;-<span class="st"> </span>sigmas[<span class="dv">1</span>] /<span class="st"> </span><span class="kw">sum</span>( sigmas )
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sigmas &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>( <span class="kw">VarCorr</span>( h2.cold) )<span class="op">$</span>vcov
+H2 &lt;-<span class="st"> </span>sigmas[<span class="dv">1</span>] <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>( sigmas )
 H2</code></pre></div>
 <pre><code>## [1] 0.539898</code></pre>
 <p>This result shows suggests that roughly 53.99% of the variation can be attributed to genetic effects.</p>
@@ -523,18 +526,18 @@ h^2 = \frac{\sigma_A^2}{\sigma_P^2}
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
 <script>
-require(["gitbook"], function(gitbook) {
+gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
 "github": false,
 "facebook": false,
 "twitter": false,
 "google": false,
+"linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "weibo", "instapaper"],
-"instapaper": false
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -542,6 +545,10 @@ gitbook.start({
 "size": 2
 },
 "edit": {
+"link": null,
+"text": null
+},
+"history": {
 "link": null,
 "text": null
 },
@@ -560,9 +567,11 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

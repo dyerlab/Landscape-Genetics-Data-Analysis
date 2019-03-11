@@ -925,7 +925,7 @@ And then you can add additional options to the plot, like axis labels and a less
 p <- ggplot() + geom_edgeset( aes(x=Longitude,y=Latitude), lopho, color="darkgrey" )
 p <- p + geom_nodeset( aes(x=Longitude, y=Latitude, color=Region, size=size), lopho) 
 p <- p + xlab("Longitude") + ylab("Latitude") 
-p + theme_empty()
+p + theme_minimal()
 ```
 
 You can also use the default layout routines in *igraph* for visualization.  Here is an example using Fruchterman-Reingold algorithm.
@@ -937,7 +937,7 @@ V(lopho)$x <- c[,1]
 V(lopho)$y <- c[,2]
 p <- ggplot() + geom_edgeset( aes(x,y), lopho, color="darkgrey" )
 p <- p + geom_nodeset( aes(x, y, color=Region, size=size), lopho) 
-p + theme_empty()
+p + theme_minimal()
 ```
 
 ### Reading Existing **popgraph** Files
