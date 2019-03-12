@@ -18,14 +18,16 @@ This afternoon's activity is focused on understanding how to work with genetic m
 
                                                                         
     
-<!-- ########################################################################
+<!-- 
+########################################################################
  _____                 _   _       ___  ___           _                 
 |  __ \               | | (_)      |  \/  |          | |                
 | |  \/ ___ _ __   ___| |_ _  ___  | .  . | __ _ _ __| | _____ _ __ ___ 
 | | __ / _ \ '_ \ / _ \ __| |/ __| | |\/| |/ _` | '__| |/ / _ \ '__/ __|
 | |_\ \  __/ | | |  __/ |_| | (__  | |  | | (_| | |  |   <  __/ |  \__ \
  \____/\___|_| |_|\___|\__|_|\___| \_|  |_/\__,_|_|  |_|\_\___|_|  |___/
-########################################################################  -->                                                                    
+########################################################################  
+-->                                                                    
 
 ## Genetic Markers, Types and Usage
 
@@ -39,6 +41,7 @@ Here are some basic constructs for how to create and manipulate `locus` objects.
 
 ```{r}
 library(gstudio)
+library(tidyverse)
 loc0 <- locus()
 loc0
 ```
@@ -124,19 +127,27 @@ Spatial coordinates for strata can be extracted using `strata_coordinates()`, wh
 
 ```{r}
 library(DT)
-coords <- strata_coordinates( arapat )
-datatable(coords, rownames = FALSE)
+
+strata_coordinates( arapat ) %>% 
+  datatable(rownames=FALSE)
+
+#coords <- strata_coordinates( arapat )
+#datatable(coords, rownames = FALSE)
 ```
 
 Creating maps of locales are also such a common feature that *gstudio* has integration with online mapping providers, allowing you to grab some map tiles from Google, OSM, and other map providers and use them to overlay your data.  Just as we did yesterday, the *ggplot* package provides the basic plotting and *gstudio* provided two geometry layers, `geom_strata` and `geom_strata_label` to help out.  Notice here also that for both of these layers, you just pass the raw `data.frame` object to it and as long as you have "Population", "Latitude", and "Longitude" columns in it, the functions take care of the plotting for you.
 
 ```{r message=FALSE, warning=FALSE}
 library( ggmap )
-library( ggplot2 ) 
-map <- population_map(coords)
-p <- ggmap( map )
-p <- p + geom_strata(data=arapat) + geom_strata_label( data=arapat )
-p
+strata_coordinates( arapat ) %>% 
+  population_map() -> map  
+
+map %>% 
+  ggmap() + geom_strata(data=arapat) + geom_strata_label( data=arapat )
+#map <- population_map(coords)
+#p <- ggmap( map )
+#p <- p + geom_strata(data=arapat) + geom_strata_label( data=arapat )
+#p
 ```
 
 
@@ -158,38 +169,49 @@ p
 At a base level, the frequency of alleles constitute the most basic type of data relevant to population genetic analyses.  You can estimate allele frequencies at several different levels from your data.
 
 ```{r}
-freqs <- frequencies( arapat )
-datatable( freqs, rownames = FALSE )
+arapat %>% 
+  frequencies() %>%
+  mutate( Frequency = round( Frequency, 4) ) %>%
+  datatable( rownames=FALSE )
 ```
 
 By default, function in *gstudio* return the data in a normal `data.frame` object (most cases) or as a `matrix` (in the case of genetic distances).  This ensures that your workflow can proceed in a normal fashion.  However, at times, things like allele frequencies are best handled as matrix objects (e.g., if you are going to use the allele frequencies in multivariate analyses or ordination).  For that purpose in particular, we can use the function `frequency_matrix`
 
 ```{r}
-freqs_mv <- frequency_matrix( arapat, locus = c("LTRS","ZMP") )
-datatable( freqs_mv, rownames=FALSE)
+arapat %>%
+  frequency_matrix( locus=c("LTRS","ZMP") ) %>%
+  datatable( rownames = FALSE)
 ```
 
-creates a wide data.frame format for analyses. Also notice that I included a specification on which loci I was interested in using---by default it uses all of them for most analysis functions.  If you don't need all the data, no need to calculate all the parameters and then shuffle through all the output.
+creates a wide data.frame format for analyses. Also notice that I included a specification on which loci I was interested in using--by default it uses all of them for most analysis functions.  If you don't need all the data, no need to calculate all the parameters and then shuffle through all the output.
 
 Individual stratum-level visualization may help interpret landscape-level patterns of genetic structure.  To estimate allele frequencies along partitions in your data, you must specify the stratum to use a populations. Here I use the frequency of one of the two alleles at the LTRS locus, estimate by "Population".
 
 ```{r}
-f <- frequencies(arapat,loci="LTRS",stratum="Population")
-f <- f[ f$Allele=="01",]
+arapat %>%
+  frequencies( loci="LTRS", stratum="Population" ) %>%
+  filter( Allele == "01" ) %>%
+  mutate( Frequency = round(Frequency, 3) ) -> f
+
 head(f)
 ```
 
 whose values can be used directly in `ggplot` as once we merge in the two `data.frame` objects, combining coordinates and frequencies (to use `merge` you must have a common column in your data.frame that can serve as an index).  The frequency can be displayed as the size of the point
 
 ```{r warning=FALSE, message=FALSE}
-coords <- merge( coords, f[,c(1,4)])
-ggmap( map ) + geom_point( aes(x=Longitude,y=Latitude,size=Frequency),data=coords)
+arapat %>%
+  strata_coordinates() %>%
+  merge(f) -> coords
+
+ggmap( map ) + 
+  geom_point( aes(x=Longitude, y=Latitude, size=Frequency), data=coords)
 ```
 
 or the color of the point
 
 ```{r}
-ggmap( map ) + geom_point( aes(x=Longitude,y=Latitude,color=Frequency),data=coords)
+ggmap( map ) +
+  geom_point( aes(x=Longitude,y=Latitude,color=Frequency),data=coords)
 ```
 
 depending upon what you think may be more effective at displaying the spatial patterns.
@@ -228,11 +250,11 @@ In this section, we delve in to what that means, where it comes from, and how we
 In addition to analyzing your data, you can simulate data in *gstudio* to mimic several of the processes we will discuss in this section.  We will start with the frequencies we calculated in the previous example for the ZMP locus and create a random population with those frequencies.
 
 ```{r warning=FALSE}
-freqs <- frequencies( arapat, stratum="Species", loci="ZMP")
-freqs <- freqs[ freqs$Stratum == "Peninsula",]
-locus1 <- make_loci(freqs, N = 100)
-data <- data.frame( ID=1:100, Locus=locus1 ) 
-summary( data)
+arapat %>%
+  frequencies( stratum="Species") %>%
+  filter( Locus == "ZMP", Stratum == "Peninsula" ) %>%
+  make_loci( N = 100 ) -> genotypes
+genotypes
 ```
 
 ### Genetic Assumptions
@@ -240,7 +262,7 @@ summary( data)
 Implicit in the description above is a characterization of what constitutes a genotype.  For simplicity, as this is the way it was originally defined, we will assume that the species we are looking at is diploid, carrying homologous chromosomes from both parents.  Diploidy means that in the adult life stage, each individual has two copies of each allele, one from each parental individual. If diploid is true, we can denote the genotype as $AA$ for the diploid homozygote, $AB$ for the heterozygote, and $BB$ for the other diploid homozygote.  If it is not true and the species (at least at that life stage) is haploid, then will will represent the genotype as $A$ or $B$. Higher levels of ploidy (triploid, tetraploid, hexaploid, etc.) are also possible in many taxa.  While the math that follows is essentially the same for these ploidy levels, the actual algebra is a bit more messy.  If you are working on taxa with higher ploidy levels, you can do many of the same operations we will focus on in *gstudio*, consult the documentation for more information.  To check the ploidy level in your data (e.g., the number of alleles at a locus) we can use the `ploidy()` function
 
 ```{r}
-ploidy(data$Locus )
+ploidy( genotypes )
 ```
 
 In addition to ploidy, genetic constraints on the formulation of the classic HWE assume that the species has two separate sexes, both of which contribute to the next generation.  In general, this rules out uniparentally inherited markers such as mtDNA or cpDNA, which are transmitted in most cases by only one of the sexes during reproduction.  Examining mating events between diploid individuals is something we should all remember from basic biology and genetics through the use of the Punnet Square.  That was a tool designed to teach us about sexual mating, however, it is also a great example of the probabilities of mating we see in sexual reproduction.  These probabilities play direct roles in the derivation of HWE.
@@ -258,7 +280,7 @@ The population we are examining need to have some specific demographic parameter
 As a simulation tool, it is very important to understand that when doing stochastic approximations, $N$ has a huge effect.  Consider the following:
 
 ```{r}
-genotype_frequencies( data$Locus )
+genotype_frequencies( genotypes )
 ```
 
 Here the expected counts are $Np^2$, $N2pq$, and $Nq^2$, conforming to the expectations from HWE, though they do differ a smidge (vernacular for small amount) from the true expectations.  When you do simulation work, you need to accept this variability as a component of the system.  However, reality also conforms to these same issues, populations are not infinite, populations are finite in size, etc. Perhaps the issue is our portrayal of the natural world using conventions like $N=\infty$, the genetic neighborhood is defined by a perfect circle with a constant radius, and dispersal follows a continuous and isotropic distance function...  These are great to make the equations better for theoreticians but may not capture the kinds of dynamic processes that are most important to landscape genetic studies.
@@ -456,16 +478,12 @@ A = \ell
 where $\ell$ is the number of observed alleles.  We can estimate allelic diversity by passing the function either a vector of locus objects
 
 ```{r}
-genetic_diversity( arapat$MP20, mode="A" )
+arapat %>%
+  select( MP20 ) %>%
+  genetic_diversity(mode="A")
 ```
 
-or a `data.frame` that has one or more columns of data that are locus objects as determined by the `column_class()` function.  
-
-```{r}
-genetic_diversity( arapat, mode="A" )
-```
-
-The concern associated with using a parameter such as $A$ is that it throws away any information about relative abundance.  For example, a data set with alleles found at an abundance of $N_A = 999$ and $N_B = 1$ would have the exact same frequency independent diversity as another sample with $N_A = N_B = 500$, namely $A = 2$.  
+or a `data.frame` that has one or more columns of data that are locus objects as determined by the `column_class()` function.  The concern associated with using a parameter such as $A$ is that it throws away any information about relative abundance.  For example, a data set with alleles found at an abundance of $N_A = 999$ and $N_B = 1$ would have the exact same frequency independent diversity as another sample with $N_A = N_B = 500$, namely $A = 2$.  
 
 *Frequency Dependent Diversity* - A slightly more stringent approach may be to estimate the diversity of alleles in a frequency dependent fashion, specifying a particular cutoff.  The parameter $A_{95}$ is a common parameter that provides a count of the number of alleles present in a sample whose frequencies exceed a threshold of 5%.  
 
@@ -476,15 +494,17 @@ A_{95} = \left| A_{freq(\ell)>0.05} \right|
 This threshold is entirely arbitrary in the same way that we use $\alpha=0.05$ as a cutoff in the teaching of formalized hypothesis testing.  It could just as easily be 3%, 1%, or 10% but has a historical trajectory  in its current form.  The $A_{95}$ parameter does remove some of the problems associated with rare alleles in our data sets as is shown by comparing the diversity of the most allele rich locus MP20 using $A$
 
 ```{r}
-mp20.A <- genetic_diversity( arapat$MP20, mode="A")
-mp20.A
+arapat %>%
+  select( MP20 ) %>%
+  genetic_diversity(mode="A")
 ```
 
 and $A_{95}$
 
 ```{r}
-mp20.A95 <- genetic_diversity( arapat$MP20, mode="A95")
-mp20.A95
+arapat %>%
+  select( MP20 ) %>%
+  genetic_diversity( mode="A95")
 ```
 
 Here 15 of the alleles we observed in the full data set occurred at a frequency less than 5%!
@@ -498,7 +518,8 @@ A_e = \frac{1}{\sum_{i=1}^\ell p_i^2}
 and is the default mode of diversity provided by the `genetic_diversity()` function (e.g., the one you get if you do not specify `mode=`).
 
 ```{r}
-genetic_diversity( arapat, mode="Ae")
+arapat %>% 
+  genetic_diversity( mode="Ae" )
 ```
 
 Notice that $A \ge A_e \ge A_{95}$, as $A_e$ integrates the contributions of those low frequency alleles.  None of these parameters are perfect, though all provide some measurement of diversity at the level of the allele.
@@ -514,7 +535,9 @@ H_O = \frac{N_{ij}}{N}
 where $N_{ij}$ is the count of all heterozygous genotypes.  The `mode="Ho"` option in `genetic_diversity()` returns these values. 
 
 ```{r}
-genetic_diversity(arapat, mode="Ho")
+arapat %>% 
+  genetic_diversity(mode="Ho") %>%
+  mutate( Ho = round( Ho, 4 ) )
 ```
 
 The second parameter, expected heterozygosity ($H_e$), is slightly different in that it is a parameter that needs to be estimated from data.  It represents the fraction of genotypes in the data set that are expected to be heterozygous, if the sample is in equilibrium.  The value for this function depends upon the data that you are estimating and how it is configured.  If it is estimated from a single locale, then the parameter can be estimated directly as the expected fraction that are not homozygous.
@@ -526,9 +549,20 @@ H_E = 1 - \sum_{i=1}^\ell p_i^2
 (where $\ell$ is the number of alleles at the locus).  Here is an example of expected heterozygosity for the LTRS and MP20 loci.
 
 ```{r}
-genetic_diversity( arapat$LTRS , mode="he")
-genetic_diversity( arapat$MP20, mode="he" ) 
+arapat %>%
+  genetic_diversity( mode="he") %>%
+  filter( Locus %in% c("LTRS","MP20"))
 ```
+
+which is identical to 
+
+```{r eval=FALSE}
+arapat %>%
+  select( LTRS, MP20 ) %>%
+  genetic_diversity( mode="he") 
+```
+
+but I filter the rows of the results in the former whereas I only grab the locus columns for the two loci before estimating diversity in the latter.
 
 In an ideal world, we would be able to have enough resources to sample for these parameters with so many individuals, they would be well behaved.  Unfortunately, we do not live in the real world and in many cases our ability to sample lots of individuals is limited.  This problem is not a new thing, we estimate the sums of square and divide by $N-1$ instead of $N$ because if we we use the later, we are producing a biased estimate.  Unless you are working with *all* the samples, every time we make population genetic inferences we will be doing so on a sub-sample of the total data available.  The `arapat` data set is no where near a major component of the species, it is only a sample.  From this sample, we *estimate* allele frequencies on which we derive our *estimates* of parameters such as $H_E$.  As such, if we used the formulas above to estimate everything in every study, we would have biased estimators of... pretty much everything.  However, the fix is not one that is too difficult to put in, and it has a pretty well established set of behaviors.  As such, if we are estimating these parameters in a single locale (for more than one location, we have further corrections to make), we should probably apply a small sample size correction.  In general, this correction is:
 
@@ -542,8 +576,9 @@ The front part is a small sample size correction factor.  Its importance in your
 library(ggplot2)
 N <- 1:100
 CF <- (2*N) / ( 2*N-1)
-df <- data.frame( N, CF)
-ggplot( df, aes(N,CF) ) + geom_line()
+
+data.frame( N, CF) %>% 
+  ggplot( aes(N,CF) ) + geom_line()
 ```
 
 
@@ -559,6 +594,7 @@ H_S = \frac{\tilde{N}}{\tilde{N}-1}\left[ 1 - \sum_{i=1}^\ell \frac{p_i^2}{K} - 
 where $\tilde{N}$ is the harmonic mean number of genotypes sampled across each of the $K$ strata.  Notice here I use the term $H_S$ instead of $H_E$ so that there isn't any doubt about the differences when we write and talk about these parameters.  This formulation (after Nei 1987) corrects for the sampling across separate  locations.  To indicate that your estimate is being made using subdivided groups of samples, pass the `stratum=` parameter to `genetic_diversity()` and set `mode="Hes".  We can see the magnitude of the correction by looking at a single population and comparing the estimates of $H_S$ for corrected and non-corrected parameters.
 
 ```{r}
+################  HERE HERE HERE
 pops <- arapat[ arapat$Population %in% c("32","101","102"),]
 he <- genetic_diversity( pops, mode="He")
 hes <- genetic_diversity(pops, stratum="Population", mode="Hes")[1:8,]
