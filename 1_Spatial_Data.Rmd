@@ -999,7 +999,6 @@ map + coord_map("fisheye",par=3)
 or any other projection available listed in the `mapproject()` function.
 
 
-
 ## Questions
 
 1. The [WorldClim](http://worldclim.org) organization makes a set of bioclimatic data available for free.  Grab the raster layers for Tile 22 (they are in the <tt>data</tt> folder) and crop them down to an extent that covers the entirety of sampling locations for the *arapat* data set.
@@ -1025,5 +1024,114 @@ summary( rho[ lower.tri(rho)])
 2. Is there more variation in elevation in a circular neighborhood around Loreto (Lon: -111.343333, Lat: 26.012778 ) or Guerrero Negro (Lon: -114.056111, Lat:27.958889)?  Use a buffer width of 0.04.
 
 3. Which sampling location is highest in elevation?  Which has the hottest summers?
+
+
+
+
+## Appendix - Other Plotting Tools
+
+There are a bunch of other plotting tools that you can use for plotting and making maps.  Here I provide some additional examples.
+
+
+### Rasters & ggplot
+
+If you like using `ggplot`, you can leverage its plotting abilities to work directly with raster data.  Let's look at the first biolayer and the traditional plotting of it (n.b., I'm using the `tidyverse` pipe characters here to pipe the output of the `raster()` function into the input of the `crop()`, we will see a lot more of this as we go forward).
+
+```{r}
+library(tidyverse)
+raster("./spatial_data/bio1.tif") %>%
+  crop( extent( c(-115,-109,22,30) ) ) -> the_raster
+  
+plot( the_raster )
+```
+
+Since ggplot works on data.frames, we need to turn the 
+
+```{r}
+rasterToPoints( the_raster ) %>% 
+  data.frame() -> df
+summary(df)
+```
+
+Since I now have a set of x, y, and `bio1` variables, we can now plot them but instead of points, we can use the `geom_tile()` function.
+
+```{r}
+ggplot(df,aes(x,y,fill=bio1)) + 
+  geom_tile() 
+```
+
+By default, `ggplot` attempts to make a square plot independent of the range of values on the x- and y- axes.  However, our plot is intended to represent area on the ground where the scale for longitude is equal to the scale for latitude (n.b., not actually true but for this sized plot it is true enough).
+
+```{r}
+ggplot(df,aes(x,y,fill=bio1)) + 
+  geom_tile() +
+  coord_equal() + 
+  xlab("Longitude") + ylab("Latitude") 
+```
+
+
+```{r}
+ggplot(df,aes(x,y,fill=bio1)) + 
+  geom_tile() +
+  coord_equal() + 
+  xlab("Longitude") + ylab("Latitude")  + 
+  scale_fill_gradientn(colours = terrain.colors(7))
+```
+
+As with most things in `ggplot`, you can customize the plot by layers or transformation or whatever to the plot.  Here I make the range of values as degree celsius and change the legend and add a different color scheme.
+
+```{r}
+ggplot(df,aes(x,y,fill=bio1/10.0)) + 
+  geom_tile() +
+  coord_equal() + 
+  labs(fill="Temperature (C)") +
+  xlab("Longitude") + ylab("Latitude")  + 
+  scale_fill_distiller(palette = "Spectral")
+```
+
+
+### ggmap
+
+The ggplot2 library does a ton of stuff and it is probably in your best interests to become familiar with it at your earliest convience.  For mapping, there is an associated package `ggmap` that will go and grab tiles for you and allow you to plot them in your current workflow.  Here is an example of how it works.
+
+```{r}
+library(ggmap)
+map <- get_map( location = c(-111.3, 26.0) )
+ggmap(map)
+```
+
+Alone, you pass it a centroid and it takes a default 'zoom' level for what you are doing.  If you are looking at plotting stuff on top of that tile, then you will need to futz (that means play around with in Rodney vernacular) the value of the zoom parameter.  Ranges for this parameter are dependent upon which map tile provider you are using.  For `source="google"` (the default at this time), they range from 3 (continental scale) to 21 (building scale).  OpenStreetMaps (`source="osm"`) limits the upper level to 10 and Stamen maps depend upon the type of map being displayed.
+
+
+Adding points onto an existing map is just like other ggplot operations. Notice how the points plotted are cropped to the extent of the underlying map. 
+
+```{r}
+library(ggrepel)
+library(gstudio)
+data(arapat)
+coords <- strata_coordinates(arapat)
+
+ggmap(map) + 
+  geom_point( aes(x=Longitude,y=Latitude), data=coords) + 
+  geom_label_repel( aes(x=Longitude, y=Latitude, label=Stratum), data=coords) +
+  xlab("Longitude") + ylab("Latitude")
+
+```
+
+For the full extent you'd have to make a new underlying map tile.
+
+```{r}
+population_map(coords) %>%
+  ggmap()  + 
+    geom_point( aes(x=Longitude,y=Latitude), data=coords) + 
+    geom_label_repel( aes(x=Longitude, y=Latitude, label=Stratum), data=coords) +
+    xlab("Longitude") + ylab("Latitude")
+```
+
+
+
+**Attention:** Recently, google has changed its terms of service for map tile usage that impacts the use of ggmap if you are going to use their maps.  They require you to register to get an API key to use the maps.  This key is *your* key and you should not share it with anyone.  You can find out more [here](https://developers.google.com/maps/documentation/javascript/get-api-key).  For registering you will be given \$200 montly credit, which translates into 100,000 static map calls per month.  If you go over 100,000 map calls, you will be charged \$1 per 1000 map calls.  If your analyses are producing 100,000 map requests per month (e.g., a map call every 25 seconds for the entire 43,200 minutes in the month), then you will have to pay.  For all intents and purposes, this is free to us.  A [calculator](https://mapsplatformtransition.withgoogle.com/calculator) is available if you are going to be doing some high-throughput mapping (we are asking for "static maps" in R).  If you do not like registering for this, you can use `source="osm"` or `source="stamen"` for your plotting.
+
+
 
 

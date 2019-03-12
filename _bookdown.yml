@@ -1,6 +1,7 @@
 book_filename: "LGDA"
 chapter_name: ""
 output_dir: "docs"
+delete_merged_file: true
 rmd_files: [
   "index.Rmd",
   "1_Spatial_Data.Rmd", 
