@@ -62,8 +62,8 @@ The data presented represent the seedlings that had survived to the end of the g
 
 Source | Treatment | Number of Trees | Offspring
 -------|:----------|:---------------:|:----------:
-fan    | Cultivar  | 24              | 131
-rice   | Native    | 9               | 40
+Fan    | Cultivar  | 24              | 131
+Rice   | Native    | 9               | 40
 
 Quantitative measurements were made on each seedling throughout the growing season to determine if cultivar types were producing different phenotypes than native stock.  Some of the measured traits include:
 

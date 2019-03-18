@@ -47,17 +47,6 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
-<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.5/datatables.js"></script>
-<link href="libs/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
-<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
-<script src="libs/d3-4.5.0/d3.min.js"></script>
-<script src="libs/dendroNetwork-binding-0.4/dendroNetwork.js"></script>
-<script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
 
 
 <style type="text/css">
@@ -145,10 +134,20 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="1.11.2" data-path="spatial-data.html"><a href="spatial-data.html#cropping-rasters-via-polygons"><i class="fa fa-check"></i><b>1.11.2</b> Cropping Rasters Via Polygons</a></li>
 <li class="chapter" data-level="1.11.3" data-path="spatial-data.html"><a href="spatial-data.html#cropping-rasters-via-convex-hull"><i class="fa fa-check"></i><b>1.11.3</b> Cropping Rasters Via Convex Hull</a></li>
 <li class="chapter" data-level="1.11.4" data-path="spatial-data.html"><a href="spatial-data.html#extracting-point-data-from-rasters"><i class="fa fa-check"></i><b>1.11.4</b> Extracting Point Data From Rasters</a></li>
-<li class="chapter" data-level="1.11.5" data-path="spatial-data.html"><a href="spatial-data.html#extracting-neighborhood-data-from-rasters"><i class="fa fa-check"></i><b>1.11.5</b> Extracting Neighborhood Data from Rasters</a></li>
-<li class="chapter" data-level="1.11.6" data-path="spatial-data.html"><a href="spatial-data.html#reprojecting-rasters"><i class="fa fa-check"></i><b>1.11.6</b> Reprojecting Rasters</a></li>
 </ul></li>
-<li class="chapter" data-level="1.12" data-path="spatial-data.html"><a href="spatial-data.html#questions"><i class="fa fa-check"></i><b>1.12</b> Questions</a></li>
+<li class="chapter" data-level="1.12" data-path="spatial-data.html"><a href="spatial-data.html#s4-method-for-signature-raster"><i class="fa fa-check"></i><b>1.12</b> S4 method for signature ‘Raster’</a></li>
+<li class="chapter" data-level="1.13" data-path="spatial-data.html"><a href="spatial-data.html#s4-method-for-signature-spatialgrid"><i class="fa fa-check"></i><b>1.13</b> S4 method for signature ‘SpatialGrid’</a></li>
+<li class="chapter" data-level="1.14" data-path="spatial-data.html"><a href="spatial-data.html#s4-method-for-signature-spatialpolygons"><i class="fa fa-check"></i><b>1.14</b> S4 method for signature ‘SpatialPolygons’</a></li>
+<li class="chapter" data-level="1.15" data-path="spatial-data.html"><a href="spatial-data.html#s4-method-for-signature-spatiallines"><i class="fa fa-check"></i><b>1.15</b> S4 method for signature ‘SpatialLines’</a></li>
+<li class="chapter" data-level="1.16" data-path="spatial-data.html"><a href="spatial-data.html#s4-method-for-signature-spatialpoints"><i class="fa fa-check"></i><b>1.16</b> S4 method for signature ‘SpatialPoints’</a><ul>
+<li class="chapter" data-level="1.16.1" data-path="spatial-data.html"><a href="spatial-data.html#extracting-neighborhood-data-from-rasters"><i class="fa fa-check"></i><b>1.16.1</b> Extracting Neighborhood Data from Rasters</a></li>
+<li class="chapter" data-level="1.16.2" data-path="spatial-data.html"><a href="spatial-data.html#reprojecting-rasters"><i class="fa fa-check"></i><b>1.16.2</b> Reprojecting Rasters</a></li>
+</ul></li>
+<li class="chapter" data-level="1.17" data-path="spatial-data.html"><a href="spatial-data.html#questions"><i class="fa fa-check"></i><b>1.17</b> Questions</a></li>
+<li class="chapter" data-level="1.18" data-path="spatial-data.html"><a href="spatial-data.html#appendix---other-plotting-tools"><i class="fa fa-check"></i><b>1.18</b> Appendix - Other Plotting Tools</a><ul>
+<li class="chapter" data-level="1.18.1" data-path="spatial-data.html"><a href="spatial-data.html#rasters-ggplot-1"><i class="fa fa-check"></i><b>1.18.1</b> Rasters &amp; ggplot</a></li>
+<li class="chapter" data-level="1.18.2" data-path="spatial-data.html"><a href="spatial-data.html#ggmap"><i class="fa fa-check"></i><b>1.18.2</b> ggmap</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="genetic-data.html"><a href="genetic-data.html"><i class="fa fa-check"></i><b>2</b> Genetic Data</a><ul>
 <li class="chapter" data-level="2.1" data-path="genetic-data.html"><a href="genetic-data.html#synopsis-1"><i class="fa fa-check"></i><b>2.1</b> Synopsis</a></li>
@@ -206,11 +205,13 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="3.5" data-path="resistance-models.html"><a href="resistance-models.html#resistance-models-1"><i class="fa fa-check"></i><b>3.5</b> Resistance Models</a><ul>
 <li class="chapter" data-level="3.5.1" data-path="resistance-models.html"><a href="resistance-models.html#the-mantel-test"><i class="fa fa-check"></i><b>3.5.1</b> The Mantel Test</a></li>
-<li class="chapter" data-level="3.5.2" data-path="resistance-models.html"><a href="resistance-models.html#the-partial-mantel"><i class="fa fa-check"></i><b>3.5.2</b> The Partial Mantel</a></li>
-<li class="chapter" data-level="3.5.3" data-path="resistance-models.html"><a href="resistance-models.html#distance-regression"><i class="fa fa-check"></i><b>3.5.3</b> Distance Regression</a></li>
-<li class="chapter" data-level="3.5.4" data-path="resistance-models.html"><a href="resistance-models.html#model-comparisons-concerns"><i class="fa fa-check"></i><b>3.5.4</b> Model Comparisons &amp; Concerns</a></li>
 </ul></li>
-<li class="chapter" data-level="3.6" data-path="resistance-models.html"><a href="resistance-models.html#questions-2"><i class="fa fa-check"></i><b>3.6</b> Questions</a></li>
+<li class="chapter" data-level="3.6" data-path="resistance-models.html"><a href="resistance-models.html#is-vegetation-related-to-environment"><i class="fa fa-check"></i><b>3.6</b> Is vegetation related to environment?</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="resistance-models.html"><a href="resistance-models.html#the-partial-mantel"><i class="fa fa-check"></i><b>3.6.1</b> The Partial Mantel</a></li>
+<li class="chapter" data-level="3.6.2" data-path="resistance-models.html"><a href="resistance-models.html#distance-regression"><i class="fa fa-check"></i><b>3.6.2</b> Distance Regression</a></li>
+<li class="chapter" data-level="3.6.3" data-path="resistance-models.html"><a href="resistance-models.html#model-comparisons-concerns"><i class="fa fa-check"></i><b>3.6.3</b> Model Comparisons &amp; Concerns</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="resistance-models.html"><a href="resistance-models.html#questions-2"><i class="fa fa-check"></i><b>3.7</b> Questions</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="space-networks.html"><a href="space-networks.html"><i class="fa fa-check"></i><b>4</b> Space &amp; Networks</a><ul>
 <li class="chapter" data-level="4.1" data-path="space-networks.html"><a href="space-networks.html#synopsis-3"><i class="fa fa-check"></i><b>4.1</b> Synopsis</a></li>
@@ -225,25 +226,27 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.5.1" data-path="space-networks.html"><a href="space-networks.html#node-edge-attributes"><i class="fa fa-check"></i><b>4.5.1</b> Node &amp; Edge Attributes</a></li>
 <li class="chapter" data-level="4.5.2" data-path="space-networks.html"><a href="space-networks.html#plotting-a-graphs"><i class="fa fa-check"></i><b>4.5.2</b> Plotting a Graphs</a></li>
 </ul></li>
-<li class="chapter" data-level="4.6" data-path="space-networks.html"><a href="space-networks.html#mapping-networks"><i class="fa fa-check"></i><b>4.6</b> Mapping Networks</a></li>
-<li class="chapter" data-level="4.7" data-path="space-networks.html"><a href="space-networks.html#genetic-distance-graphs"><i class="fa fa-check"></i><b>4.7</b> Genetic Distance Graphs</a></li>
-<li class="chapter" data-level="4.8" data-path="space-networks.html"><a href="space-networks.html#population-graphs"><i class="fa fa-check"></i><b>4.8</b> Population Graphs</a></li>
-<li class="chapter" data-level="4.9" data-path="space-networks.html"><a href="space-networks.html#adding-data-to-a-graph"><i class="fa fa-check"></i><b>4.9</b> Adding data to a graph</a><ul>
-<li class="chapter" data-level="4.9.1" data-path="space-networks.html"><a href="space-networks.html#plotting-a-graph-using-ggplot2-routines"><i class="fa fa-check"></i><b>4.9.1</b> Plotting a graph using <strong>ggplot2</strong> routines</a></li>
-<li class="chapter" data-level="4.9.2" data-path="space-networks.html"><a href="space-networks.html#reading-existing-popgraph-files"><i class="fa fa-check"></i><b>4.9.2</b> Reading Existing <strong>popgraph</strong> Files</a></li>
-<li class="chapter" data-level="4.9.3" data-path="space-networks.html"><a href="space-networks.html#saving-population-graph-objects"><i class="fa fa-check"></i><b>4.9.3</b> Saving Population Graph Objects</a></li>
-<li class="chapter" data-level="4.9.4" data-path="space-networks.html"><a href="space-networks.html#interactive-networks"><i class="fa fa-check"></i><b>4.9.4</b> Interactive Networks</a></li>
-<li class="chapter" data-level="4.9.5" data-path="space-networks.html"><a href="space-networks.html#spatial-population-graphs"><i class="fa fa-check"></i><b>4.9.5</b> Spatial Population Graphs</a></li>
-<li class="chapter" data-level="4.9.6" data-path="space-networks.html"><a href="space-networks.html#integrating-google-and-ggplot2-for-plotting"><i class="fa fa-check"></i><b>4.9.6</b> Integrating Google and <strong>ggplot2</strong> for Plotting</a></li>
-<li class="chapter" data-level="4.9.7" data-path="space-networks.html"><a href="space-networks.html#integrating-raster-maps"><i class="fa fa-check"></i><b>4.9.7</b> Integrating Raster Maps</a></li>
-<li class="chapter" data-level="4.9.8" data-path="space-networks.html"><a href="space-networks.html#extracting-spatial-data-using-population-graphs"><i class="fa fa-check"></i><b>4.9.8</b> Extracting Spatial Data Using Population Graphs</a></li>
+<li class="chapter" data-level="4.6" data-path="space-networks.html"><a href="space-networks.html#not-run"><i class="fa fa-check"></i><b>4.6</b> Not run:</a></li>
+<li class="chapter" data-level="4.7" data-path="space-networks.html"><a href="space-networks.html#endnot-run"><i class="fa fa-check"></i><b>4.7</b> End(Not run)</a></li>
+<li class="chapter" data-level="4.8" data-path="space-networks.html"><a href="space-networks.html#mapping-networks"><i class="fa fa-check"></i><b>4.8</b> Mapping Networks</a></li>
+<li class="chapter" data-level="4.9" data-path="space-networks.html"><a href="space-networks.html#genetic-distance-graphs"><i class="fa fa-check"></i><b>4.9</b> Genetic Distance Graphs</a></li>
+<li class="chapter" data-level="4.10" data-path="space-networks.html"><a href="space-networks.html#population-graphs"><i class="fa fa-check"></i><b>4.10</b> Population Graphs</a></li>
+<li class="chapter" data-level="4.11" data-path="space-networks.html"><a href="space-networks.html#adding-data-to-a-graph"><i class="fa fa-check"></i><b>4.11</b> Adding data to a graph</a><ul>
+<li class="chapter" data-level="4.11.1" data-path="space-networks.html"><a href="space-networks.html#plotting-a-graph-using-ggplot2-routines"><i class="fa fa-check"></i><b>4.11.1</b> Plotting a graph using <strong>ggplot2</strong> routines</a></li>
+<li class="chapter" data-level="4.11.2" data-path="space-networks.html"><a href="space-networks.html#reading-existing-popgraph-files"><i class="fa fa-check"></i><b>4.11.2</b> Reading Existing <strong>popgraph</strong> Files</a></li>
+<li class="chapter" data-level="4.11.3" data-path="space-networks.html"><a href="space-networks.html#saving-population-graph-objects"><i class="fa fa-check"></i><b>4.11.3</b> Saving Population Graph Objects</a></li>
+<li class="chapter" data-level="4.11.4" data-path="space-networks.html"><a href="space-networks.html#interactive-networks"><i class="fa fa-check"></i><b>4.11.4</b> Interactive Networks</a></li>
+<li class="chapter" data-level="4.11.5" data-path="space-networks.html"><a href="space-networks.html#spatial-population-graphs"><i class="fa fa-check"></i><b>4.11.5</b> Spatial Population Graphs</a></li>
+<li class="chapter" data-level="4.11.6" data-path="space-networks.html"><a href="space-networks.html#integrating-google-and-ggplot2-for-plotting"><i class="fa fa-check"></i><b>4.11.6</b> Integrating Google and <strong>ggplot2</strong> for Plotting</a></li>
+<li class="chapter" data-level="4.11.7" data-path="space-networks.html"><a href="space-networks.html#integrating-raster-maps"><i class="fa fa-check"></i><b>4.11.7</b> Integrating Raster Maps</a></li>
+<li class="chapter" data-level="4.11.8" data-path="space-networks.html"><a href="space-networks.html#extracting-spatial-data-using-population-graphs"><i class="fa fa-check"></i><b>4.11.8</b> Extracting Spatial Data Using Population Graphs</a></li>
 </ul></li>
-<li class="chapter" data-level="4.10" data-path="space-networks.html"><a href="space-networks.html#extracting-graph-theoretic-parameters"><i class="fa fa-check"></i><b>4.10</b> Extracting Graph-Theoretic Parameters</a><ul>
-<li class="chapter" data-level="4.10.1" data-path="space-networks.html"><a href="space-networks.html#matrix-representations-of-population-graph-objects"><i class="fa fa-check"></i><b>4.10.1</b> Matrix Representations of Population Graph Objects</a></li>
-<li class="chapter" data-level="4.10.2" data-path="space-networks.html"><a href="space-networks.html#edge-specific-parameters"><i class="fa fa-check"></i><b>4.10.2</b> Edge Specific Parameters</a></li>
+<li class="chapter" data-level="4.12" data-path="space-networks.html"><a href="space-networks.html#extracting-graph-theoretic-parameters"><i class="fa fa-check"></i><b>4.12</b> Extracting Graph-Theoretic Parameters</a><ul>
+<li class="chapter" data-level="4.12.1" data-path="space-networks.html"><a href="space-networks.html#matrix-representations-of-population-graph-objects"><i class="fa fa-check"></i><b>4.12.1</b> Matrix Representations of Population Graph Objects</a></li>
+<li class="chapter" data-level="4.12.2" data-path="space-networks.html"><a href="space-networks.html#edge-specific-parameters"><i class="fa fa-check"></i><b>4.12.2</b> Edge Specific Parameters</a></li>
 </ul></li>
-<li class="chapter" data-level="4.11" data-path="space-networks.html"><a href="space-networks.html#testing-for-topological-congruence"><i class="fa fa-check"></i><b>4.11</b> Testing for Topological Congruence</a></li>
-<li class="chapter" data-level="4.12" data-path="space-networks.html"><a href="space-networks.html#questions-3"><i class="fa fa-check"></i><b>4.12</b> Questions</a></li>
+<li class="chapter" data-level="4.13" data-path="space-networks.html"><a href="space-networks.html#testing-for-topological-congruence"><i class="fa fa-check"></i><b>4.13</b> Testing for Topological Congruence</a></li>
+<li class="chapter" data-level="4.14" data-path="space-networks.html"><a href="space-networks.html#questions-3"><i class="fa fa-check"></i><b>4.14</b> Questions</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="quantitative-genetics.html"><a href="quantitative-genetics.html"><i class="fa fa-check"></i><b>5</b> Quantitative Genetics</a><ul>
 <li class="chapter" data-level="5.1" data-path="quantitative-genetics.html"><a href="quantitative-genetics.html#phenotypic-variance"><i class="fa fa-check"></i><b>5.1</b> Phenotypic Variance</a></li>
@@ -255,6 +258,26 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="" data-path="references-cited.html"><a href="references-cited.html"><i class="fa fa-check"></i>References Cited</a></li>
 <li class="chapter" data-level="" data-path="rgdal-rgeos.html"><a href="rgdal-rgeos.html"><i class="fa fa-check"></i>RGDAL &amp; RGEOS</a></li>
+<li class="chapter" data-level="6" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html"><i class="fa fa-check"></i><b>6</b> <code>tidyverse</code> and Its Awesomeness</a><ul>
+<li class="chapter" data-level="6.1" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#the-data"><i class="fa fa-check"></i><b>6.1</b> The Data</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#preprocessing---dates-and-times"><i class="fa fa-check"></i><b>6.1.1</b> Preprocessing - Dates and Times</a></li>
+<li class="chapter" data-level="6.1.2" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#preprocessing---removing-redundancy"><i class="fa fa-check"></i><b>6.1.2</b> Preprocessing - Removing Redundancy</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#manipulating-data"><i class="fa fa-check"></i><b>6.2</b> Manipulating Data</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#selecting-subsets-of-data"><i class="fa fa-check"></i><b>6.2.1</b> Selecting Subsets of Data</a></li>
+<li class="chapter" data-level="6.2.2" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#filtering-rows"><i class="fa fa-check"></i><b>6.2.2</b> Filtering Rows</a></li>
+<li class="chapter" data-level="6.2.3" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#selecting-and-ordering"><i class="fa fa-check"></i><b>6.2.3</b> Selecting and Ordering</a></li>
+<li class="chapter" data-level="6.2.4" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#piping-output"><i class="fa fa-check"></i><b>6.2.4</b> Piping Output</a></li>
+<li class="chapter" data-level="6.2.5" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#grouping-summarizing"><i class="fa fa-check"></i><b>6.2.5</b> Grouping &amp; Summarizing</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#the-ggplot-library"><i class="fa fa-check"></i><b>6.3</b> The <code>ggplot</code> Library</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#aesthetics"><i class="fa fa-check"></i><b>6.3.1</b> Aesthetics</a></li>
+<li class="chapter" data-level="6.3.2" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#density-plots"><i class="fa fa-check"></i><b>6.3.2</b> Density Plots</a></li>
+<li class="chapter" data-level="6.3.3" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#ggplot-themes"><i class="fa fa-check"></i><b>6.3.3</b> GGPlot Themes</a></li>
+<li class="chapter" data-level="6.3.4" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#histograms"><i class="fa fa-check"></i><b>6.3.4</b> Histograms</a></li>
+<li class="chapter" data-level="6.3.5" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#overlaying-data"><i class="fa fa-check"></i><b>6.3.5</b> Overlaying Data</a></li>
+</ul></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="http://dyerlab.com" target="blank">the Dyer Laboratory</a></li>
 
@@ -377,7 +400,7 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(GGally)
 <span class="kw">library</span>(ggplot2)
 <span class="kw">ggpairs</span>( seedlings, <span class="dt">columns=</span><span class="dv">4</span><span class="op">:</span><span class="dv">8</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-279-1.png" width="672" /></p>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>Like most data, these are imperfect. In particular, there are some families whose seedling mortality resulted in few seeds.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t &lt;-<span class="st"> </span><span class="kw">table</span>( seedlings<span class="op">$</span>Mom )
 t</code></pre></div>
@@ -395,8 +418,8 @@ seedlings &lt;-<span class="st"> </span><span class="kw">droplevels</span>( seed
 <p>Visual summaries of the measured traits are shown below.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw">ggplot</span>(seedlings) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()
 p <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>Cold), <span class="dt">alpha=</span><span class="fl">0.75</span>)</code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-282"></span>
-<img src="LGDA_files/figure-html/unnamed-chunk-282-1.png" alt="Length of time (in days) of seedling dormancy following cold stratification for seedlings collected from maternal trees in urban (fan) and native (rice) populations." width="672" />
+<div class="figure"><span id="fig:unnamed-chunk-6"></span>
+<img src="LGDA_files/figure-html/unnamed-chunk-6-1.png" alt="Length of time (in days) of seedling dormancy following cold stratification for seedlings collected from maternal trees in urban (fan) and native (rice) populations." width="672" />
 <p class="caption">
 Figure 5.1: Length of time (in days) of seedling dormancy following cold stratification for seedlings collected from maternal trees in urban (fan) and native (rice) populations.
 </p>
@@ -404,22 +427,22 @@ Figure 5.1: Length of time (in days) of seedling dormancy following cold stratif
 <p>In the remaining plot, I partion the display of phenotypic variability further by separating out seedlings that were grown in either the SUN (full light) or SHADE (reduced light) treatments.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="kw">facet_grid</span>(Treatment<span class="op">~</span>.)
 p <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>Height), <span class="dt">alpha=</span><span class="fl">0.75</span>) </code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-283"></span>
-<img src="LGDA_files/figure-html/unnamed-chunk-283-1.png" alt="The height of the seedling measured from the soil to the top of the apical meristem." width="672" />
+<div class="figure"><span id="fig:unnamed-chunk-7"></span>
+<img src="LGDA_files/figure-html/unnamed-chunk-7-1.png" alt="The height of the seedling measured from the soil to the top of the apical meristem." width="672" />
 <p class="caption">
 Figure 5.2: The height of the seedling measured from the soil to the top of the apical meristem.
 </p>
 </div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>Branches), <span class="dt">alpha=</span><span class="fl">0.75</span>) </code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-284"></span>
-<img src="LGDA_files/figure-html/unnamed-chunk-284-1.png" alt="The number of branches from the main seedling stem." width="672" />
+<div class="figure"><span id="fig:unnamed-chunk-8"></span>
+<img src="LGDA_files/figure-html/unnamed-chunk-8-1.png" alt="The number of branches from the main seedling stem." width="672" />
 <p class="caption">
 Figure 5.3: The number of branches from the main seedling stem.
 </p>
 </div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>LeafArea), <span class="dt">alpha=</span><span class="fl">0.75</span>) </code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-285"></span>
-<img src="LGDA_files/figure-html/unnamed-chunk-285-1.png" alt="The photosynthetic area measured on the largest leaf from each seedling." width="672" />
+<div class="figure"><span id="fig:unnamed-chunk-9"></span>
+<img src="LGDA_files/figure-html/unnamed-chunk-9-1.png" alt="The photosynthetic area measured on the largest leaf from each seedling." width="672" />
 <p class="caption">
 Figure 5.4: The photosynthetic area measured on the largest leaf from each seedling.
 </p>

@@ -9,5 +9,7 @@ rmd_files: [
   "3_Resistance.Rmd", 
   "4_Networks_Space.Rmd",
   "5.1_Quantitative_Genetics.Rmd",
-  "6.1_References.Rmd", "6.2_Appendix_RGDAL.Rmd"
+  "6.1_References.Rmd", 
+   "6.2_Appendix_RGDAL.Rmd",
+   "6.3_Tidyverse.Rmd"
 ]
