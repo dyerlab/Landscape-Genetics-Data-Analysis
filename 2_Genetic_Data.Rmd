@@ -374,9 +374,12 @@ Q_{t+1} &= \frac{P_tQ_t}{2} + 2P_tR_t + \frac{Q^2_t}{2} + Q_tR_t\\
 \end{aligned}
 $$
 
-Putting these together, we have an expectation that the genotypes $AA$, $AB$, and $BB$ will occur at frequencies of $p^2$, $2pq$, and $q^2$, which is exactly what HWE is.  More importantly, it takes only one generation of mating under the assumptions of HWE to return all genotype frequencies to HWE!  However, the real population frequencies differ a bit due in part (mostly) the finite size of populations.  Here we can simulate a generation of mating in the previous data as:
+Putting these together, we have an expectation that the genotypes $AA$, $AB$, and $BB$ will occur at frequencies of $p^2$, $2pq$, and $q^2$, which is exactly what HWE is.  More importantly, it takes only one generation of mating under the assumptions of HWE to return all genotype frequencies to HWE!  However, the real population frequencies differ a bit due in part (mostly) the finite size of populations.  
+
+Here we can simulate a generation of mating in the previous data.  For the following simualtions, we need to have two kinds of data, 1) genotypes, and 2) a unique ID for each individual.  
 
 ```{r}
+data <- data.frame( ID=1:length(genotypes), Locus=genotypes )
 next_gen <- mate( data, N=1 )
 table( data$Locus ) / nrow( data )
 table( next_gen$Locus ) / nrow( data )
