@@ -27,7 +27,7 @@ In the vast majority of landscape genetic studies, we focus on genetic markers a
 
 This chapter spends a bit of time focusing on the nature of phenotypes that we can measure that may contribute to fitness. Across a landscape, the interation between gentoypes and the environment create variability in phenotypes.  These phenotypes, most commonly derived from many interacting loci, are what define the fitness landscape by the way in which they respond to differing selection pressures.
 
-![A schematic representation of the relationship between genotypes, environmental fetures, phentoypes, and the resulting fitness landscape (adapted from Eckert & Dyer, 2012).)](../media/fitness-landscape.png)
+![A schematic representation of the relationship between genotypes, environmental fetures, phentoypes, and the resulting fitness landscape (adapted from Eckert & Dyer, 2012).)](./media/fitness-landscape.png)
 
 The next chapter examines how we can look at the genetic markers alone to get inferences about where selection *may* be acting---a hypotheis generating approahc.  This one focuses on measuring and determing the extent to which traits can respond to selection.
 
@@ -70,7 +70,7 @@ Here we will use some example data that was collected to understand the quantita
 An experiment was set up to collect arrays of seedling siblings from maternal individuals in both the urban environment and proximate native populations.  These seeds were germinated and grown in a greenhouse environment. Seedlings were then randomly assigned to either a full light (to mimic the urban environment) or a shaded (to represent the native understory) environment.  Several quantiative measurements were collected throughout the growning season.  A subset of these data are available in the <tt>seedlings.rda</tt> data file.
 
 
-![Dogwood seedlings growing in the greenhouse.  Seeds were collected from parental trees from urban (left) and natural (right) populations and grown in either full light (to mimic urban environments) and shaded (to mimic native popualtions)](../media/seedlings.png)
+![Dogwood seedlings growing in the greenhouse.  Seeds were collected from parental trees from urban (left) and natural (right) populations and grown in either full light (to mimic urban environments) and shaded (to mimic native popualtions)](./media/seedlings.png)
 
 ```{r echo=FALSE}
 load("seedlings.rda")

@@ -47,44 +47,80 @@
 
 
 
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.5/datatables.js"></script>
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<script src="libs/d3-4.5.0/d3.min.js"></script>
+<script src="libs/dendroNetwork-binding-0.4/dendroNetwork.js"></script>
+<script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-pre, code { background-color: #f8f8f8; }
-code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
-code > span.dt { color: #204a87; } /* DataType */
-code > span.dv { color: #0000cf; } /* DecVal */
-code > span.bn { color: #0000cf; } /* BaseN */
-code > span.fl { color: #0000cf; } /* Float */
-code > span.ch { color: #4e9a06; } /* Char */
-code > span.st { color: #4e9a06; } /* String */
-code > span.co { color: #8f5902; font-style: italic; } /* Comment */
-code > span.ot { color: #8f5902; } /* Other */
-code > span.al { color: #ef2929; } /* Alert */
-code > span.fu { color: #000000; } /* Function */
-code > span.er { color: #a40000; font-weight: bold; } /* Error */
-code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #000000; } /* Constant */
-code > span.sc { color: #000000; } /* SpecialChar */
-code > span.vs { color: #4e9a06; } /* VerbatimString */
-code > span.ss { color: #4e9a06; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #000000; } /* Variable */
-code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
-code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code > span.ex { } /* Extension */
-code > span.at { color: #c4a000; } /* Attribute */
-code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
-code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="media/style.css" type="text/css" />
@@ -102,7 +138,9 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <ul class="summary">
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Frontmatter</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Frontmatter</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#loading-required-libraries"><i class="fa fa-check"></i>Loading Required Libraries</a></li>
+</ul></li>
 <li class="chapter" data-level="1" data-path="spatial-data.html"><a href="spatial-data.html"><i class="fa fa-check"></i><b>1</b> Spatial Data</a><ul>
 <li class="chapter" data-level="1.1" data-path="spatial-data.html"><a href="spatial-data.html#synopsis"><i class="fa fa-check"></i><b>1.1</b> Synopsis</a></li>
 <li class="chapter" data-level="1.2" data-path="spatial-data.html"><a href="spatial-data.html#objectives"><i class="fa fa-check"></i><b>1.2</b> Objectives</a></li>
@@ -134,19 +172,13 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="1.11.2" data-path="spatial-data.html"><a href="spatial-data.html#cropping-rasters-via-polygons"><i class="fa fa-check"></i><b>1.11.2</b> Cropping Rasters Via Polygons</a></li>
 <li class="chapter" data-level="1.11.3" data-path="spatial-data.html"><a href="spatial-data.html#cropping-rasters-via-convex-hull"><i class="fa fa-check"></i><b>1.11.3</b> Cropping Rasters Via Convex Hull</a></li>
 <li class="chapter" data-level="1.11.4" data-path="spatial-data.html"><a href="spatial-data.html#extracting-point-data-from-rasters"><i class="fa fa-check"></i><b>1.11.4</b> Extracting Point Data From Rasters</a></li>
+<li class="chapter" data-level="1.11.5" data-path="spatial-data.html"><a href="spatial-data.html#extracting-neighborhood-data-from-rasters"><i class="fa fa-check"></i><b>1.11.5</b> Extracting Neighborhood Data from Rasters</a></li>
+<li class="chapter" data-level="1.11.6" data-path="spatial-data.html"><a href="spatial-data.html#reprojecting-rasters"><i class="fa fa-check"></i><b>1.11.6</b> Reprojecting Rasters</a></li>
 </ul></li>
-<li class="chapter" data-level="1.12" data-path="spatial-data.html"><a href="spatial-data.html#s4-method-for-signature-raster"><i class="fa fa-check"></i><b>1.12</b> S4 method for signature ‘Raster’</a></li>
-<li class="chapter" data-level="1.13" data-path="spatial-data.html"><a href="spatial-data.html#s4-method-for-signature-spatialgrid"><i class="fa fa-check"></i><b>1.13</b> S4 method for signature ‘SpatialGrid’</a></li>
-<li class="chapter" data-level="1.14" data-path="spatial-data.html"><a href="spatial-data.html#s4-method-for-signature-spatialpolygons"><i class="fa fa-check"></i><b>1.14</b> S4 method for signature ‘SpatialPolygons’</a></li>
-<li class="chapter" data-level="1.15" data-path="spatial-data.html"><a href="spatial-data.html#s4-method-for-signature-spatiallines"><i class="fa fa-check"></i><b>1.15</b> S4 method for signature ‘SpatialLines’</a></li>
-<li class="chapter" data-level="1.16" data-path="spatial-data.html"><a href="spatial-data.html#s4-method-for-signature-spatialpoints"><i class="fa fa-check"></i><b>1.16</b> S4 method for signature ‘SpatialPoints’</a><ul>
-<li class="chapter" data-level="1.16.1" data-path="spatial-data.html"><a href="spatial-data.html#extracting-neighborhood-data-from-rasters"><i class="fa fa-check"></i><b>1.16.1</b> Extracting Neighborhood Data from Rasters</a></li>
-<li class="chapter" data-level="1.16.2" data-path="spatial-data.html"><a href="spatial-data.html#reprojecting-rasters"><i class="fa fa-check"></i><b>1.16.2</b> Reprojecting Rasters</a></li>
-</ul></li>
-<li class="chapter" data-level="1.17" data-path="spatial-data.html"><a href="spatial-data.html#questions"><i class="fa fa-check"></i><b>1.17</b> Questions</a></li>
-<li class="chapter" data-level="1.18" data-path="spatial-data.html"><a href="spatial-data.html#appendix---other-plotting-tools"><i class="fa fa-check"></i><b>1.18</b> Appendix - Other Plotting Tools</a><ul>
-<li class="chapter" data-level="1.18.1" data-path="spatial-data.html"><a href="spatial-data.html#rasters-ggplot-1"><i class="fa fa-check"></i><b>1.18.1</b> Rasters &amp; ggplot</a></li>
-<li class="chapter" data-level="1.18.2" data-path="spatial-data.html"><a href="spatial-data.html#ggmap"><i class="fa fa-check"></i><b>1.18.2</b> ggmap</a></li>
+<li class="chapter" data-level="1.12" data-path="spatial-data.html"><a href="spatial-data.html#questions"><i class="fa fa-check"></i><b>1.12</b> Questions</a></li>
+<li class="chapter" data-level="1.13" data-path="spatial-data.html"><a href="spatial-data.html#appendix---other-plotting-tools"><i class="fa fa-check"></i><b>1.13</b> Appendix - Other Plotting Tools</a><ul>
+<li class="chapter" data-level="1.13.1" data-path="spatial-data.html"><a href="spatial-data.html#rasters-ggplot-1"><i class="fa fa-check"></i><b>1.13.1</b> Rasters &amp; ggplot</a></li>
+<li class="chapter" data-level="1.13.2" data-path="spatial-data.html"><a href="spatial-data.html#ggmap"><i class="fa fa-check"></i><b>1.13.2</b> ggmap</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="genetic-data.html"><a href="genetic-data.html"><i class="fa fa-check"></i><b>2</b> Genetic Data</a><ul>
@@ -205,13 +237,11 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="3.5" data-path="resistance-models.html"><a href="resistance-models.html#resistance-models-1"><i class="fa fa-check"></i><b>3.5</b> Resistance Models</a><ul>
 <li class="chapter" data-level="3.5.1" data-path="resistance-models.html"><a href="resistance-models.html#the-mantel-test"><i class="fa fa-check"></i><b>3.5.1</b> The Mantel Test</a></li>
+<li class="chapter" data-level="3.5.2" data-path="resistance-models.html"><a href="resistance-models.html#the-partial-mantel"><i class="fa fa-check"></i><b>3.5.2</b> The Partial Mantel</a></li>
+<li class="chapter" data-level="3.5.3" data-path="resistance-models.html"><a href="resistance-models.html#distance-regression"><i class="fa fa-check"></i><b>3.5.3</b> Distance Regression</a></li>
+<li class="chapter" data-level="3.5.4" data-path="resistance-models.html"><a href="resistance-models.html#model-comparisons-concerns"><i class="fa fa-check"></i><b>3.5.4</b> Model Comparisons &amp; Concerns</a></li>
 </ul></li>
-<li class="chapter" data-level="3.6" data-path="resistance-models.html"><a href="resistance-models.html#is-vegetation-related-to-environment"><i class="fa fa-check"></i><b>3.6</b> Is vegetation related to environment?</a><ul>
-<li class="chapter" data-level="3.6.1" data-path="resistance-models.html"><a href="resistance-models.html#the-partial-mantel"><i class="fa fa-check"></i><b>3.6.1</b> The Partial Mantel</a></li>
-<li class="chapter" data-level="3.6.2" data-path="resistance-models.html"><a href="resistance-models.html#distance-regression"><i class="fa fa-check"></i><b>3.6.2</b> Distance Regression</a></li>
-<li class="chapter" data-level="3.6.3" data-path="resistance-models.html"><a href="resistance-models.html#model-comparisons-concerns"><i class="fa fa-check"></i><b>3.6.3</b> Model Comparisons &amp; Concerns</a></li>
-</ul></li>
-<li class="chapter" data-level="3.7" data-path="resistance-models.html"><a href="resistance-models.html#questions-2"><i class="fa fa-check"></i><b>3.7</b> Questions</a></li>
+<li class="chapter" data-level="3.6" data-path="resistance-models.html"><a href="resistance-models.html#questions-2"><i class="fa fa-check"></i><b>3.6</b> Questions</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="space-networks.html"><a href="space-networks.html"><i class="fa fa-check"></i><b>4</b> Space &amp; Networks</a><ul>
 <li class="chapter" data-level="4.1" data-path="space-networks.html"><a href="space-networks.html#synopsis-3"><i class="fa fa-check"></i><b>4.1</b> Synopsis</a></li>
@@ -226,27 +256,25 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.5.1" data-path="space-networks.html"><a href="space-networks.html#node-edge-attributes"><i class="fa fa-check"></i><b>4.5.1</b> Node &amp; Edge Attributes</a></li>
 <li class="chapter" data-level="4.5.2" data-path="space-networks.html"><a href="space-networks.html#plotting-a-graphs"><i class="fa fa-check"></i><b>4.5.2</b> Plotting a Graphs</a></li>
 </ul></li>
-<li class="chapter" data-level="4.6" data-path="space-networks.html"><a href="space-networks.html#not-run"><i class="fa fa-check"></i><b>4.6</b> Not run:</a></li>
-<li class="chapter" data-level="4.7" data-path="space-networks.html"><a href="space-networks.html#endnot-run"><i class="fa fa-check"></i><b>4.7</b> End(Not run)</a></li>
-<li class="chapter" data-level="4.8" data-path="space-networks.html"><a href="space-networks.html#mapping-networks"><i class="fa fa-check"></i><b>4.8</b> Mapping Networks</a></li>
-<li class="chapter" data-level="4.9" data-path="space-networks.html"><a href="space-networks.html#genetic-distance-graphs"><i class="fa fa-check"></i><b>4.9</b> Genetic Distance Graphs</a></li>
-<li class="chapter" data-level="4.10" data-path="space-networks.html"><a href="space-networks.html#population-graphs"><i class="fa fa-check"></i><b>4.10</b> Population Graphs</a></li>
-<li class="chapter" data-level="4.11" data-path="space-networks.html"><a href="space-networks.html#adding-data-to-a-graph"><i class="fa fa-check"></i><b>4.11</b> Adding data to a graph</a><ul>
-<li class="chapter" data-level="4.11.1" data-path="space-networks.html"><a href="space-networks.html#plotting-a-graph-using-ggplot2-routines"><i class="fa fa-check"></i><b>4.11.1</b> Plotting a graph using <strong>ggplot2</strong> routines</a></li>
-<li class="chapter" data-level="4.11.2" data-path="space-networks.html"><a href="space-networks.html#reading-existing-popgraph-files"><i class="fa fa-check"></i><b>4.11.2</b> Reading Existing <strong>popgraph</strong> Files</a></li>
-<li class="chapter" data-level="4.11.3" data-path="space-networks.html"><a href="space-networks.html#saving-population-graph-objects"><i class="fa fa-check"></i><b>4.11.3</b> Saving Population Graph Objects</a></li>
-<li class="chapter" data-level="4.11.4" data-path="space-networks.html"><a href="space-networks.html#interactive-networks"><i class="fa fa-check"></i><b>4.11.4</b> Interactive Networks</a></li>
-<li class="chapter" data-level="4.11.5" data-path="space-networks.html"><a href="space-networks.html#spatial-population-graphs"><i class="fa fa-check"></i><b>4.11.5</b> Spatial Population Graphs</a></li>
-<li class="chapter" data-level="4.11.6" data-path="space-networks.html"><a href="space-networks.html#integrating-google-and-ggplot2-for-plotting"><i class="fa fa-check"></i><b>4.11.6</b> Integrating Google and <strong>ggplot2</strong> for Plotting</a></li>
-<li class="chapter" data-level="4.11.7" data-path="space-networks.html"><a href="space-networks.html#integrating-raster-maps"><i class="fa fa-check"></i><b>4.11.7</b> Integrating Raster Maps</a></li>
-<li class="chapter" data-level="4.11.8" data-path="space-networks.html"><a href="space-networks.html#extracting-spatial-data-using-population-graphs"><i class="fa fa-check"></i><b>4.11.8</b> Extracting Spatial Data Using Population Graphs</a></li>
+<li class="chapter" data-level="4.6" data-path="space-networks.html"><a href="space-networks.html#mapping-networks"><i class="fa fa-check"></i><b>4.6</b> Mapping Networks</a></li>
+<li class="chapter" data-level="4.7" data-path="space-networks.html"><a href="space-networks.html#genetic-distance-graphs"><i class="fa fa-check"></i><b>4.7</b> Genetic Distance Graphs</a></li>
+<li class="chapter" data-level="4.8" data-path="space-networks.html"><a href="space-networks.html#population-graphs"><i class="fa fa-check"></i><b>4.8</b> Population Graphs</a></li>
+<li class="chapter" data-level="4.9" data-path="space-networks.html"><a href="space-networks.html#adding-data-to-a-graph"><i class="fa fa-check"></i><b>4.9</b> Adding data to a graph</a><ul>
+<li class="chapter" data-level="4.9.1" data-path="space-networks.html"><a href="space-networks.html#plotting-a-graph-using-ggplot2-routines"><i class="fa fa-check"></i><b>4.9.1</b> Plotting a graph using <strong>ggplot2</strong> routines</a></li>
+<li class="chapter" data-level="4.9.2" data-path="space-networks.html"><a href="space-networks.html#reading-existing-popgraph-files"><i class="fa fa-check"></i><b>4.9.2</b> Reading Existing <strong>popgraph</strong> Files</a></li>
+<li class="chapter" data-level="4.9.3" data-path="space-networks.html"><a href="space-networks.html#saving-population-graph-objects"><i class="fa fa-check"></i><b>4.9.3</b> Saving Population Graph Objects</a></li>
+<li class="chapter" data-level="4.9.4" data-path="space-networks.html"><a href="space-networks.html#interactive-networks"><i class="fa fa-check"></i><b>4.9.4</b> Interactive Networks</a></li>
+<li class="chapter" data-level="4.9.5" data-path="space-networks.html"><a href="space-networks.html#spatial-population-graphs"><i class="fa fa-check"></i><b>4.9.5</b> Spatial Population Graphs</a></li>
+<li class="chapter" data-level="4.9.6" data-path="space-networks.html"><a href="space-networks.html#integrating-google-and-ggplot2-for-plotting"><i class="fa fa-check"></i><b>4.9.6</b> Integrating Google and <strong>ggplot2</strong> for Plotting</a></li>
+<li class="chapter" data-level="4.9.7" data-path="space-networks.html"><a href="space-networks.html#integrating-raster-maps"><i class="fa fa-check"></i><b>4.9.7</b> Integrating Raster Maps</a></li>
+<li class="chapter" data-level="4.9.8" data-path="space-networks.html"><a href="space-networks.html#extracting-spatial-data-using-population-graphs"><i class="fa fa-check"></i><b>4.9.8</b> Extracting Spatial Data Using Population Graphs</a></li>
 </ul></li>
-<li class="chapter" data-level="4.12" data-path="space-networks.html"><a href="space-networks.html#extracting-graph-theoretic-parameters"><i class="fa fa-check"></i><b>4.12</b> Extracting Graph-Theoretic Parameters</a><ul>
-<li class="chapter" data-level="4.12.1" data-path="space-networks.html"><a href="space-networks.html#matrix-representations-of-population-graph-objects"><i class="fa fa-check"></i><b>4.12.1</b> Matrix Representations of Population Graph Objects</a></li>
-<li class="chapter" data-level="4.12.2" data-path="space-networks.html"><a href="space-networks.html#edge-specific-parameters"><i class="fa fa-check"></i><b>4.12.2</b> Edge Specific Parameters</a></li>
+<li class="chapter" data-level="4.10" data-path="space-networks.html"><a href="space-networks.html#extracting-graph-theoretic-parameters"><i class="fa fa-check"></i><b>4.10</b> Extracting Graph-Theoretic Parameters</a><ul>
+<li class="chapter" data-level="4.10.1" data-path="space-networks.html"><a href="space-networks.html#matrix-representations-of-population-graph-objects"><i class="fa fa-check"></i><b>4.10.1</b> Matrix Representations of Population Graph Objects</a></li>
+<li class="chapter" data-level="4.10.2" data-path="space-networks.html"><a href="space-networks.html#edge-specific-parameters"><i class="fa fa-check"></i><b>4.10.2</b> Edge Specific Parameters</a></li>
 </ul></li>
-<li class="chapter" data-level="4.13" data-path="space-networks.html"><a href="space-networks.html#testing-for-topological-congruence"><i class="fa fa-check"></i><b>4.13</b> Testing for Topological Congruence</a></li>
-<li class="chapter" data-level="4.14" data-path="space-networks.html"><a href="space-networks.html#questions-3"><i class="fa fa-check"></i><b>4.14</b> Questions</a></li>
+<li class="chapter" data-level="4.11" data-path="space-networks.html"><a href="space-networks.html#testing-for-topological-congruence"><i class="fa fa-check"></i><b>4.11</b> Testing for Topological Congruence</a></li>
+<li class="chapter" data-level="4.12" data-path="space-networks.html"><a href="space-networks.html#questions-3"><i class="fa fa-check"></i><b>4.12</b> Questions</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="quantitative-genetics.html"><a href="quantitative-genetics.html"><i class="fa fa-check"></i><b>5</b> Quantitative Genetics</a><ul>
 <li class="chapter" data-level="5.1" data-path="quantitative-genetics.html"><a href="quantitative-genetics.html#phenotypic-variance"><i class="fa fa-check"></i><b>5.1</b> Phenotypic Variance</a></li>
@@ -256,28 +284,26 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.3" data-path="quantitative-genetics.html"><a href="quantitative-genetics.html#heritability"><i class="fa fa-check"></i><b>5.3</b> Heritability</a></li>
 <li class="chapter" data-level="5.4" data-path="quantitative-genetics.html"><a href="quantitative-genetics.html#questions-4"><i class="fa fa-check"></i><b>5.4</b> Questions</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references-cited.html"><a href="references-cited.html"><i class="fa fa-check"></i>References Cited</a></li>
-<li class="chapter" data-level="" data-path="rgdal-rgeos.html"><a href="rgdal-rgeos.html"><i class="fa fa-check"></i>RGDAL &amp; RGEOS</a></li>
-<li class="chapter" data-level="6" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html"><i class="fa fa-check"></i><b>6</b> <code>tidyverse</code> and Its Awesomeness</a><ul>
-<li class="chapter" data-level="6.1" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#the-data"><i class="fa fa-check"></i><b>6.1</b> The Data</a><ul>
-<li class="chapter" data-level="6.1.1" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#preprocessing---dates-and-times"><i class="fa fa-check"></i><b>6.1.1</b> Preprocessing - Dates and Times</a></li>
-<li class="chapter" data-level="6.1.2" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#preprocessing---removing-redundancy"><i class="fa fa-check"></i><b>6.1.2</b> Preprocessing - Removing Redundancy</a></li>
-</ul></li>
-<li class="chapter" data-level="6.2" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#manipulating-data"><i class="fa fa-check"></i><b>6.2</b> Manipulating Data</a><ul>
-<li class="chapter" data-level="6.2.1" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#selecting-subsets-of-data"><i class="fa fa-check"></i><b>6.2.1</b> Selecting Subsets of Data</a></li>
-<li class="chapter" data-level="6.2.2" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#filtering-rows"><i class="fa fa-check"></i><b>6.2.2</b> Filtering Rows</a></li>
-<li class="chapter" data-level="6.2.3" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#selecting-and-ordering"><i class="fa fa-check"></i><b>6.2.3</b> Selecting and Ordering</a></li>
-<li class="chapter" data-level="6.2.4" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#piping-output"><i class="fa fa-check"></i><b>6.2.4</b> Piping Output</a></li>
-<li class="chapter" data-level="6.2.5" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#grouping-summarizing"><i class="fa fa-check"></i><b>6.2.5</b> Grouping &amp; Summarizing</a></li>
-</ul></li>
-<li class="chapter" data-level="6.3" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#the-ggplot-library"><i class="fa fa-check"></i><b>6.3</b> The <code>ggplot</code> Library</a><ul>
-<li class="chapter" data-level="6.3.1" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#aesthetics"><i class="fa fa-check"></i><b>6.3.1</b> Aesthetics</a></li>
-<li class="chapter" data-level="6.3.2" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#density-plots"><i class="fa fa-check"></i><b>6.3.2</b> Density Plots</a></li>
-<li class="chapter" data-level="6.3.3" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#ggplot-themes"><i class="fa fa-check"></i><b>6.3.3</b> GGPlot Themes</a></li>
-<li class="chapter" data-level="6.3.4" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#histograms"><i class="fa fa-check"></i><b>6.3.4</b> Histograms</a></li>
-<li class="chapter" data-level="6.3.5" data-path="tidyverse-and-its-awesomeness.html"><a href="tidyverse-and-its-awesomeness.html#overlaying-data"><i class="fa fa-check"></i><b>6.3.5</b> Overlaying Data</a></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="references-cited.html"><a href="references-cited.html"><i class="fa fa-check"></i><b>A</b> References Cited</a></li>
+<li class="chapter" data-level="B" data-path="tidyverse.html"><a href="tidyverse.html"><i class="fa fa-check"></i><b>B</b> <code>tidyverse</code></a><ul>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#preprocessing---dates-and-times"><i class="fa fa-check"></i>Preprocessing - Dates and Times</a></li>
+<li class="chapter" data-level="B.0.1" data-path="tidyverse.html"><a href="tidyverse.html#preprocessing---removing-redundancy"><i class="fa fa-check"></i><b>B.0.1</b> Preprocessing - Removing Redundancy</a></li>
+<li class="chapter" data-level="B.0.2" data-path="tidyverse.html"><a href="tidyverse.html#manipulating-data"><i class="fa fa-check"></i><b>B.0.2</b> Manipulating Data</a></li>
+<li class="chapter" data-level="B.0.3" data-path="tidyverse.html"><a href="tidyverse.html#selecting-subsets-of-data"><i class="fa fa-check"></i><b>B.0.3</b> Selecting Subsets of Data</a></li>
+<li class="chapter" data-level="B.0.4" data-path="tidyverse.html"><a href="tidyverse.html#filtering-rows"><i class="fa fa-check"></i><b>B.0.4</b> Filtering Rows</a></li>
+<li class="chapter" data-level="B.0.5" data-path="tidyverse.html"><a href="tidyverse.html#selecting-and-ordering"><i class="fa fa-check"></i><b>B.0.5</b> Selecting and Ordering</a></li>
+<li class="chapter" data-level="B.0.6" data-path="tidyverse.html"><a href="tidyverse.html#piping-output"><i class="fa fa-check"></i><b>B.0.6</b> Piping Output</a></li>
+<li class="chapter" data-level="B.0.7" data-path="tidyverse.html"><a href="tidyverse.html#grouping-summarizing"><i class="fa fa-check"></i><b>B.0.7</b> Grouping &amp; Summarizing</a></li>
+<li class="chapter" data-level="B.1" data-path="tidyverse.html"><a href="tidyverse.html#the-ggplot-library"><i class="fa fa-check"></i><b>B.1</b> The <code>ggplot</code> Library</a><ul>
+<li class="chapter" data-level="B.1.1" data-path="tidyverse.html"><a href="tidyverse.html#aesthetics"><i class="fa fa-check"></i><b>B.1.1</b> Aesthetics</a></li>
+<li class="chapter" data-level="B.1.2" data-path="tidyverse.html"><a href="tidyverse.html#density-plots"><i class="fa fa-check"></i><b>B.1.2</b> Density Plots</a></li>
+<li class="chapter" data-level="B.1.3" data-path="tidyverse.html"><a href="tidyverse.html#ggplot-themes"><i class="fa fa-check"></i><b>B.1.3</b> GGPlot Themes</a></li>
+<li class="chapter" data-level="B.1.4" data-path="tidyverse.html"><a href="tidyverse.html#histograms"><i class="fa fa-check"></i><b>B.1.4</b> Histograms</a></li>
+<li class="chapter" data-level="B.1.5" data-path="tidyverse.html"><a href="tidyverse.html#overlaying-data"><i class="fa fa-check"></i><b>B.1.5</b> Overlaying Data</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="C" data-path="rgdal-rgeos.html"><a href="rgdal-rgeos.html"><i class="fa fa-check"></i><b>C</b> RGDAL &amp; RGEOS</a></li>
 <li class="divider"></li>
 <li><a href="http://dyerlab.com" target="blank">the Dyer Laboratory</a></li>
 
@@ -357,13 +383,13 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 </thead>
 <tbody>
 <tr class="odd">
-<td>fan</td>
+<td>Fan</td>
 <td align="left">Cultivar</td>
 <td align="center">24</td>
 <td align="center">131</td>
 </tr>
 <tr class="even">
-<td>rice</td>
+<td>Rice</td>
 <td align="left">Native</td>
 <td align="center">9</td>
 <td align="center">40</td>
@@ -379,7 +405,7 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <li>Height - Total seedling height.</li>
 <li>Leaf Area - The size of the largest leaf on the seedling.</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(seedlings)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(seedlings)</code></pre>
 <pre><code>##   Source    Treatment        Mom          Leaves          Height     
 ##  fan :131   SHADE: 52   U09    : 14   Min.   : 2.00   Min.   : 2.70  
 ##  rice: 40   SUN  :119   U17    : 14   1st Qu.: 5.00   1st Qu.: 8.75  
@@ -397,57 +423,57 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 ##  Max.   :8.000   Max.   :138.00   Max.   :160.20  
 ## </code></pre>
 <p>The relationship among these traits are presented below.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(GGally)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(GGally)
 <span class="kw">library</span>(ggplot2)
-<span class="kw">ggpairs</span>( seedlings, <span class="dt">columns=</span><span class="dv">4</span><span class="op">:</span><span class="dv">8</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<span class="kw">ggpairs</span>( seedlings, <span class="dt">columns=</span><span class="dv">4</span><span class="op">:</span><span class="dv">8</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-300-1.png" width="672" /></p>
 <p>Like most data, these are imperfect. In particular, there are some families whose seedling mortality resulted in few seeds.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t &lt;-<span class="st"> </span><span class="kw">table</span>( seedlings<span class="op">$</span>Mom )
-t</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">t &lt;-<span class="st"> </span><span class="kw">table</span>( seedlings<span class="op">$</span>Mom )
+t</code></pre>
 <pre><code>## 
 ## 354 471 590 598 600 645 646 712 819 U09 U11 U12 U13 U14 U15 U17 U18 U19 
 ##   3   1   4  10   2   4   5   8   3  14   5   5   5   7   1  14  13  10 
 ## U20 U23 U24 U25 U26 U27 U29 U31 U32 U36 U39 U40 U44 U46 U47 
 ##   1   5  10   5   3   1   5   7   2   2   2   8   1   3   2</code></pre>
 <p>As a result, before we go forward, lets limit the data to those mothers whose families have at least 5 surviving offspring.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">keepers &lt;-<span class="st"> </span><span class="kw">names</span>(t)[ t <span class="op">&gt;=</span><span class="st"> </span><span class="dv">4</span> ] 
+<pre class="sourceCode r"><code class="sourceCode r">keepers &lt;-<span class="st"> </span><span class="kw">names</span>(t)[ t <span class="op">&gt;=</span><span class="st"> </span><span class="dv">4</span> ] 
 seedlings &lt;-<span class="st"> </span>seedlings[ seedlings<span class="op">$</span>Mom <span class="op">%in%</span><span class="st"> </span>keepers, ]
-seedlings &lt;-<span class="st"> </span><span class="kw">droplevels</span>( seedlings )</code></pre></div>
+seedlings &lt;-<span class="st"> </span><span class="kw">droplevels</span>( seedlings )</code></pre>
 <div id="measured-traits" class="section level3">
 <h3><span class="header-section-number">5.2.1</span> Measured Traits</h3>
 <p>Visual summaries of the measured traits are shown below.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw">ggplot</span>(seedlings) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()
-p <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>Cold), <span class="dt">alpha=</span><span class="fl">0.75</span>)</code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-6"></span>
-<img src="LGDA_files/figure-html/unnamed-chunk-6-1.png" alt="Length of time (in days) of seedling dormancy following cold stratification for seedlings collected from maternal trees in urban (fan) and native (rice) populations." width="672" />
+<pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw">ggplot</span>(seedlings) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()
+p <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>Cold), <span class="dt">alpha=</span><span class="fl">0.75</span>)</code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-303"></span>
+<img src="LGDA_files/figure-html/unnamed-chunk-303-1.png" alt="Length of time (in days) of seedling dormancy following cold stratification for seedlings collected from maternal trees in urban (fan) and native (rice) populations." width="672" />
 <p class="caption">
 Figure 5.1: Length of time (in days) of seedling dormancy following cold stratification for seedlings collected from maternal trees in urban (fan) and native (rice) populations.
 </p>
 </div>
 <p>In the remaining plot, I partion the display of phenotypic variability further by separating out seedlings that were grown in either the SUN (full light) or SHADE (reduced light) treatments.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="kw">facet_grid</span>(Treatment<span class="op">~</span>.)
-p <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>Height), <span class="dt">alpha=</span><span class="fl">0.75</span>) </code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-7"></span>
-<img src="LGDA_files/figure-html/unnamed-chunk-7-1.png" alt="The height of the seedling measured from the soil to the top of the apical meristem." width="672" />
+<pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="kw">facet_grid</span>(Treatment<span class="op">~</span>.)
+p <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>Height), <span class="dt">alpha=</span><span class="fl">0.75</span>) </code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-304"></span>
+<img src="LGDA_files/figure-html/unnamed-chunk-304-1.png" alt="The height of the seedling measured from the soil to the top of the apical meristem." width="672" />
 <p class="caption">
 Figure 5.2: The height of the seedling measured from the soil to the top of the apical meristem.
 </p>
 </div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>Branches), <span class="dt">alpha=</span><span class="fl">0.75</span>) </code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-8"></span>
-<img src="LGDA_files/figure-html/unnamed-chunk-8-1.png" alt="The number of branches from the main seedling stem." width="672" />
+<pre class="sourceCode r"><code class="sourceCode r">p <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>Branches), <span class="dt">alpha=</span><span class="fl">0.75</span>) </code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-305"></span>
+<img src="LGDA_files/figure-html/unnamed-chunk-305-1.png" alt="The number of branches from the main seedling stem." width="672" />
 <p class="caption">
 Figure 5.3: The number of branches from the main seedling stem.
 </p>
 </div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>LeafArea), <span class="dt">alpha=</span><span class="fl">0.75</span>) </code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-9"></span>
-<img src="LGDA_files/figure-html/unnamed-chunk-9-1.png" alt="The photosynthetic area measured on the largest leaf from each seedling." width="672" />
+<pre class="sourceCode r"><code class="sourceCode r">p <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>LeafArea), <span class="dt">alpha=</span><span class="fl">0.75</span>) </code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-306"></span>
+<img src="LGDA_files/figure-html/unnamed-chunk-306-1.png" alt="The photosynthetic area measured on the largest leaf from each seedling." width="672" />
 <p class="caption">
 Figure 5.4: The photosynthetic area measured on the largest leaf from each seedling.
 </p>
 </div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>Leaves), <span class="dt">alpha=</span><span class="fl">0.75</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">geom_density</span>( <span class="kw">aes</span>(<span class="dt">fill=</span>Source,<span class="dt">x=</span>Leaves), <span class="dt">alpha=</span><span class="fl">0.75</span>)</code></pre>
 <pre><code>## mapping: x = ~Leaves, fill = ~Source 
 ## geom_density: na.rm = FALSE
 ## stat_density: na.rm = FALSE
@@ -463,9 +489,9 @@ Figure 5.4: The photosynthetic area measured on the largest leaf from each seedl
 H^2 = \frac{\sigma_G^2}{\sigma_P^2}
 \]</span></p>
 <p>This estimate includes the additive (<span class="math inline">\(\sigma_A^2\)</span>), dominance (<span class="math inline">\(\sigma_D^2\)</span>), and interaction (<span class="math inline">\(\sigma_I^2\)</span>) variance and is the easiest parameter to estimate. A common approach to estimating <span class="math inline">\(H^2\)</span> is to report it as the proportion of variance explained (<span class="math inline">\(R^2\)</span>) from an ANOVA based upon family-level data. Often we treat the family unit as a random effect in an analysis of variance. In <code>R</code> we fit random effects models using the <code>lmer</code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lme4)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lme4)
 h2.cold &lt;-<span class="st"> </span><span class="kw">lmer</span>(Cold <span class="op">~</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Mom), <span class="dt">data=</span>seedlings)
-<span class="kw">summary</span>(h2.cold)</code></pre></div>
+<span class="kw">summary</span>(h2.cold)</code></pre>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
 ## Formula: Cold ~ (1 | Mom)
 ##    Data: seedlings
@@ -487,7 +513,7 @@ h2.cold &lt;-<span class="st"> </span><span class="kw">lmer</span>(Cold <span cl
 ## (Intercept)    91.96       2.85   32.26</code></pre>
 <p>If you are not familiar with fitting a random effect to a model in R, this may look a bit odd. The formula <code>Cold ~ (1|Mom)</code> is examining differences among the length of dormancy as explained by seedlings grouped by mother. The maternal stratum is treated as a random effect because we are assuming that the mothers we used are a random selection from a much broader population of mothers. The differences between a random and a fixed effects model is in how we estimate the variance components. In a fixed effect model, the expectation for the treatment variance is based solely upon the treatment effect <span class="math inline">\(E[\sigma_A^2] = MSA\)</span>. However, in a random effects model, we assume that since we are sampling on a random subsample of potential mothers, the treatment effect is a bit upwardly biased and we need to correct that variance.</p>
 <p>Here is an example of how those differ. Treating mother as a fixed effect, we can see the estimates of the varince for both Mom and Residuals as the values int he third column.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>( <span class="kw">aov</span>(Cold<span class="op">~</span>Mom,<span class="dt">data=</span>seedlings))</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>( <span class="kw">aov</span>(Cold<span class="op">~</span>Mom,<span class="dt">data=</span>seedlings))</code></pre>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: Cold
@@ -497,14 +523,14 @@ h2.cold &lt;-<span class="st"> </span><span class="kw">lmer</span>(Cold <span cl
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>However, those same variance estiamtes, assuming that Mom is a random effect, are different (moreso for the Mom effect than that for the Residual variance).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">VarCorr</span>(h2.cold), <span class="dt">comp=</span><span class="st">&quot;Variance&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">VarCorr</span>(h2.cold), <span class="dt">comp=</span><span class="st">&quot;Variance&quot;</span>)</code></pre>
 <pre><code>##  Groups   Name        Variance
 ##  Mom      (Intercept) 136.55  
 ##  Residual             116.37</code></pre>
 <p>Then from the formula above, we can estimate the fraction of the total variance that is attributed to the family effect as:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sigmas &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>( <span class="kw">VarCorr</span>( h2.cold) )<span class="op">$</span>vcov
+<pre class="sourceCode r"><code class="sourceCode r">sigmas &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>( <span class="kw">VarCorr</span>( h2.cold) )<span class="op">$</span>vcov
 H2 &lt;-<span class="st"> </span>sigmas[<span class="dv">1</span>] <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>( sigmas )
-H2</code></pre></div>
+H2</code></pre>
 <pre><code>## [1] 0.539898</code></pre>
 <p>This result shows suggests that roughly 53.99% of the variation can be attributed to genetic effects.</p>
 <p>Narrow-sense heritabilty is a bit more precise in that it uses not the total genetic variance but only that associated with the additive component of variation.</p>
@@ -532,6 +558,9 @@ h^2 = \frac{\sigma_A^2}{\sigma_P^2}
 
 </div>
 </div>
+
+
+
             </section>
 
           </div>
@@ -590,7 +619,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
+    var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');

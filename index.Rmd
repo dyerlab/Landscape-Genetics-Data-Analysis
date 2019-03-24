@@ -28,7 +28,7 @@ knitr::include_graphics("media/LGDA-Titlepage-Small.png")
 
 Dr. Rodney Dyer is an Associate Professor and Director of the Center for Environmental Studies at Virginia Commonwealth University in Richmond, Virginia, USA.  His research focuses on genetic connectivity and structure and how the environment influences both.  More information on his research can be found at [http://dyerlab.com](http://dyerlab.com).
 
-## Loading Required Libraries
+## Loading Required Libraries {-}
 
 Working with this text requires several libraries that are not installed on a default `R` installation.  I've created a script that will install this stuff for you directly with the following commands:
 

@@ -20,7 +20,7 @@ This activity is divided between two different topics, explicitly spatial analys
 Admixture is the mixing of two or more populations whose frequency spectra may differ.  If they differ considerably, then the admixed population may be examined to determine relative contributions of each population.
 
 ```{r admixture, echo=FALSE, fig.cap="Hypothetical pedigree of an individual whose parents come from two separate populations.  Stretches of chromosome are depicted in differing colors to highlight parentage as well as demonstrate admixture in the offspring."}
-knitr::include_graphics("../media/Admixture.png")
+knitr::include_graphics("./media/Admixture.png")
 ```
 
 An ubiquitous feature of modern population genetic analyses is the presence of a model-based clustering analysis such as those provided by programs such as STRUCTURE and TESS.  The general idea of these approaches is to examine the current distribution of genotypes ($X$) within individuals and populations and try to describe it in terms of historical mixing of populations ($Z$), at specified mixing rates ($Q$), whose allele frequency spectra ($P$) may differ.  
@@ -75,7 +75,7 @@ Perhaps more interpretive are the plots of individuals as they were assigned to 
 If you select it to Sort by $Q$ it should look something like Figure below.  This figure is based upon 363 columns of admixture information, one column for each individual.  The colors are defined by the number of groups, here $K=3$.  You can see some individual columns (=individuals genotypes) who are entirely one color.  These are individuals whose genotypes suggest they are the most likely from the group associated with that color.  You can also see that there are some individuals who may be admixed between two or even three groups ad indicated by a column with more than one color.
 
 ```{r structureByQ, echo=FALSE, fig.cap="Output from STRUCTURE using the *Araptus attenuatus* when setting $K=3$."}
-knitr::include_graphics("../media/structure_by_q.png")
+knitr::include_graphics("./media/structure_by_q.png")
 ```
 
 This output is a hypothesis about admixture.  As such, it is only one simulation and as we've done many times thus far, we should probably run several of these to generate a level of confidence for any value we specified as $K$.  Here is where it gets a little dicey.  We specified $K=3$ and as such we found out what the $P(X|Z,P,Q)$ by specifying $K=3$ implicitly.  In the output of our data, we see can find the log likelihood of our data given these parameters.  However, $K$ may be some value other than three.  Running this simulation with specified values only tells us the likelihood of the data for that value and for that simulation, it does not determine if the specified $K$ is the correct one.  
@@ -102,7 +102,7 @@ The output shows that as we assume more clusters, the $log(P(Data))$ tends towar
 If I go back to STRUCTURE and plot examine the barplot of individuals from the $K=4$ data (setting "Group by PopID").
 
 ```{r structureByPop, echo=FALSE, fig.cap="STRUCTURE output for *Araptus attenuatus* for $K=4$ sorted by population."}
-knitr::include_graphics("../media/structure_by_pop.png")
+knitr::include_graphics("./media/structure_by_pop.png")
 ```
 
 
@@ -174,7 +174,7 @@ X
 Once we have the proper data, we can perform a principal component (PC) rotation.  A PC rotation is one that takes the original columns of data and performs a rotation on the values to align onto new ‘synthetic' axes.  Consider the example in the next figure.  Here, some bivariate data is plot in 2-space, though this can be done for much higher dimensions of data as well—in fact it is more beneficial with more columns of data and this can be used as a way of reducing the dimensionality of the data while loosing very little (or no) content (more later on this).  
 
 ```{r echo=FALSE, dpi=300, fig.cap="A rotation of 2-dimenational data from the original coordinate space (represented by the x- and y-axes) onto synthetic principal component (the red axes).  The rotation itself maximizes the distributional width of the data (depicted as density plots in grey for the original axes and red for the rotated axes)."}
-knitr::include_graphics("../media/pc_rotation.png")
+knitr::include_graphics("./media/pc_rotation.png")
 ```
 
 The axes of a PC rotation are taken as linear combinations of the existing axes and define a new coordinate set onto which the points are plot.  All points are rigidly constrained to keep the same relationship and there is no loss of information.  The PC axes are defined by determining the most variable stretch through the data. In the figure on the next page, we see the raw data plot onto the X- and Y-axes.  The axis of highest variance does not align with either of the original ones, and instead can be defined as a combination of both X- and Y- coordinates.  If we take the blue axis as the first PC axis, the coordinate of the points would be taken along that new synthetic axis.  The next PC axis is defined as being perpendicular to the previous one(s) and is identified as covering the largest variance in the data as before.  This process continues until there are no more axes.  In our case, the second axis would be at a right angle from the blue line (above).  You can, at maximum, have as many PC axes as there are columns of data.  However, the later axes may not explain any significant chunk of the underlying data, the process of rotating based upon axes of maximal variation may be able to capture the complete data set with fewer axes than the total set.  This is where a technique like this may be helpful in reducing the dimensionality of the data.
@@ -279,6 +279,11 @@ plot.pcoa
 
   
 It is interesting to compare the output from rotations on frequencies and genetic distance matrices.
+
+```{r echo=FALSE}
+suppressMessages(library(cowplot))
+```
+
 
 ```{r, fig.cap="Comparison of population-level (A) principal component and (B) principal coordiante rotations on the same data set.  Colors indicate the STRUCTURE clustering for each population."}
 library(cowplot)
@@ -424,7 +429,11 @@ plot(g)
 There are several different options you can use to manipulate the graphical forms.  By default, the plotting routines look for node and edge attributes such as `name` and `color` to plot the output appropriately.  There are several additional plotting functions for plotting *igraph* objects.  Here are some examples.
 
 ```{r}
-plot(g, edge.color="black", vertex.label.color="darkred", vertex.color="#cccccc", vertex.label.dist=1)
+plot(g, 
+     edge.color="black", 
+     vertex.label.color="darkred", 
+     vertex.color="#cccccc", 
+     vertex.label.dist=1)
 ```
 
 Below is the output from the `igraph.plotting` help file that covers the main options that you have for customizing the way that the network is displayed.
@@ -766,13 +775,15 @@ V(g)$Longitude <- c(-122.89,-122.49,-89.98, -93.47, -77.16 )
 
 Then overlay this onto a map using the `overlay_popgraph()` function.    Here is an example where I plot it over the map of the US states.
 
-```{r,message=FALSE,fig.cap="Map of graph stetched onto continential US map."}
+```{r,message=FALSE, eval=FALSE}
 library(maps)
 library(popgraph)
 pg <- as.popgraph( g )
 map( "state" )
 overlay_popgraph( pg )
 ```
+
+![Graph overlain onto map object](./media/rodney_graph.png)
 
 This function **requires** that you already have a plot available (it uses the `lines()` and `points()` routines).  If you try to just overlay this with no existing plot, it will not work (and should throw an error).
 
@@ -1114,12 +1125,24 @@ df.nodes <- data.frame(Pop=V(lopho)$name, Latitude=V(lopho)$Latitude, Longitude=
 Then we can extract the elevation from the `alt` raster as:
 
 ```{r}
-library(raster)
-df.nodes$Elevation <- extract( alt, lopho.nodes )
+df.nodes$Elevation <- raster::extract( alt, lopho.nodes )
 summary(df.nodes)
 ```
 
-Additional data could be extracted from other rasters.  See http://worldclim.org for some example data that may prove useful.
+Additional data could be extracted from other rasters.  See http://worldclim.org for some example data that may prove useful.  Here I'm using the namespace designator (`raster::`) in front of the `extract()` function because of something called namespace collisions.  What this means is that I loaded in the `raster()` package way up in the code, so all the functions in that package are loaded into memory.  In the interim, I've also loaded in other packages, some of whih also provide a function called `extract()`.  What happens in these cases is that the package loaded last 'masks' the functions from the previously loaded packages.  So, when I'm compiling this markdown as a book, when I hit the above chunk, I get the following error.
+
+![Namespace collision in cryptic 'R programmer' (e.g., do not care much for the sanity of the R user) speak.](./media/namespace_collision.png)
+
+This message says that I'm calling a function `extract` on an object that is some kind of `Raster` but the currently loaded `extract()` function does not know how to deal with rasters...  Odd, because we *know* there is an `extract()` function that works on Rasters (see first Chapter).  One of the strategies I use when encountering cryptic messages like this is to look to see how many functions there are named `extract()`.  You can do this by typing in `?extract` in the command line.  When working on this document, my computer has at least the following three
+
+![The `extract` functions in my global namespace.](./media/extract_help.png)
+
+
+So, this tells me that there are at least 3 different `extract()` functions in effect!  To get around this, I can tell R to use the extract function that is from the raster library using the notation as above (e.g., library name + double colons + function name) and it will *do the right thing.*  Sometimes you need to hack your way around these kinds of issues.  If you become a writer of packages, you could also not be a jerk and come up with better names that don't obliterate functions from other packages that people may be working with at the same time...  Just saying.
+
+
+
+
 
 #### Extracting Data Along Popgraph Edges
 
@@ -1157,7 +1180,7 @@ plot(edge,add=TRUE)
 From this edge object (or a collection of edge objects) we can again extract values from a raster.  Here I pull out the elevation profile of this edge.  To plot it, I need to make a sequence of latitude values equal in length to that of the observed elevation values I extracted.  
 
 ```{r warning=FALSE,message=FALSE}
-elev <- extract( alt, edge )[[1]]
+elev <- raster::extract( alt, edge )[[1]]
 from_lat <- V(graph)$Latitude[V(graph)$name == "SFr"]
 to_lat <- V(graph)$Latitude[ V(graph)$name == "164"]
 lat <- seq( from=from_lat, to=to_lat, length.out = length(elev) )
@@ -1203,7 +1226,7 @@ all_edges <- to_SpatialLines( saturated_graph )
 From these `r length(all_edges)` `SpatialLines` objects, we can extract data from the elevation raster.  
 
 ```{r echo=TRUE, eval=FALSE}
-edge_values <- extract( alt, all_edges, fun=max, na.rm=TRUE, df=TRUE)
+edge_values <- raster::extract( alt, all_edges, fun=max, na.rm=TRUE, df=TRUE)
 ```
 
 This will take a bit of time to complete.  The options that I provided were:  

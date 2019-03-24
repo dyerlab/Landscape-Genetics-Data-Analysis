@@ -47,44 +47,80 @@
 
 
 
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.5/datatables.js"></script>
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<script src="libs/d3-4.5.0/d3.min.js"></script>
+<script src="libs/dendroNetwork-binding-0.4/dendroNetwork.js"></script>
+<script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-pre, code { background-color: #f8f8f8; }
-code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
-code > span.dt { color: #204a87; } /* DataType */
-code > span.dv { color: #0000cf; } /* DecVal */
-code > span.bn { color: #0000cf; } /* BaseN */
-code > span.fl { color: #0000cf; } /* Float */
-code > span.ch { color: #4e9a06; } /* Char */
-code > span.st { color: #4e9a06; } /* String */
-code > span.co { color: #8f5902; font-style: italic; } /* Comment */
-code > span.ot { color: #8f5902; } /* Other */
-code > span.al { color: #ef2929; } /* Alert */
-code > span.fu { color: #000000; } /* Function */
-code > span.er { color: #a40000; font-weight: bold; } /* Error */
-code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #000000; } /* Constant */
-code > span.sc { color: #000000; } /* SpecialChar */
-code > span.vs { color: #4e9a06; } /* VerbatimString */
-code > span.ss { color: #4e9a06; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #000000; } /* Variable */
-code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
-code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code > span.ex { } /* Extension */
-code > span.at { color: #c4a000; } /* Attribute */
-code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
-code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="media/style.css" type="text/css" />
@@ -102,7 +138,9 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <ul class="summary">
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Frontmatter</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Frontmatter</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#loading-required-libraries"><i class="fa fa-check"></i>Loading Required Libraries</a></li>
+</ul></li>
 <li class="chapter" data-level="1" data-path="spatial-data.html"><a href="spatial-data.html"><i class="fa fa-check"></i><b>1</b> Spatial Data</a><ul>
 <li class="chapter" data-level="1.1" data-path="spatial-data.html"><a href="spatial-data.html#synopsis"><i class="fa fa-check"></i><b>1.1</b> Synopsis</a></li>
 <li class="chapter" data-level="1.2" data-path="spatial-data.html"><a href="spatial-data.html#objectives"><i class="fa fa-check"></i><b>1.2</b> Objectives</a></li>
@@ -199,13 +237,11 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="3.5" data-path="resistance-models.html"><a href="resistance-models.html#resistance-models-1"><i class="fa fa-check"></i><b>3.5</b> Resistance Models</a><ul>
 <li class="chapter" data-level="3.5.1" data-path="resistance-models.html"><a href="resistance-models.html#the-mantel-test"><i class="fa fa-check"></i><b>3.5.1</b> The Mantel Test</a></li>
+<li class="chapter" data-level="3.5.2" data-path="resistance-models.html"><a href="resistance-models.html#the-partial-mantel"><i class="fa fa-check"></i><b>3.5.2</b> The Partial Mantel</a></li>
+<li class="chapter" data-level="3.5.3" data-path="resistance-models.html"><a href="resistance-models.html#distance-regression"><i class="fa fa-check"></i><b>3.5.3</b> Distance Regression</a></li>
+<li class="chapter" data-level="3.5.4" data-path="resistance-models.html"><a href="resistance-models.html#model-comparisons-concerns"><i class="fa fa-check"></i><b>3.5.4</b> Model Comparisons &amp; Concerns</a></li>
 </ul></li>
-<li class="chapter" data-level="3.6" data-path="resistance-models.html"><a href="resistance-models.html#is-vegetation-related-to-environment"><i class="fa fa-check"></i><b>3.6</b> Is vegetation related to environment?</a><ul>
-<li class="chapter" data-level="3.6.1" data-path="resistance-models.html"><a href="resistance-models.html#the-partial-mantel"><i class="fa fa-check"></i><b>3.6.1</b> The Partial Mantel</a></li>
-<li class="chapter" data-level="3.6.2" data-path="resistance-models.html"><a href="resistance-models.html#distance-regression"><i class="fa fa-check"></i><b>3.6.2</b> Distance Regression</a></li>
-<li class="chapter" data-level="3.6.3" data-path="resistance-models.html"><a href="resistance-models.html#model-comparisons-concerns"><i class="fa fa-check"></i><b>3.6.3</b> Model Comparisons &amp; Concerns</a></li>
-</ul></li>
-<li class="chapter" data-level="3.7" data-path="resistance-models.html"><a href="resistance-models.html#questions-2"><i class="fa fa-check"></i><b>3.7</b> Questions</a></li>
+<li class="chapter" data-level="3.6" data-path="resistance-models.html"><a href="resistance-models.html#questions-2"><i class="fa fa-check"></i><b>3.6</b> Questions</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="space-networks.html"><a href="space-networks.html"><i class="fa fa-check"></i><b>4</b> Space &amp; Networks</a><ul>
 <li class="chapter" data-level="4.1" data-path="space-networks.html"><a href="space-networks.html#synopsis-3"><i class="fa fa-check"></i><b>4.1</b> Synopsis</a></li>
@@ -220,27 +256,25 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.5.1" data-path="space-networks.html"><a href="space-networks.html#node-edge-attributes"><i class="fa fa-check"></i><b>4.5.1</b> Node &amp; Edge Attributes</a></li>
 <li class="chapter" data-level="4.5.2" data-path="space-networks.html"><a href="space-networks.html#plotting-a-graphs"><i class="fa fa-check"></i><b>4.5.2</b> Plotting a Graphs</a></li>
 </ul></li>
-<li class="chapter" data-level="4.6" data-path="space-networks.html"><a href="space-networks.html#not-run"><i class="fa fa-check"></i><b>4.6</b> Not run:</a></li>
-<li class="chapter" data-level="4.7" data-path="space-networks.html"><a href="space-networks.html#endnot-run"><i class="fa fa-check"></i><b>4.7</b> End(Not run)</a></li>
-<li class="chapter" data-level="4.8" data-path="space-networks.html"><a href="space-networks.html#mapping-networks"><i class="fa fa-check"></i><b>4.8</b> Mapping Networks</a></li>
-<li class="chapter" data-level="4.9" data-path="space-networks.html"><a href="space-networks.html#genetic-distance-graphs"><i class="fa fa-check"></i><b>4.9</b> Genetic Distance Graphs</a></li>
-<li class="chapter" data-level="4.10" data-path="space-networks.html"><a href="space-networks.html#population-graphs"><i class="fa fa-check"></i><b>4.10</b> Population Graphs</a></li>
-<li class="chapter" data-level="4.11" data-path="space-networks.html"><a href="space-networks.html#adding-data-to-a-graph"><i class="fa fa-check"></i><b>4.11</b> Adding data to a graph</a><ul>
-<li class="chapter" data-level="4.11.1" data-path="space-networks.html"><a href="space-networks.html#plotting-a-graph-using-ggplot2-routines"><i class="fa fa-check"></i><b>4.11.1</b> Plotting a graph using <strong>ggplot2</strong> routines</a></li>
-<li class="chapter" data-level="4.11.2" data-path="space-networks.html"><a href="space-networks.html#reading-existing-popgraph-files"><i class="fa fa-check"></i><b>4.11.2</b> Reading Existing <strong>popgraph</strong> Files</a></li>
-<li class="chapter" data-level="4.11.3" data-path="space-networks.html"><a href="space-networks.html#saving-population-graph-objects"><i class="fa fa-check"></i><b>4.11.3</b> Saving Population Graph Objects</a></li>
-<li class="chapter" data-level="4.11.4" data-path="space-networks.html"><a href="space-networks.html#interactive-networks"><i class="fa fa-check"></i><b>4.11.4</b> Interactive Networks</a></li>
-<li class="chapter" data-level="4.11.5" data-path="space-networks.html"><a href="space-networks.html#spatial-population-graphs"><i class="fa fa-check"></i><b>4.11.5</b> Spatial Population Graphs</a></li>
-<li class="chapter" data-level="4.11.6" data-path="space-networks.html"><a href="space-networks.html#integrating-google-and-ggplot2-for-plotting"><i class="fa fa-check"></i><b>4.11.6</b> Integrating Google and <strong>ggplot2</strong> for Plotting</a></li>
-<li class="chapter" data-level="4.11.7" data-path="space-networks.html"><a href="space-networks.html#integrating-raster-maps"><i class="fa fa-check"></i><b>4.11.7</b> Integrating Raster Maps</a></li>
-<li class="chapter" data-level="4.11.8" data-path="space-networks.html"><a href="space-networks.html#extracting-spatial-data-using-population-graphs"><i class="fa fa-check"></i><b>4.11.8</b> Extracting Spatial Data Using Population Graphs</a></li>
+<li class="chapter" data-level="4.6" data-path="space-networks.html"><a href="space-networks.html#mapping-networks"><i class="fa fa-check"></i><b>4.6</b> Mapping Networks</a></li>
+<li class="chapter" data-level="4.7" data-path="space-networks.html"><a href="space-networks.html#genetic-distance-graphs"><i class="fa fa-check"></i><b>4.7</b> Genetic Distance Graphs</a></li>
+<li class="chapter" data-level="4.8" data-path="space-networks.html"><a href="space-networks.html#population-graphs"><i class="fa fa-check"></i><b>4.8</b> Population Graphs</a></li>
+<li class="chapter" data-level="4.9" data-path="space-networks.html"><a href="space-networks.html#adding-data-to-a-graph"><i class="fa fa-check"></i><b>4.9</b> Adding data to a graph</a><ul>
+<li class="chapter" data-level="4.9.1" data-path="space-networks.html"><a href="space-networks.html#plotting-a-graph-using-ggplot2-routines"><i class="fa fa-check"></i><b>4.9.1</b> Plotting a graph using <strong>ggplot2</strong> routines</a></li>
+<li class="chapter" data-level="4.9.2" data-path="space-networks.html"><a href="space-networks.html#reading-existing-popgraph-files"><i class="fa fa-check"></i><b>4.9.2</b> Reading Existing <strong>popgraph</strong> Files</a></li>
+<li class="chapter" data-level="4.9.3" data-path="space-networks.html"><a href="space-networks.html#saving-population-graph-objects"><i class="fa fa-check"></i><b>4.9.3</b> Saving Population Graph Objects</a></li>
+<li class="chapter" data-level="4.9.4" data-path="space-networks.html"><a href="space-networks.html#interactive-networks"><i class="fa fa-check"></i><b>4.9.4</b> Interactive Networks</a></li>
+<li class="chapter" data-level="4.9.5" data-path="space-networks.html"><a href="space-networks.html#spatial-population-graphs"><i class="fa fa-check"></i><b>4.9.5</b> Spatial Population Graphs</a></li>
+<li class="chapter" data-level="4.9.6" data-path="space-networks.html"><a href="space-networks.html#integrating-google-and-ggplot2-for-plotting"><i class="fa fa-check"></i><b>4.9.6</b> Integrating Google and <strong>ggplot2</strong> for Plotting</a></li>
+<li class="chapter" data-level="4.9.7" data-path="space-networks.html"><a href="space-networks.html#integrating-raster-maps"><i class="fa fa-check"></i><b>4.9.7</b> Integrating Raster Maps</a></li>
+<li class="chapter" data-level="4.9.8" data-path="space-networks.html"><a href="space-networks.html#extracting-spatial-data-using-population-graphs"><i class="fa fa-check"></i><b>4.9.8</b> Extracting Spatial Data Using Population Graphs</a></li>
 </ul></li>
-<li class="chapter" data-level="4.12" data-path="space-networks.html"><a href="space-networks.html#extracting-graph-theoretic-parameters"><i class="fa fa-check"></i><b>4.12</b> Extracting Graph-Theoretic Parameters</a><ul>
-<li class="chapter" data-level="4.12.1" data-path="space-networks.html"><a href="space-networks.html#matrix-representations-of-population-graph-objects"><i class="fa fa-check"></i><b>4.12.1</b> Matrix Representations of Population Graph Objects</a></li>
-<li class="chapter" data-level="4.12.2" data-path="space-networks.html"><a href="space-networks.html#edge-specific-parameters"><i class="fa fa-check"></i><b>4.12.2</b> Edge Specific Parameters</a></li>
+<li class="chapter" data-level="4.10" data-path="space-networks.html"><a href="space-networks.html#extracting-graph-theoretic-parameters"><i class="fa fa-check"></i><b>4.10</b> Extracting Graph-Theoretic Parameters</a><ul>
+<li class="chapter" data-level="4.10.1" data-path="space-networks.html"><a href="space-networks.html#matrix-representations-of-population-graph-objects"><i class="fa fa-check"></i><b>4.10.1</b> Matrix Representations of Population Graph Objects</a></li>
+<li class="chapter" data-level="4.10.2" data-path="space-networks.html"><a href="space-networks.html#edge-specific-parameters"><i class="fa fa-check"></i><b>4.10.2</b> Edge Specific Parameters</a></li>
 </ul></li>
-<li class="chapter" data-level="4.13" data-path="space-networks.html"><a href="space-networks.html#testing-for-topological-congruence"><i class="fa fa-check"></i><b>4.13</b> Testing for Topological Congruence</a></li>
-<li class="chapter" data-level="4.14" data-path="space-networks.html"><a href="space-networks.html#questions-3"><i class="fa fa-check"></i><b>4.14</b> Questions</a></li>
+<li class="chapter" data-level="4.11" data-path="space-networks.html"><a href="space-networks.html#testing-for-topological-congruence"><i class="fa fa-check"></i><b>4.11</b> Testing for Topological Congruence</a></li>
+<li class="chapter" data-level="4.12" data-path="space-networks.html"><a href="space-networks.html#questions-3"><i class="fa fa-check"></i><b>4.12</b> Questions</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="quantitative-genetics.html"><a href="quantitative-genetics.html"><i class="fa fa-check"></i><b>5</b> Quantitative Genetics</a><ul>
 <li class="chapter" data-level="5.1" data-path="quantitative-genetics.html"><a href="quantitative-genetics.html#phenotypic-variance"><i class="fa fa-check"></i><b>5.1</b> Phenotypic Variance</a></li>
@@ -250,8 +284,26 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.3" data-path="quantitative-genetics.html"><a href="quantitative-genetics.html#heritability"><i class="fa fa-check"></i><b>5.3</b> Heritability</a></li>
 <li class="chapter" data-level="5.4" data-path="quantitative-genetics.html"><a href="quantitative-genetics.html#questions-4"><i class="fa fa-check"></i><b>5.4</b> Questions</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references-cited.html"><a href="references-cited.html"><i class="fa fa-check"></i>References Cited</a></li>
-<li class="chapter" data-level="" data-path="rgdal-rgeos.html"><a href="rgdal-rgeos.html"><i class="fa fa-check"></i>RGDAL &amp; RGEOS</a></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="references-cited.html"><a href="references-cited.html"><i class="fa fa-check"></i><b>A</b> References Cited</a></li>
+<li class="chapter" data-level="B" data-path="tidyverse.html"><a href="tidyverse.html"><i class="fa fa-check"></i><b>B</b> <code>tidyverse</code></a><ul>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#preprocessing---dates-and-times"><i class="fa fa-check"></i>Preprocessing - Dates and Times</a></li>
+<li class="chapter" data-level="B.0.1" data-path="tidyverse.html"><a href="tidyverse.html#preprocessing---removing-redundancy"><i class="fa fa-check"></i><b>B.0.1</b> Preprocessing - Removing Redundancy</a></li>
+<li class="chapter" data-level="B.0.2" data-path="tidyverse.html"><a href="tidyverse.html#manipulating-data"><i class="fa fa-check"></i><b>B.0.2</b> Manipulating Data</a></li>
+<li class="chapter" data-level="B.0.3" data-path="tidyverse.html"><a href="tidyverse.html#selecting-subsets-of-data"><i class="fa fa-check"></i><b>B.0.3</b> Selecting Subsets of Data</a></li>
+<li class="chapter" data-level="B.0.4" data-path="tidyverse.html"><a href="tidyverse.html#filtering-rows"><i class="fa fa-check"></i><b>B.0.4</b> Filtering Rows</a></li>
+<li class="chapter" data-level="B.0.5" data-path="tidyverse.html"><a href="tidyverse.html#selecting-and-ordering"><i class="fa fa-check"></i><b>B.0.5</b> Selecting and Ordering</a></li>
+<li class="chapter" data-level="B.0.6" data-path="tidyverse.html"><a href="tidyverse.html#piping-output"><i class="fa fa-check"></i><b>B.0.6</b> Piping Output</a></li>
+<li class="chapter" data-level="B.0.7" data-path="tidyverse.html"><a href="tidyverse.html#grouping-summarizing"><i class="fa fa-check"></i><b>B.0.7</b> Grouping &amp; Summarizing</a></li>
+<li class="chapter" data-level="B.1" data-path="tidyverse.html"><a href="tidyverse.html#the-ggplot-library"><i class="fa fa-check"></i><b>B.1</b> The <code>ggplot</code> Library</a><ul>
+<li class="chapter" data-level="B.1.1" data-path="tidyverse.html"><a href="tidyverse.html#aesthetics"><i class="fa fa-check"></i><b>B.1.1</b> Aesthetics</a></li>
+<li class="chapter" data-level="B.1.2" data-path="tidyverse.html"><a href="tidyverse.html#density-plots"><i class="fa fa-check"></i><b>B.1.2</b> Density Plots</a></li>
+<li class="chapter" data-level="B.1.3" data-path="tidyverse.html"><a href="tidyverse.html#ggplot-themes"><i class="fa fa-check"></i><b>B.1.3</b> GGPlot Themes</a></li>
+<li class="chapter" data-level="B.1.4" data-path="tidyverse.html"><a href="tidyverse.html#histograms"><i class="fa fa-check"></i><b>B.1.4</b> Histograms</a></li>
+<li class="chapter" data-level="B.1.5" data-path="tidyverse.html"><a href="tidyverse.html#overlaying-data"><i class="fa fa-check"></i><b>B.1.5</b> Overlaying Data</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="C" data-path="rgdal-rgeos.html"><a href="rgdal-rgeos.html"><i class="fa fa-check"></i><b>C</b> RGDAL &amp; RGEOS</a></li>
 <li class="divider"></li>
 <li><a href="http://dyerlab.com" target="blank">the Dyer Laboratory</a></li>
 
@@ -274,14 +326,11 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="spatial-data" class="section level1">
 <h1><span class="header-section-number">1</span> Spatial Data</h1>
-<div class="figure">
-<img src="media/ch_newt2.jpg" />
-
-</div>
+<p><img src="media/ch_newt2.jpg" /></p>
 <div id="synopsis" class="section level2">
 <h2><span class="header-section-number">1.1</span> Synopsis</h2>
 <p>The goal of this activity is to introduce you to spatial data types and their manipulation and analysis. Functionally, we will be working with two kinds of spatial data: vector and raster data. Vector data can be considered as a finite set of points that may or may not be connected. In R, these points can be used directly, as a numeric data type, or as a <em>Spatial</em> class object. The <em>sp</em> library contains a lot of functions that help deal with points, lines, and polygons and this is going to be a short overview of how they can be derived and manipulated in the pursuit of landscape genetic studies.</p>
-<p>Rasters are a form of data that is georeferenced and (somewhat) more continuous. Raster data is perhaps best envisioned as a matrix of values, whose entries represent spatially referenced data points (pixels). The raster itself can be visualized as you could for normal matrix output. What makes a raster different, however, is that it is (or should be) georeferenced. This means that each element of the matrix represents some measurement on the ground having a specific location and spread—sometimes referred to as granularity. This is analogous to an image, where if you zoom in on it enough, you will be able to differentiate between individual pixels, each with its own color value. Raster representation specifies each pixel in terms of a location and size associated with that value that we can map onto the earth.</p>
+<p>Rasters are a form of data that is georeferenced and may be more continuous. Raster data is perhaps best envisioned as a matrix of values, whose entries represent spatially referenced data points (think pixels). The raster itself can be visualized as you could for normal matrix output. What makes a raster different, however, is that it is (or should be) georeferenced. This means that each element of the matrix represents some measurement on the ground having a specific location and spread—sometimes referred to as granularity. This is analogous to an image, where if you zoom in on it enough, you will be able to differentiate between individual pixels, each with its own color value. Raster representation specifies each pixel in terms of a location and size associated with that value that we can map onto the earth.</p>
 </div>
 <div id="objectives" class="section level2">
 <h2><span class="header-section-number">1.2</span> Objectives</h2>
@@ -295,7 +344,7 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="logistics-on-data" class="section level2">
 <h2><span class="header-section-number">1.3</span> Logistics on Data</h2>
-<p>Since this is the first hands-on practicum, it makes sense to standardize a few things. All activities for this workshop will be displayed in html5 format due to some of the display functions that rely upon javascript libraries. It is perhaps more common to provide these as PDF printouts, but that format cannot be dynamic. Much of what we want to do will be creating maps and looking at complicated data, we do not want limit ourselves to static presentations.</p>
+<p>Since this is the first hands-on practicum, it makes sense to standardize a few things. All activities for this workshop will be displayed in html5 format due to some of the display functions that rely upon javascript libraries. It is perhaps more common to provide these as PDF printouts, but that format cannot be <em>dynamic</em>. Much of what we want to do will be creating maps and looking at complicated data, we do not want limit ourselves to static presentations.</p>
 <p>If you are not in the habit of using RStudio, I would recommend that you use it for this course. Please make a project for this course and use that project throughout the week so we can minimize the problems associated with setting working directories, finding proper paths, etc. If you need some help on this, please ask, we are here to help.</p>
 <p>I am also going to assume that the data we have provided is located in a folder called <tt>data</tt> that is in the same directory as this document. When loading data in this and subsequent activities, I will assume that this is your working directory.</p>
 <p>If at any point, you have questions, feel free to ask.</p>
@@ -312,7 +361,7 @@ ______          _           _   _
 </div>
 <div id="projections" class="section level2">
 <h2><span class="header-section-number">1.4</span> Projections</h2>
-<p>Before we break into the data, we must cover a bit about projections. Our ability to use and understand spatial data is dependent upon understanding geographic ellipses, coordinate systems, and datum. A spatial projection is a mathematical representation of a coordinate space used to identify geospatial objects. Because the earth is both non-flat and non-spheroid, we must use mathematical approaches to describe the shape of the earth in a coordinate space. We do this using an ellipsoid—a simplified model of the shape of the earth. Common ellipsoids include:</p>
+<p>Before we break into the data, we must cover a bit about projections. Our ability to use and understand spatial data is dependent upon understanding geographic ellipses, coordinate systems, and datum. A spatial projection is a mathematical representation of a coordinate space used to identify geospatial objects. Because the earth is both non-flat and non-spheroid, we must use mathematical approaches to describe the shape of the earth in a coordinate space. We do this using an ellipsoid—a simplified model of the shape of the earth. Common ellipsoid models include:</p>
 <ul>
 <li>NAD27 (North American Datum of 1927) based upon land surveys<br />
 </li>
@@ -332,12 +381,12 @@ ______          _           _   _
 <div id="equatorial-projections" class="section level3">
 <h3><span class="header-section-number">1.4.1</span> Equatorial Projections</h3>
 <p>These are projections centered on the Prime Meridian (<code>Longitude=0</code>)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(maps)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(maps)
 <span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>)) <span class="co"># makes 2x2 grid of images with no margin</span>
 <span class="kw">map</span>(<span class="st">&quot;state&quot;</span>,<span class="dt">proj=</span><span class="st">&quot;mercator&quot;</span>,<span class="dt">main=</span><span class="st">&quot;mercator&quot;</span>)
 <span class="kw">map</span>(<span class="st">&quot;state&quot;</span>,<span class="dt">proj=</span><span class="st">&quot;mollweide&quot;</span>, <span class="dt">main=</span><span class="st">&quot;mollweide&quot;</span>)
 <span class="kw">map</span>(<span class="st">&quot;state&quot;</span>,<span class="dt">proj=</span><span class="st">&quot;gilbert&quot;</span>, <span class="dt">main=</span><span class="st">&quot;gilbert&quot;</span>)
-<span class="kw">map</span>(<span class="st">&quot;state&quot;</span>,<span class="dt">proj=</span><span class="st">&quot;cylequalarea&quot;</span>,<span class="dt">par=</span><span class="fl">39.83</span>)</code></pre></div>
+<span class="kw">map</span>(<span class="st">&quot;state&quot;</span>,<span class="dt">proj=</span><span class="st">&quot;cylequalarea&quot;</span>,<span class="dt">par=</span><span class="fl">39.83</span>)</code></pre>
 <div class="figure"><span id="fig:projections1"></span>
 <img src="LGDA_files/figure-html/projections1-1.png" alt="Mercator, Mollweide, and Gilbert equatorial projections along with a cylequalarea projection centered on the middle of the US." width="672" />
 <p class="caption">
@@ -348,13 +397,13 @@ Figure 1.1: Mercator, Mollweide, and Gilbert equatorial projections along with a
 <div id="azimuth-projections" class="section level3">
 <h3><span class="header-section-number">1.4.2</span> Azimuth Projections</h3>
 <p>These projections are centered on the North Pole with parallels making concentric circles. Meridians are equally spaced radial lines.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>))
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>))
 <span class="kw">map</span>(<span class="st">&quot;state&quot;</span>,<span class="dt">proj=</span><span class="st">&quot;orthographic&quot;</span>)
 <span class="kw">map</span>(<span class="st">&quot;state&quot;</span>,<span class="dt">proj=</span><span class="st">&quot;orthographic&quot;</span>)
 <span class="kw">map</span>(<span class="st">&quot;state&quot;</span>,<span class="dt">proj=</span><span class="st">&quot;perspective&quot;</span>, <span class="dt">param=</span><span class="dv">8</span>)
-<span class="kw">map</span>(<span class="st">&quot;state&quot;</span>,<span class="dt">proj=</span><span class="st">&quot;gnomonic&quot;</span>)</code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-1"></span>
-<img src="LGDA_files/figure-html/unnamed-chunk-1-1.png" alt="Orthographic, stereographic, perspective, and gnomonic projections." width="672" />
+<span class="kw">map</span>(<span class="st">&quot;state&quot;</span>,<span class="dt">proj=</span><span class="st">&quot;gnomonic&quot;</span>)</code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-3"></span>
+<img src="LGDA_files/figure-html/unnamed-chunk-3-1.png" alt="Orthographic, stereographic, perspective, and gnomonic projections." width="672" />
 <p class="caption">
 Figure 1.2: Orthographic, stereographic, perspective, and gnomonic projections.
 </p>
@@ -363,11 +412,11 @@ Figure 1.2: Orthographic, stereographic, perspective, and gnomonic projections.
 <div id="polar-conic-projections" class="section level3">
 <h3><span class="header-section-number">1.4.3</span> Polar Conic Projections</h3>
 <p>Here projections are symmetric around the Prime Meridian with parallel as segments of concentric circles with meridians being equally spaced.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>))
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>))
 <span class="kw">map</span>(<span class="st">&quot;state&quot;</span>,<span class="dt">proj=</span><span class="st">&quot;conic&quot;</span>,<span class="dt">par=</span><span class="fl">39.83</span>)
-<span class="kw">map</span>(<span class="st">&quot;state&quot;</span>,<span class="dt">proj=</span><span class="st">&quot;lambert&quot;</span>,<span class="dt">par=</span><span class="kw">c</span>(<span class="dv">30</span>,<span class="dv">40</span>))</code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-2"></span>
-<img src="LGDA_files/figure-html/unnamed-chunk-2-1.png" alt="Conic and Lambert projections." width="672" />
+<span class="kw">map</span>(<span class="st">&quot;state&quot;</span>,<span class="dt">proj=</span><span class="st">&quot;lambert&quot;</span>,<span class="dt">par=</span><span class="kw">c</span>(<span class="dv">30</span>,<span class="dv">40</span>))</code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-4"></span>
+<img src="LGDA_files/figure-html/unnamed-chunk-4-1.png" alt="Conic and Lambert projections." width="672" />
 <p class="caption">
 Figure 1.3: Conic and Lambert projections.
 </p>
@@ -376,13 +425,13 @@ Figure 1.3: Conic and Lambert projections.
 <div id="miscellaneous-projections" class="section level3">
 <h3><span class="header-section-number">1.4.4</span> Miscellaneous Projections</h3>
 <p>These are some additional miscellaneous projections, provided for fun mostly, to show some more diversity in the ways we have come up with mapping points onto 2-dimensional displays.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>))
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>))
 <span class="kw">map</span>(<span class="st">&quot;state&quot;</span>,<span class="dt">proj=</span><span class="st">&quot;square&quot;</span>)
 <span class="kw">map</span>(<span class="st">&quot;state&quot;</span>,<span class="dt">proj=</span><span class="st">&quot;hex&quot;</span>)
 <span class="kw">map</span>(<span class="st">&quot;state&quot;</span>,<span class="dt">proj=</span><span class="st">&quot;bicentric&quot;</span>, <span class="dt">par=</span><span class="op">-</span><span class="dv">98</span>)
-<span class="kw">map</span>(<span class="st">&quot;state&quot;</span>,<span class="dt">proj=</span><span class="st">&quot;guyou&quot;</span>)</code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-3"></span>
-<img src="LGDA_files/figure-html/unnamed-chunk-3-1.png" alt="Miscellaneous projections (Square, hex, bicentric, and Guyou) highlighting some of the more excentric ways of displaying data." width="672" />
+<span class="kw">map</span>(<span class="st">&quot;state&quot;</span>,<span class="dt">proj=</span><span class="st">&quot;guyou&quot;</span>)</code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-5"></span>
+<img src="LGDA_files/figure-html/unnamed-chunk-5-1.png" alt="Miscellaneous projections (Square, hex, bicentric, and Guyou) highlighting some of the more excentric ways of displaying data." width="672" />
 <p class="caption">
 Figure 1.4: Miscellaneous projections (Square, hex, bicentric, and Guyou) highlighting some of the more excentric ways of displaying data.
 </p>
@@ -392,7 +441,8 @@ Figure 1.4: Miscellaneous projections (Square, hex, bicentric, and Guyou) highli
 <h3><span class="header-section-number">1.4.5</span> Coordinate Systems</h3>
 <p>Onto this ellipsoid, we must define a set of reference locations (in 3-space) called datum that help describe the precise shape of the surface. We typically are dealing with a combination of data that we’ve collected and that we’ve attained from some other provider. In most GIS applications, the coordinate systems we encounter are either:</p>
 <ul>
-<li>UTM (Universal Transverse Mercator) measuring the distance from the prime meridian for the x-coordinate and the distance from the equator (often called northing in the northern hemisphere) for the y-coordinate. These distances are in meters and the globe is divided into 60 zones, each of which is 6 degrees in width. Geographic coordinate systems use longitude and latitude. For historical purposes these are unfortunately reported in degrees, minutes, seconds, a temporal abstraction that is both annoying and a waste of time (IMHO).<br />
+<li>UTM (Universal Transverse Mercator) measuring the distance from the prime meridian for the x-coordinate and the distance from the equator (often called northing in the northern hemisphere) for the y-coordinate. These distances are in meters and the globe is divided into 60 zones, each of which is 6 degrees in width.
+Geographic coordinate systems use longitude and latitude. For historical purposes these are unfortunately reported in degrees, minutes, seconds, a temporal abstraction that is both annoying and a waste of time (IMHO).<br />
 </li>
 <li>Decimal degrees, while less easy to remember, are easier to work with in R.</li>
 <li>State Planar coordinate systems are coordinate systems that each US State has defined for their own purposes. They are based upon some arbitrarily defined points of reference and another pain to use (IMHO). Given the differential in state area, some states are also divided into different zones. Maps you get from municipal agencies may be in this coordinate system. If your study straddles different zones or even state lines, you have some work ahead of you…</li>
@@ -417,8 +467,8 @@ Figure 1.4: Miscellaneous projections (Square, hex, bicentric, and Guyou) highli
 <div id="the-sp-library" class="section level2">
 <h2><span class="header-section-number">1.5</span> The <code>sp</code> Library</h2>
 <p>The <code>sp</code> Library is a large and complicated library that you will learn incrementally, like pulling layers of an onion… It is a very powerful tool to use and makes our lives rather enjoyable once you get the hang of it. Each object is build within a hierarchy of classes that looks like:</p>
-<div class="figure"><span id="fig:unnamed-chunk-4"></span>
-<img src="../media/sp_levels.png" alt="A general schematic of sp object inheritance.  Here the generic 'Object' is taking the place of Point, Line, Polygon, Pixel, and other data structures."  />
+<div class="figure"><span id="fig:unnamed-chunk-6"></span>
+<img src="media/sp_levels.png" alt="A general schematic of sp object inheritance.  Here the generic 'Object' is taking the place of Point, Line, Polygon, Pixel, and other data structures." width="48" />
 <p class="caption">
 Figure 1.5: A general schematic of sp object inheritance. Here the generic ‘Object’ is taking the place of Point, Line, Polygon, Pixel, and other data structures.
 </p>
@@ -428,12 +478,12 @@ Figure 1.5: A general schematic of sp object inheritance. Here the generic ‘Ob
 <h3><span class="header-section-number">1.5.1</span> Points</h3>
 <p>Points are defined by <em>SpatialPoints</em> objects. A collection of points may have additional data associated with each location and would make a <em>SpatialPointsDataFrame</em>. This is a bit different than the normal <code>data.frame</code> objects we’ve been using with coordinates in them already—in fact it is the opposite of that. It is a set of points within which is located a <code>data.frame</code> rather than <code>data.frame</code> that has within it a set of points.</p>
 <p>Confused yet? Lets get to the point and make some coordinates.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sp)
-x &lt;-<span class="st"> </span><span class="kw">c</span>( <span class="op">-</span><span class="fl">110.2725</span>, <span class="op">-</span><span class="fl">110.0960</span>, <span class="op">-</span><span class="fl">109.3270</span> )
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sp)
+x &lt;-<span class="st"> </span><span class="kw">c</span>( <span class="fl">-110.2725</span>, <span class="fl">-110.0960</span>, <span class="fl">-109.3270</span> )
 y &lt;-<span class="st"> </span><span class="kw">c</span>( <span class="fl">24.21441</span>, <span class="fl">24.0195</span>, <span class="fl">26.63783</span> )
 coords &lt;-<span class="st"> </span><span class="kw">cbind</span>( x, y )
 pts &lt;-<span class="st"> </span><span class="kw">SpatialPoints</span>( coords )
-pts</code></pre></div>
+pts</code></pre>
 <pre><code>## SpatialPoints:
 ##              x        y
 ## [1,] -110.2725 24.21441
@@ -441,10 +491,10 @@ pts</code></pre></div>
 ## [3,] -109.3270 26.63783
 ## Coordinate Reference System (CRS) arguments: NA</code></pre>
 <p>Since we use coordinates all the time in our analyses, <code>gstudio</code> has included some helper functions as long as you are keeping our data in a <code>data.frame</code>. In the <em>Arapatus attenuatus</em> data set there are locale coordinates defined as Longitude and Latitude. By default it produces just a <code>data.frame</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(gstudio)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(gstudio)
 <span class="kw">data</span>(arapat)
 coords &lt;-<span class="st"> </span><span class="kw">strata_coordinates</span>(arapat)
-<span class="kw">summary</span>(coords)</code></pre></div>
+<span class="kw">summary</span>(coords)</code></pre>
 <pre><code>##     Stratum     Longitude         Latitude    
 ##  101    : 1   Min.   :-114.3   Min.   :23.08  
 ##  102    : 1   1st Qu.:-112.9   1st Qu.:24.52  
@@ -454,27 +504,27 @@ coords &lt;-<span class="st"> </span><span class="kw">strata_coordinates</span>(
 ##  157    : 1   Max.   :-109.1   Max.   :29.33  
 ##  (Other):33</code></pre>
 <p>However, we can also derive these points directly as a <em>SpatialPoints</em> object defined in the <em>sp</em> library by setting the optional flag <code>as.SpatialPoints=TRUE</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pts &lt;-<span class="st"> </span><span class="kw">strata_coordinates</span>( arapat, <span class="dt">as.SpatialPoints =</span> <span class="ot">TRUE</span> )
-pts</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">pts &lt;-<span class="st"> </span><span class="kw">strata_coordinates</span>( arapat, <span class="dt">as.SpatialPoints =</span> <span class="ot">TRUE</span> )
+pts</code></pre>
 <pre><code>## class       : SpatialPoints 
 ## features    : 39 
 ## extent      : -114.2935, -109.1263, 23.0757, 29.32541  (xmin, xmax, ymin, ymax)
 ## coord. ref. : NA</code></pre>
 <p>Notice that there is no coordinate reference system in the default extraction. This is because you can pass a wide array of coordinates to this function and it only takes the centroid. It is up to you to define the projection and datum for the data. If it is Long/Lat data as in the example, it can be defined as:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">proj &lt;-<span class="st"> &quot;+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;</span>
+<pre class="sourceCode r"><code class="sourceCode r">proj &lt;-<span class="st"> &quot;+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;</span>
 <span class="kw">proj4string</span>(pts) &lt;-<span class="st"> </span><span class="kw">CRS</span>(proj)
-pts</code></pre></div>
+pts</code></pre>
 <pre><code>## class       : SpatialPoints 
 ## features    : 39 
 ## extent      : -114.2935, -109.1263, 23.0757, 29.32541  (xmin, xmax, ymin, ymax)
 ## coord. ref. : +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>( pts, <span class="dt">axes=</span><span class="ot">TRUE</span>, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>( pts, <span class="dt">axes=</span><span class="ot">TRUE</span>, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <p>Any set of x- and y- coordinates can be turned into a <em>SpatialPoints</em> object. If we are to associate data with those points, the data has to have the same number of observations as there are coordinates. In our case here, we have 39 populations and as an example I’ll determine the number of individuals genotyped in each population as a</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="kw">table</span>(arapat<span class="op">$</span>Population) )
+<pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="kw">table</span>(arapat<span class="op">$</span>Population) )
 <span class="kw">names</span>(df) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Population&quot;</span>,<span class="st">&quot;N&quot;</span>)
 pts.df &lt;-<span class="st"> </span><span class="kw">SpatialPointsDataFrame</span>(pts,df)
-pts.df</code></pre></div>
+pts.df</code></pre>
 <pre><code>## class       : SpatialPointsDataFrame 
 ## features    : 39 
 ## extent      : -114.2935, -109.1263, 23.0757, 29.32541  (xmin, xmax, ymin, ymax)
@@ -484,7 +534,7 @@ pts.df</code></pre></div>
 ## min values  :        101,  4 
 ## max values  :        SFr, 19</code></pre>
 <p>You can translate it back into a <code>data.frame</code> object as:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.data.frame</span>( pts.df )[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,]</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.data.frame</span>( pts.df )[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,]</code></pre>
 <pre><code>##     Population  N         x        y
 ## 88         101  9 -114.2935 29.32541
 ## 9          102  8 -113.9449 29.01457
@@ -492,9 +542,9 @@ pts.df</code></pre></div>
 ## 175        153 10 -113.4897 28.72796
 ## 177        156  6 -113.9914 28.66056</code></pre>
 <p>or access the data within the <code>data.frame</code> directly (thereby not needing to make a new object) using the attribute <code>@</code> operator</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">slotNames</span>(pts.df)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">slotNames</span>(pts.df)</code></pre>
 <pre><code>## [1] &quot;data&quot;        &quot;coords.nrs&quot;  &quot;coords&quot;      &quot;bbox&quot;        &quot;proj4string&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pts.df<span class="op">@</span>data[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,]</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">pts.df<span class="op">@</span>data[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,]</code></pre>
 <pre><code>##   Population  N
 ## 1        101  9
 ## 2        102  8
@@ -502,7 +552,7 @@ pts.df</code></pre></div>
 ## 4        153 10
 ## 5        156  6</code></pre>
 <p>Since it is a <em>SpatialPoints</em> object, you can get information about it such as the bounding box (e.g., the coordinates of a box that encloses all the points).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bbox</span>(pts.df)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bbox</span>(pts.df)</code></pre>
 <pre><code>##         min        max
 ## x -114.2935 -109.12633
 ## y   23.0757   29.32541</code></pre>
@@ -510,24 +560,24 @@ pts.df</code></pre></div>
 <div id="lines" class="section level3">
 <h3><span class="header-section-number">1.5.2</span> Lines</h3>
 <p>Lines are created by pairs of points. A single <em>Line</em> object</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">c1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(coords<span class="op">$</span>Longitude[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], coords<span class="op">$</span>Latitude[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>])
+<pre class="sourceCode r"><code class="sourceCode r">c1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(coords<span class="op">$</span>Longitude[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], coords<span class="op">$</span>Latitude[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>])
 c2 &lt;-<span class="st"> </span><span class="kw">cbind</span>(coords<span class="op">$</span>Longitude[<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>], coords<span class="op">$</span>Latitude[<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>])
 L1 &lt;-<span class="st"> </span><span class="kw">Line</span>(c1)
 L2 &lt;-<span class="st"> </span><span class="kw">Line</span>(c2)
-L1</code></pre></div>
+L1</code></pre>
 <pre><code>## An object of class &quot;Line&quot;
 ## Slot &quot;coords&quot;:
 ##           [,1]     [,2]
 ## [1,] -114.2935 29.32541
 ## [2,] -113.9449 29.01457</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">coordinates</span>(L1)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">coordinates</span>(L1)</code></pre>
 <pre><code>##           [,1]     [,2]
 ## [1,] -114.2935 29.32541
 ## [2,] -113.9449 29.01457</code></pre>
 <p>A collection of <em>Line</em> objects can be put into a <em>Lines</em> object.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Ls1 &lt;-<span class="st"> </span><span class="kw">Lines</span>( <span class="kw">list</span>(L1), <span class="dt">ID=</span><span class="st">&quot;88 to 9&quot;</span>)
+<pre class="sourceCode r"><code class="sourceCode r">Ls1 &lt;-<span class="st"> </span><span class="kw">Lines</span>( <span class="kw">list</span>(L1), <span class="dt">ID=</span><span class="st">&quot;88 to 9&quot;</span>)
 Ls2 &lt;-<span class="st"> </span><span class="kw">Lines</span>( <span class="kw">list</span>(L2), <span class="dt">ID=</span><span class="st">&quot;9 to 84&quot;</span>)
-Ls1</code></pre></div>
+Ls1</code></pre>
 <pre><code>## An object of class &quot;Lines&quot;
 ## Slot &quot;Lines&quot;:
 ## [[1]]
@@ -542,23 +592,23 @@ Ls1</code></pre></div>
 ## Slot &quot;ID&quot;:
 ## [1] &quot;88 to 9&quot;</code></pre>
 <p>And if they are spatial in context (e.g., if we need to plot them in any way, shape, or form), we need to put them into a <em>SpatialLines</em> object, which is also constructed from a <code>list</code> of <em>Lines</em> objects.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SLs &lt;-<span class="st"> </span><span class="kw">SpatialLines</span>( <span class="kw">list</span>(Ls1,Ls2))
+<pre class="sourceCode r"><code class="sourceCode r">SLs &lt;-<span class="st"> </span><span class="kw">SpatialLines</span>( <span class="kw">list</span>(Ls1,Ls2))
 <span class="kw">proj4string</span>(SLs) &lt;-<span class="st"> </span><span class="kw">CRS</span>(<span class="kw">proj4string</span>(pts))
-SLs</code></pre></div>
+SLs</code></pre>
 <pre><code>## class       : SpatialLines 
 ## features    : 2 
 ## extent      : -114.2935, -113.6679, 28.96651, 29.32541  (xmin, xmax, ymin, ymax)
 ## coord. ref. : +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>( pts, <span class="dt">axes=</span><span class="ot">TRUE</span>, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span>,
-      <span class="dt">ylim=</span><span class="kw">c</span>(<span class="fl">28.5</span>,<span class="fl">29.5</span>), <span class="dt">xlim=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">114.5</span>, <span class="op">-</span><span class="dv">113</span>))
-<span class="kw">plot</span>( SLs, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span> )</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>( pts, <span class="dt">axes=</span><span class="ot">TRUE</span>, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span>,
+      <span class="dt">ylim=</span><span class="kw">c</span>(<span class="fl">28.5</span>,<span class="fl">29.5</span>), <span class="dt">xlim=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">114.5</span>, <span class="dv">-113</span>))
+<span class="kw">plot</span>( SLs, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span> )</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>If we want to add data to the set of lines, we can associate a <code>data.frame</code> with each of them with internal data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">Sequence =</span> <span class="kw">c</span>(<span class="st">&quot;First&quot;</span>,<span class="st">&quot;Second&quot;</span>), 
+<pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">Sequence =</span> <span class="kw">c</span>(<span class="st">&quot;First&quot;</span>,<span class="st">&quot;Second&quot;</span>), 
                   <span class="dt">Like_It=</span> <span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">FALSE</span>), 
                   <span class="dt">row.names =</span> <span class="kw">c</span>(<span class="st">&quot;88 to 9&quot;</span>,<span class="st">&quot;9 to 84&quot;</span>))
 SLDF &lt;-<span class="st"> </span><span class="kw">SpatialLinesDataFrame</span>( SLs, df )
-SLDF</code></pre></div>
+SLDF</code></pre>
 <pre><code>## class       : SpatialLinesDataFrame 
 ## features    : 2 
 ## extent      : -114.2935, -113.6679, 28.96651, 29.32541  (xmin, xmax, ymin, ymax)
@@ -567,21 +617,21 @@ SLDF</code></pre></div>
 ## names       : Sequence, Like_It 
 ## min values  :    First,    TRUE 
 ## max values  :   Second,   FALSE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.data.frame</span>(SLDF)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.data.frame</span>(SLDF)</code></pre>
 <pre><code>##         Sequence Like_It
 ## 88 to 9    First    TRUE
 ## 9 to 84   Second   FALSE</code></pre>
 <p>We can also extract the line lengths of each line.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">SpatialLinesLengths</span>(SLs, <span class="dt">longlat =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">SpatialLinesLengths</span>(SLs, <span class="dt">longlat =</span> <span class="ot">TRUE</span>)</code></pre>
 <pre><code>## [1] 48.34721 27.51264</code></pre>
 </div>
 <div id="polygons" class="section level3">
 <h3><span class="header-section-number">1.5.3</span> Polygons</h3>
 <p>A polygon is simply a collection of line segments that closes in on itself. We can use polygons to identify habitat, define boundaries, etc. In the short description to follow, we will create a set Polygon* objects, culminating in a <em>SpatialPolygonsDataFrame</em> object.</p>
 <p>We will start with the first 5 coordinates in the <code>arapat</code> data set. To make the polygon, we <strong>must</strong> close the coordinates, which means take the first one we put in and append it to the end of the list of coordinates, such that in this case <code>c[1,] == c[6,]</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">c &lt;-<span class="st"> </span><span class="kw">cbind</span>( coords<span class="op">$</span>Longitude[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>], coords<span class="op">$</span>Latitude[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])
+<pre class="sourceCode r"><code class="sourceCode r">c &lt;-<span class="st"> </span><span class="kw">cbind</span>( coords<span class="op">$</span>Longitude[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>], coords<span class="op">$</span>Latitude[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])
 c &lt;-<span class="st"> </span><span class="kw">rbind</span>( c, c[<span class="dv">1</span>,])
-c</code></pre></div>
+c</code></pre>
 <pre><code>##           [,1]     [,2]
 ## [1,] -114.2935 29.32541
 ## [2,] -113.9449 29.01457
@@ -590,8 +640,8 @@ c</code></pre></div>
 ## [5,] -113.9914 28.66056
 ## [6,] -114.2935 29.32541</code></pre>
 <p>Then you can construct an individual polygon object</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">P &lt;-<span class="st"> </span><span class="kw">Polygon</span>( c )
-P</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">P &lt;-<span class="st"> </span><span class="kw">Polygon</span>( c )
+P</code></pre>
 <pre><code>## An object of class &quot;Polygon&quot;
 ## Slot &quot;labpt&quot;:
 ## [1] -113.89179   28.89114
@@ -618,24 +668,24 @@ P</code></pre></div>
 - The <code>labpt</code> is the coordinate where a label would be plot.<br />
 - The <code>hole</code> and <code>ringDir</code> determine if the polygon represent a hole in some other polygon (e.g., the doughnut hole and the direction it is plot).</p>
 <p>Similar to how we constructed <em>SpatialLines</em>, a <em>Polygon</em> must be in inserted into a set of <em>Polygons</em></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Ps &lt;-<span class="st"> </span><span class="kw">Polygons</span>( <span class="kw">list</span>(P), <span class="dt">ID=</span><span class="st">&quot;Bob&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">Ps &lt;-<span class="st"> </span><span class="kw">Polygons</span>( <span class="kw">list</span>(P), <span class="dt">ID=</span><span class="st">&quot;Bob&quot;</span>)</code></pre>
 <p>From which a list of can be created to make a <em>SpatialPolygons</em> object</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SPs &lt;-<span class="st"> </span><span class="kw">SpatialPolygons</span>( <span class="kw">list</span>(Ps))
+<pre class="sourceCode r"><code class="sourceCode r">SPs &lt;-<span class="st"> </span><span class="kw">SpatialPolygons</span>( <span class="kw">list</span>(Ps))
 <span class="kw">proj4string</span>(SPs) &lt;-<span class="st"> </span><span class="kw">CRS</span>(<span class="kw">proj4string</span>(pts))
-SPs</code></pre></div>
+SPs</code></pre>
 <pre><code>## class       : SpatialPolygons 
 ## features    : 1 
 ## extent      : -114.2935, -113.4897, 28.66056, 29.32541  (xmin, xmax, ymin, ymax)
 ## coord. ref. : +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>( pts, <span class="dt">axes=</span><span class="ot">TRUE</span>, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span>, 
-      <span class="dt">ylim=</span><span class="kw">c</span>(<span class="fl">28.5</span>,<span class="fl">29.5</span>), <span class="dt">xlim=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">114.5</span>, <span class="op">-</span><span class="dv">113</span>))
-<span class="kw">plot</span>( SPs, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">border=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>, <span class="dt">add=</span><span class="ot">TRUE</span>  )</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>( pts, <span class="dt">axes=</span><span class="ot">TRUE</span>, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span>, 
+      <span class="dt">ylim=</span><span class="kw">c</span>(<span class="fl">28.5</span>,<span class="fl">29.5</span>), <span class="dt">xlim=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">114.5</span>, <span class="dv">-113</span>))
+<span class="kw">plot</span>( SPs, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">border=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>, <span class="dt">add=</span><span class="ot">TRUE</span>  )</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>And data can be added to it making a <em>SpatialPolygonsDataFrame</em> (n.b., The <code>row.names</code> of the <code>data.frame</code> <em>must</em> match the <code>ID</code> we set for making the <em>Polygons</em> objects). If they do not, there will be an error thrown.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">Populations=</span><span class="kw">paste</span>(coords<span class="op">$</span>Stratum[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>],<span class="dt">collapse=</span><span class="st">&quot;, &quot;</span>), 
+<pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">Populations=</span><span class="kw">paste</span>(coords<span class="op">$</span>Stratum[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>],<span class="dt">collapse=</span><span class="st">&quot;, &quot;</span>), 
                   <span class="dt">row.names =</span> <span class="st">&quot;Bob&quot;</span>)
 SPDF &lt;-<span class="st"> </span><span class="kw">SpatialPolygonsDataFrame</span>( SPs, df)
-SPDF</code></pre></div>
+SPDF</code></pre>
 <pre><code>## class       : SpatialPolygonsDataFrame 
 ## features    : 1 
 ## extent      : -114.2935, -113.4897, 28.66056, 29.32541  (xmin, xmax, ymin, ymax)
@@ -647,18 +697,18 @@ SPDF</code></pre></div>
 <div id="projecting-sp-objects." class="section level3">
 <h3><span class="header-section-number">1.5.4</span> Projecting <code>sp</code> objects.</h3>
 <p>In R, we use rgdal to project points. Here I load in the coordinates of the populations in the <em>Arapatus attenuatus</em> data set and make a <em>SpatialPoints</em> object out of it. Setting the <code>proj4string()</code> here <strong>does not</strong> project the data, I am just specifying that the data are already in the lat/long WGS84 format because that is the format it was in when I recorded the values and put them into the data file.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">coords &lt;-<span class="st"> </span><span class="kw">strata_coordinates</span>( arapat )
+<pre class="sourceCode r"><code class="sourceCode r">coords &lt;-<span class="st"> </span><span class="kw">strata_coordinates</span>( arapat )
 pts &lt;-<span class="st"> </span><span class="kw">SpatialPoints</span>( coords[,<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>] )
 <span class="kw">proj4string</span>(pts) &lt;-<span class="st"> </span><span class="kw">CRS</span>(<span class="st">&quot;+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;</span>)
-pts</code></pre></div>
+pts</code></pre>
 <pre><code>## class       : SpatialPoints 
 ## features    : 39 
 ## extent      : -114.2935, -109.1263, 23.0757, 29.32541  (xmin, xmax, ymin, ymax)
 ## coord. ref. : +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0</code></pre>
 <p>The <code>CRS()</code> function holds the definition of the projection and interfaces between the PROJ.4 and RGDAL libraries. To project a set of data points into a new coordinate systems, we use <code>spTransform()</code> and pass it the definition of the new system to use.</p>
 <p>If we want to actually change the projection, ellipse, or datum, we need to project the data onto the new model. We do this using the <code>spTransform</code> function. Here is an example of taking the exact same data and projecting it from decimal Longitude and Latitude into Universal Transverse Mercator (<a href="https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system">UTM</a>).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pts.utm &lt;-<span class="st"> </span><span class="kw">spTransform</span>(pts, <span class="kw">CRS</span>(<span class="st">&quot;+proj=utm +zone=12 +datum=WGS84&quot;</span>))
-<span class="kw">summary</span>( pts.utm )</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">pts.utm &lt;-<span class="st"> </span><span class="kw">spTransform</span>(pts, <span class="kw">CRS</span>(<span class="st">&quot;+proj=utm +zone=12 +datum=WGS84&quot;</span>))
+<span class="kw">summary</span>( pts.utm )</code></pre>
 <pre><code>## Object of class SpatialPoints
 ## Coordinates:
 ##               min       max
@@ -669,8 +719,8 @@ pts</code></pre></div>
 ## [+proj=utm +zone=12 +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0]
 ## Number of points: 39</code></pre>
 <p>You can see the transformations in the coordinate system by comparing the plots below. The relative position of each point is the same, it has just been loaded into a new space.</p>
-<div class="figure"><span id="fig:unnamed-chunk-28"></span>
-<img src="LGDA_files/figure-html/unnamed-chunk-28-1.png" alt="Population locations in (A) longitude and latitude and (B) Universal Transverse Mercator coordinate systems." width="672" />
+<div class="figure"><span id="fig:unnamed-chunk-30"></span>
+<img src="LGDA_files/figure-html/unnamed-chunk-30-1.png" alt="Population locations in (A) longitude and latitude and (B) Universal Transverse Mercator coordinate systems." width="672" />
 <p class="caption">
 Figure 1.6: Population locations in (A) longitude and latitude and (B) Universal Transverse Mercator coordinate systems.
 </p>
@@ -681,8 +731,8 @@ Figure 1.6: Population locations in (A) longitude and latitude and (B) Universal
 <p>I am a huge fan of the <code>ggplot2</code> graphics library, mostly because it is constructed in a way that makes sense to me and it produces very beautiful graphics. You will see various <code>ggplot</code> plotting functions throughout the week so let me give you a brief tutorial.</p>
 <p>The library is build upon the idea of the grammar of graphics. Essentially, a graphical display is created, sequentially, by adding (literally) components to it. These components may represent the raw data, layers of plotting geometries, spatial transformations (maps, projections, etc.), labels, summaries (expected lines, etc) and coordinate transformations. Unlike build-in graphic approaches, these are added together rather than put into a single function call. This allows us to sequentially build the graphic. Here I’m going plot the locations for the <em>arapat</em> data set onto a map as the final graphic but do so incrementally to demonstrate how it work.</p>
 <p>At a bare minimum, ggplot requires your data to be in a <code>data.frame</code> object. Columns of data will define the x-, y-, z-, color, shape, and other characteristics.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">coords &lt;-<span class="st"> </span><span class="kw">strata_coordinates</span>(arapat)
-<span class="kw">summary</span>(coords)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">coords &lt;-<span class="st"> </span><span class="kw">strata_coordinates</span>(arapat)
+<span class="kw">summary</span>(coords)</code></pre>
 <pre><code>##     Stratum     Longitude         Latitude    
 ##  101    : 1   Min.   :-114.3   Min.   :23.08  
 ##  102    : 1   1st Qu.:-112.9   1st Qu.:24.52  
@@ -692,19 +742,19 @@ Figure 1.6: Population locations in (A) longitude and latitude and (B) Universal
 ##  157    : 1   Max.   :-109.1   Max.   :29.33  
 ##  (Other):33</code></pre>
 <p>You initiate a ggplot by specifying the data and an aesthetic. Here the aesthetic maps the names of the columns of the data onto the x- and y- axes. To show the graphical output I just print the object.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw">ggplot</span>( coords, <span class="kw">aes</span>(<span class="dt">x=</span>Longitude, <span class="dt">y=</span>Latitude))
-p</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
-<p>There is nothing shown because we have not specified how to display the data in x- and y- space. It did however set up the range and labels for us automatically. To do that, we need to add (again literally add it to the object just like an equation) a geometric layer.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()
-p</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
-<p>By default it makes the points filled and black. Since this is a projected set of data, we should probably change the coordinate space so it knows that these are supposed to be mapped onto a projection in decimal degrees. If you look at the figure above, you will see that the x- and y- limits are maximized in the graphic display, not scaled to be spatially coherent. To change the coordinate system, we add a coordinate transformation to the data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="kw">coord_map</span>(<span class="st">&quot;mercator&quot;</span>)
-p</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw">ggplot</span>( coords, <span class="kw">aes</span>(<span class="dt">x=</span>Longitude, <span class="dt">y=</span>Latitude))
+p</code></pre>
 <p><img src="LGDA_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p>There is nothing shown because we have not specified how to display the data in x- and y- space. It did however set up the range and labels for us automatically. To do that, we need to add (again literally add it to the object just like an equation) a geometric layer.</p>
+<pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()
+p</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<p>By default it makes the points filled and black. Since this is a projected set of data, we should probably change the coordinate space so it knows that these are supposed to be mapped onto a projection in decimal degrees. If you look at the figure above, you will see that the x- and y- limits are maximized in the graphic display, not scaled to be spatially coherent. To change the coordinate system, we add a coordinate transformation to the data.</p>
+<pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="kw">coord_map</span>(<span class="st">&quot;mercator&quot;</span>)
+p</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 <p>This plot does not need to be incrementally crated, it can be created as a single line of code as:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(coords, <span class="kw">aes</span>(<span class="dt">x=</span>Longitude,<span class="dt">y=</span>Latitude)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">coord_map</span>(<span class="st">&quot;mercator&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(coords, <span class="kw">aes</span>(<span class="dt">x=</span>Longitude,<span class="dt">y=</span>Latitude)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">coord_map</span>(<span class="st">&quot;mercator&quot;</span>)</code></pre>
 <p>and it would create the same thing.</p>
 <p>Both lines and polygons may also be created using different geometries. In both cases, you need to have your initial <code>data.frame</code> set up in a specific way so that the <code>geom_*</code> can create the line segments and polygons. See <code>?geom_line</code> and <code>geom_polygon</code> for more information on how that works.</p>
 <!-- ########################################################################
@@ -721,10 +771,10 @@ p</code></pre></div>
 <h2><span class="header-section-number">1.6</span> Rasters</h2>
 <p>Rasters are a form of data that is georeferenced and (somewhat) continuous. Raster data is perhaps best envisioned as a matrix of values, whose entries represent spatially referenced data points. The raster itself can be visualized as you could for normal matrix output. What makes a raster different, however, is that it is (or should be) georeferenced. This means that each element of the matrix represents some measurement on the ground having a specific location and spread. This is analogous to an image, where if you zoom in on it enough, you will be able to differentiate between individual pixels, it is just that for rasters, each pixel has a spatial location and size associated with it that we can map onto the earth.</p>
 <p>You can either create raster objects <em>de novo</em> or you can acquire them from some external source. To create one from scratch, you start with a matrix of values and then construct the raster object using the <code>raster()</code> function as:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(raster)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(raster)
 r &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">10000</span>),<span class="dt">nrow=</span><span class="dv">100</span>)
 rnd &lt;-<span class="st"> </span><span class="kw">raster</span>( r )
-rnd</code></pre></div>
+rnd</code></pre>
 <pre><code>## class       : RasterLayer 
 ## dimensions  : 100, 100, 10000  (nrow, ncol, ncell)
 ## resolution  : 0.01, 0.01  (x, y)
@@ -732,12 +782,12 @@ rnd</code></pre></div>
 ## coord. ref. : NA 
 ## data source : in memory
 ## names       : layer 
-## values      : 2.03813e-05, 0.9999085  (min, max)</code></pre>
+## values      : 0.0004153715, 0.9999267  (min, max)</code></pre>
 <p>which can be visualized using the normal plot command. The raster library has overridden several of the plotting functions and you can plot raster objects and decorate the images in the same way you do for normal plotting materials (<a href="#graphics"><strong>??</strong></a>).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(rnd)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(rnd)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 <p>There are also many available repositories for raster data including Open Source, Governmental, and Municipal locations. One common source for these data is that of <a href="http://worldclim.org" class="uri">http://worldclim.org</a>. This repository contains temperature and precipitation data generalized for the entire globe.</p>
-<p><img src="../media/WorldClimTiles.png" /><!-- --></p>
+<p><img src="media/WorldClimTiles.png" width="333" /></p>
 <p>These data are available free of charge and have been used in numerous biological studies. Moreover, they provide a set of ‘biologically relevant’ layers, called <code>BioClim</code>, that summarize both temperature and precipitation. They motivate these by saying:</p>
 <blockquote>
 <p>Bioclimatic variables are derived from the monthly temperature and rainfall values in order to generate more biologically meaningful variables. These are often used in ecological niche modeling (e.g., BIOCLIM, GARP). The bioclimatic variables represent annual trends (e.g., mean annual temperature, annual precipitation) seasonality (e.g., annual range in temperature and precipitation) and extreme or limiting environmental factors (e.g., temperature of the coldest and warmest month, and precipitation of the wet and dry quarters).</p>
@@ -915,58 +965,60 @@ Precipitation of Coldest Quarter
 <p>For the purposes of this chapter, I’ll use bioclim and altitude layers from tile 22, which encompasses the spatial distribution of sampling locations in Baja California for the <em>Araptus attenuatus</em> dataset</p>
 <p>Common raster formats include GeoTiff, essentially an image file with some metadata associated with it, and BIL (Binary interleaved) file formats. Both of these types are available from WorldClim. In general, the GeoTiff format is slightly easier to work with as all the data is contained within a single file, whereas the BIL format has two files for each raster (the second file is a header file that has the spatial meta data associated with it). If you do use the BIL format, the file path you pass to <code>raster()</code> would be of the BIL file, not the header one.</p>
 <p>From Worldclim, I downloaded the elevation raster for Tile 22 and can load it into R using the <code>raster()</code> function as:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">alt &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;./spatial_data/alt.tif&quot;</span>)
-alt</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">alt &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;./spatial_data/alt.tif&quot;</span>)
+alt</code></pre>
 <pre><code>## class       : RasterLayer 
 ## dimensions  : 3600, 3600, 12960000  (nrow, ncol, ncell)
 ## resolution  : 0.008333333, 0.008333333  (x, y)
 ## extent      : -120, -90, 0, 30  (xmin, xmax, ymin, ymax)
 ## coord. ref. : +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## data source : /Users/rodney/Desktop/Landscape-Genetics-Data-Analysis/spatial_data/alt.tif 
+## data source : /Users/rodney/Documents/Landscape_Genetics_Book/spatial_data/alt.tif 
 ## names       : alt 
 ## values      : -202, 5469  (min, max)</code></pre>
-<p>The <code>alt</code> object is summarized here. A couple of things should be pointed out here: - In total, this is an object with 12,960,000 entries in it!<br />
-- The resolution of each ‘pixel’ in this representation is 0.008, which is about 30-arc seconds or ~1km. That means that each location in the study area is represented by the same exact value as the surrounding square kilometer. Obviously, if you are working on processes whose spatial scale is relevant less than 1000 m<sup><sup>2</sup></sup>, this kind of data is going to be of little value to you. - The values within the matrix range from -202 upwards to 5469. This is in meters.</p>
+<p>The <code>alt</code> object is summarized here. A couple of things should be pointed out here:
+- In total, this is an object with 12,960,000 entries in it!<br />
+- The resolution of each ‘pixel’ in this representation is 0.008, which is about 30-arc seconds or ~1km. That means that each location in the study area is represented by the same exact value as the surrounding square kilometer. Obviously, if you are working on processes whose spatial scale is relevant less than 1000 m^<sup>2</sup>^, this kind of data is going to be of little value to you.
+- The values within the matrix range from -202 upwards to 5469. This is in meters.</p>
 <p>In addition, the raster has a spatial extent and a projection associated with it. For more information on projections see <a href="#map-projections"><strong>??</strong></a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bbox</span>( alt )</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bbox</span>( alt )</code></pre>
 <pre><code>##     min max
 ## s1 -120 -90
 ## s2    0  30</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">proj4string</span>( alt )</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">proj4string</span>( alt )</code></pre>
 <pre><code>## [1] &quot;+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;</code></pre>
 <p>This elevation raster looks like:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>( alt, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span> )</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>( alt, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span> )</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
 </div>
 <div id="modifying-rasters" class="section level2">
 <h2><span class="header-section-number">1.7</span> Modifying Rasters</h2>
 <p>We can modify rasters just as easily as we can modify matrices. The square bracket indexing you use for matrices are just as effective as before. In the next example, I mask the landscape based upon elevation. I create a copy of the original raster and then make everything whose elevation is less than 500m as missing data. Plotting this over the top of the original raster shows only locations where elevation exceeds this cutoff.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">alt &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;data/bioclim/alt_22.tif&quot;</span>)
+<pre class="sourceCode r"><code class="sourceCode r">alt &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;data/bioclim/alt_22.tif&quot;</span>)
 e &lt;-<span class="st"> </span><span class="kw">extent</span>( <span class="kw">c</span>(<span class="op">-</span><span class="dv">115</span>,<span class="op">-</span><span class="dv">109</span>,<span class="dv">22</span>,<span class="dv">30</span>) )
 baja_california &lt;-<span class="st"> </span><span class="kw">crop</span>( alt, e )
-baja_california</code></pre></div>
+baja_california</code></pre>
 <pre><code>## class       : RasterLayer 
 ## dimensions  : 960, 720, 691200  (nrow, ncol, ncell)
 ## resolution  : 0.008333333, 0.008333333  (x, y)
 ## extent      : -115, -109, 22, 30  (xmin, xmax, ymin, ymax)
 ## coord. ref. : +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## data source : in memory
+## data source : /private/var/folders/nq/7jmnh01s3gl7ff3mf2rhblpc0000gn/T/RtmpA6DI6d/raster/r_tmp_2019-03-24_152958_6418_04983.grd 
 ## names       : alt_22 
 ## values      : -202, 2263  (min, max)</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>( baja_california, <span class="dt">axes=</span><span class="ot">TRUE</span>, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span> )
-<span class="kw">plot</span>( pts, <span class="dt">add=</span><span class="ot">TRUE</span> )</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bc &lt;-<span class="st"> </span>baja_california
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>( baja_california, <span class="dt">axes=</span><span class="ot">TRUE</span>, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span> )
+<span class="kw">plot</span>( pts, <span class="dt">add=</span><span class="ot">TRUE</span> )</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">bc &lt;-<span class="st"> </span>baja_california
 bc[ bc <span class="op">&lt;</span><span class="st"> </span><span class="dv">500</span> ] &lt;-<span class="st"> </span><span class="ot">NA</span>
 <span class="kw">plot</span>( baja_california, <span class="dt">legend=</span><span class="ot">FALSE</span>, <span class="dt">col=</span><span class="st">&quot;darkgrey&quot;</span> )
-<span class="kw">plot</span>( bc, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">legend=</span><span class="ot">FALSE</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<span class="kw">plot</span>( bc, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">legend=</span><span class="ot">FALSE</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
 <div id="stacks-of-rasters" class="section level3">
 <h3><span class="header-section-number">1.7.1</span> Stacks of Rasters</h3>
 <p>It is not uncommon to be working with many different raster layers at the same time. Instead of loading them individually, the <code>raster</code> library has a <code>RasterStack</code> object that can hold several rasters at one time and can be used in places where we would use individual rasters. Here is an example using the elevation and temperature rasters for tile 22.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">files &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;./spatial_data/alt.tif&quot;</span>, <span class="st">&quot;./spatial_data/bio1.tif&quot;</span>, <span class="st">&quot;./spatial_data/bio5.tif&quot;</span>, <span class="st">&quot;./spatial_data/bio6.tif&quot;</span>)
+<pre class="sourceCode r"><code class="sourceCode r">files &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;./spatial_data/alt.tif&quot;</span>, <span class="st">&quot;./spatial_data/bio1.tif&quot;</span>, <span class="st">&quot;./spatial_data/bio5.tif&quot;</span>, <span class="st">&quot;./spatial_data/bio6.tif&quot;</span>)
 bio_layers &lt;-<span class="st"> </span><span class="kw">stack</span>( files )
-bio_layers</code></pre></div>
+bio_layers</code></pre>
 <pre><code>## class       : RasterStack 
 ## dimensions  : 3600, 3600, 12960000, 4  (nrow, ncol, ncell, nlayers)
 ## resolution  : 0.008333333, 0.008333333  (x, y)
@@ -976,12 +1028,12 @@ bio_layers</code></pre></div>
 ## min values  : -202,  -20,   54,  -83 
 ## max values  : 5469,  295,  424,  242</code></pre>
 <p>Performing operations on a stack is as easy as performing them on individual layers. Here, I trim them to the hull defined above.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">e &lt;-<span class="st"> </span><span class="kw">extent</span>( <span class="kw">c</span>(<span class="op">-</span><span class="dv">115</span>,<span class="op">-</span><span class="dv">109</span>,<span class="dv">22</span>,<span class="dv">30</span>) )
+<pre class="sourceCode r"><code class="sourceCode r">e &lt;-<span class="st"> </span><span class="kw">extent</span>( <span class="kw">c</span>(<span class="op">-</span><span class="dv">115</span>,<span class="op">-</span><span class="dv">109</span>,<span class="dv">22</span>,<span class="dv">30</span>) )
 bio_layers &lt;-<span class="st"> </span><span class="kw">crop</span>( bio_layers, e )
-<span class="kw">plot</span>(bio_layers)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<span class="kw">plot</span>(bio_layers)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
 <p>From which values may be extracted using normal methods as outlined above.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sp)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sp)
 <span class="kw">library</span>(gstudio)
 <span class="kw">data</span>(arapat)
 coords &lt;-<span class="st"> </span><span class="kw">strata_coordinates</span>(arapat)
@@ -990,7 +1042,7 @@ coords &lt;-<span class="st"> </span><span class="kw">strata_coordinates</span>(
 pts &lt;-<span class="st"> </span><span class="kw">SpatialPoints</span>( coords[,<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>] )
 df &lt;-<span class="st"> </span><span class="kw">extract</span>( bio_layers, pts)
 df &lt;-<span class="st"> </span>df[ <span class="op">!</span><span class="kw">is.na</span>(df[,<span class="dv">1</span>]),]
-<span class="kw">head</span>(df)</code></pre></div>
+<span class="kw">head</span>(df)</code></pre>
 <pre><code>##      alt bio1 bio5 bio6
 ## [1,] 681  178  331   48
 ## [2,] 361  195  346   61
@@ -999,36 +1051,36 @@ df &lt;-<span class="st"> </span>df[ <span class="op">!</span><span class="kw">i
 ## [5,] 177  203  352   71
 ## [6,]  26  223  372   81</code></pre>
 <p>And visualized normally.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>( GGally )
-<span class="kw">ggpairs</span>(<span class="kw">as.data.frame</span>(df))</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>( GGally )
+<span class="kw">ggpairs</span>(<span class="kw">as.data.frame</span>(df))</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
 </div>
 </div>
 <div id="rasters-ggplot" class="section level2">
 <h2><span class="header-section-number">1.8</span> Rasters &amp; ggplot</h2>
 <p>As is the case with a lot of data types in R, there is a way to use the <code>ggplot</code> library to visualize rasters. Essentially, what you need to do is to transform your raster objects into <code>data.frame</code> objects for <code>ggplot</code>’s <code>geom_tile()</code> function. Here is an example.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 df &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="kw">rasterToPoints</span>( baja_california )) 
 <span class="kw">names</span>(df) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Longitude&quot;</span>,<span class="st">&quot;Latitude&quot;</span>,<span class="st">&quot;Elevation&quot;</span>)
 p &lt;-<span class="st"> </span><span class="kw">ggplot</span>( df ) <span class="op">+</span><span class="st"> </span><span class="kw">geom_tile</span>( <span class="kw">aes</span>(<span class="dt">x=</span>Longitude,<span class="dt">y=</span>Latitude,<span class="dt">fill=</span>Elevation)) 
 p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="kw">scale_fill_gradientn</span>( <span class="dt">colors=</span><span class="kw">c</span>(<span class="st">&#39;#a6611a&#39;</span>,<span class="st">&#39;#dfc27d&#39;</span>,<span class="st">&#39;#f5f5f5&#39;</span>,<span class="st">&#39;#80cdc1&#39;</span>,<span class="st">&#39;#018571&#39;</span>))
 p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="kw">coord_equal</span>() <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Longitude&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Latitude&quot;</span>) 
-p</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+p</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
 <p>As usual, we can add additional information to the plot and as we would for any other <code>ggplot</code> object. Here I’ll add the populations and indicate if they have samples in them that are of one species (Pure) or have a mix of the two (Mixed).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">num.clades &lt;-<span class="st"> </span><span class="kw">colSums</span>( <span class="kw">table</span>(arapat<span class="op">$</span>Species, arapat<span class="op">$</span>Population) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> )
+<pre class="sourceCode r"><code class="sourceCode r">num.clades &lt;-<span class="st"> </span><span class="kw">colSums</span>( <span class="kw">table</span>(arapat<span class="op">$</span>Species, arapat<span class="op">$</span>Population) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> )
 Stratum=<span class="kw">names</span>(num.clades)
 Species=<span class="st"> </span><span class="kw">factor</span>( <span class="kw">c</span>(<span class="st">&quot;Pure&quot;</span>,<span class="st">&quot;Mixed&quot;</span>)[num.clades] )
 tmp.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>( Stratum, Species )
 sites &lt;-<span class="st"> </span><span class="kw">merge</span>( coords, tmp.df )
-p <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">x=</span>Longitude,<span class="dt">y=</span>Latitude, <span class="dt">shape=</span>Species), <span class="dt">size=</span><span class="dv">3</span>, <span class="dt">data=</span>sites )</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
+p <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">x=</span>Longitude,<span class="dt">y=</span>Latitude, <span class="dt">shape=</span>Species), <span class="dt">size=</span><span class="dv">3</span>, <span class="dt">data=</span>sites )</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
 </div>
 <div id="d-visualization" class="section level2">
 <h2><span class="header-section-number">1.9</span> 3D Visualization</h2>
 <p>It is also possible to visualize rasters in 3-space. The library <code>rasterVis</code> provides an interface to the <code>rgl</code> library to plot a surface. Once installed, these are easy to use for viewing surfaces. Here is an example using the elevation data we have been playing with.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rasterVis)
-<span class="kw">plot3D</span>( baja_california , <span class="dt">zfac=</span><span class="fl">0.1</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rasterVis)
+<span class="kw">plot3D</span>( baja_california , <span class="dt">zfac=</span><span class="fl">0.1</span>)</code></pre>
 <p><img src="media/Baja_Plot3D.png" width="200" /></p>
 <p>The <code>zfac</code> option in the plot is the amount to scale the z-axis (elevation) in relation to the x-axis and y-axis dimensions. It is a bit exaggerated at <code>zfac=0.1</code> but you get the idea.</p>
 <!-- TODO: Add Categorical Rasters -->
@@ -1039,13 +1091,13 @@ p <span class="op">+</span><span class="st"> </span><span class="kw">geom_point<
 <h2><span class="header-section-number">1.10</span> Saving &amp; Exporting Vector &amp; Raster Objects</h2>
 <p>As all of these objects are R objects, they can be saved to disk using the <code>save()</code> function, which makes them a *.rda object. If you have objects that take a bit of time to create, it is in your best interests to save them after creation and on subsequent analyses, just use the saved versions.</p>
 <p>There are many situations where you need to save a raster you’ve manipulated. As these raster objects are R objects, you can save them directly to the file system using the <code>write()</code> as:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write</span>( baja_california, <span class="dt">filename=</span><span class="st">&quot;baja_california.rda&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write</span>( baja_california, <span class="dt">filename=</span><span class="st">&quot;baja_california.rda&quot;</span>)</code></pre>
 <p>This will save the raster object to file exactly like it is in your R session. To load it back in you just use <code>load()</code> and it is returned just like it was. The benefit to saving these as R objects is that you do not need to change it at all to pick up where you left off.</p>
 <p>You may also need to export the vector or raster data into a non-R format for external analyses. A common format for vector data is the ubiquitous ESRI shapefile.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rgdal)
-<span class="kw">writeOGR</span>( <span class="dt">obj=</span>SPDF, <span class="dt">dsn=</span><span class="st">&quot;spatial_data&quot;</span>, <span class="dt">layer=</span><span class="st">&quot;SpatialPolyExample&quot;</span>, <span class="dt">driver=</span><span class="st">&quot;ESRI Shapefile&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rgdal)
+<span class="kw">writeOGR</span>( <span class="dt">obj=</span>SPDF, <span class="dt">dsn=</span><span class="st">&quot;spatial_data&quot;</span>, <span class="dt">layer=</span><span class="st">&quot;SpatialPolyExample&quot;</span>, <span class="dt">driver=</span><span class="st">&quot;ESRI Shapefile&quot;</span>)</code></pre>
 <p>For rasters, you use the <code>writeRaster()</code> function. The file extension is used to determine the file format used and R saves it automatically.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">writeRaster</span>( baja_california, <span class="dt">filename=</span><span class="st">&quot;baja_california.tif&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">writeRaster</span>( baja_california, <span class="dt">filename=</span><span class="st">&quot;baja_california.tif&quot;</span>)</code></pre>
 <!-- ########################################################################
 ______          _             ___  ___            _             _       _   _             
 | ___ \        | |            |  \/  |           (_)           | |     | | (_)            
@@ -1064,39 +1116,39 @@ ______          _             ___  ___            _             _       _   _
 <h3><span class="header-section-number">1.11.1</span> Cropping Rasters</h3>
 <p>Just because we have a large raster does not mean that it is in your best interest to use the entire object. Much of the spatial analyses routines used in population genetics require measurements of intervening distance, either Euclidean or ecological. Many of the routines for estimation of these distances require the estimation of pairwise distance between <em>all</em> pixels. For our purposes, the <code>arapat</code> dataset does not occur throughout most of this map, so it is in our best interests to use only the portion of the raster relevant to our data rather than the entire thing.</p>
 <p>Here is one way of going this. I first define an extent, which consists of a vector representing the coordinates for <code>xmin</code>, <code>xmax</code>, <code>ymin</code>, and <code>ymax</code> (in decimal degrees longitude and latitude). You then <code>crop()</code> the raster to that extent.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sp)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sp)
 <span class="kw">library</span>(raster)
 alt &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;./spatial_data/alt.tif&quot;</span>)
 e &lt;-<span class="st"> </span><span class="kw">extent</span>( <span class="kw">c</span>(<span class="op">-</span><span class="dv">115</span>,<span class="op">-</span><span class="dv">109</span>,<span class="dv">22</span>,<span class="dv">30</span>) )
 baja_california &lt;-<span class="st"> </span><span class="kw">crop</span>( alt, e )
-<span class="kw">plot</span>(baja_california, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<span class="kw">plot</span>(baja_california, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
 <p>Lets make this base map a bit more pretty by taking the altitude and estimating the slope of each pixel and the direction it is facing (aspect). From this, we can ‘shade’ the hills in the map giving it more of a relief view we commonly see in maps. The optional parameters to <code>hillShade</code> provide the angle and direction of the light source.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">slope &lt;-<span class="st"> </span><span class="kw">terrain</span>( baja_california, <span class="dt">opt=</span><span class="st">&quot;slope&quot;</span> )
+<pre class="sourceCode r"><code class="sourceCode r">slope &lt;-<span class="st"> </span><span class="kw">terrain</span>( baja_california, <span class="dt">opt=</span><span class="st">&quot;slope&quot;</span> )
 aspect &lt;-<span class="st"> </span><span class="kw">terrain</span>( baja_california, <span class="dt">opt=</span><span class="st">&quot;aspect&quot;</span>)
 baja &lt;-<span class="st"> </span><span class="kw">hillShade</span>( slope, aspect, <span class="dv">40</span>, <span class="dv">270</span> )
-<span class="kw">plot</span>(baja, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span>, <span class="dt">legend=</span><span class="ot">FALSE</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
+<span class="kw">plot</span>(baja, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span>, <span class="dt">legend=</span><span class="ot">FALSE</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
 <p>Onto this map, we can plot our populations. For this, we convert the raw coordinates into a <code>SpatialPoints</code> object and then overlay onto the map. I use two <code>points()</code> commands to make the symbol for each population.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(gstudio)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(gstudio)
 <span class="kw">data</span>(arapat)
 coords &lt;-<span class="st"> </span><span class="kw">strata_coordinates</span>(arapat)
 pts &lt;-<span class="st"> </span><span class="kw">SpatialPoints</span>( coords[,<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">proj4string =</span> <span class="kw">CRS</span>(<span class="kw">proj4string</span>(baja)))
 <span class="kw">plot</span>(baja, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span>, <span class="dt">legend=</span><span class="ot">FALSE</span>)
 <span class="kw">points</span>( pts, <span class="dt">col=</span><span class="st">&quot;darkred&quot;</span>, <span class="dt">pch=</span><span class="dv">3</span>)
-<span class="kw">points</span>( pts, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">pch=</span><span class="dv">16</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<span class="kw">points</span>( pts, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">pch=</span><span class="dv">16</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
 </div>
 <div id="cropping-rasters-via-polygons" class="section level3">
 <h3><span class="header-section-number">1.11.2</span> Cropping Rasters Via Polygons</h3>
 <p>It is also possible to crop a raster with a more fine grained approach using a polygon. Here is an example using five points picked around the region of Loreto, BCS (I just grabbed these by looking at Google Earth). You define a polygon by a series of points, the last of which has to be identical to the first one so that the polygon is a closed object and not just a series of points on a crooked line…</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pts &lt;-<span class="st"> </span><span class="kw">rbind</span>( <span class="kw">c</span>(<span class="op">-</span><span class="fl">111.5</span>,<span class="fl">27.0</span>),
+<pre class="sourceCode r"><code class="sourceCode r">pts &lt;-<span class="st"> </span><span class="kw">rbind</span>( <span class="kw">c</span>(<span class="op">-</span><span class="fl">111.5</span>,<span class="fl">27.0</span>),
               <span class="kw">c</span>(<span class="op">-</span><span class="fl">112.4</span>,<span class="fl">26.7</span>),
               <span class="kw">c</span>(<span class="op">-</span><span class="fl">111.7</span>,<span class="fl">25.7</span>),
               <span class="kw">c</span>(<span class="op">-</span><span class="fl">111.1</span>,<span class="fl">25.4</span>),
               <span class="kw">c</span>(<span class="op">-</span><span class="fl">110.8</span>,<span class="fl">26.0</span>),
               <span class="kw">c</span>(<span class="op">-</span><span class="fl">111.5</span>,<span class="fl">27.0</span>) )
-pts</code></pre></div>
+pts</code></pre>
 <pre><code>##        [,1] [,2]
 ## [1,] -111.5 27.0
 ## [2,] -112.4 26.7
@@ -1105,15 +1157,15 @@ pts</code></pre></div>
 ## [5,] -110.8 26.0
 ## [6,] -111.5 27.0</code></pre>
 <p>From these points, we construct a <code>SpatialPolygons</code> object (see @ref{polygons} for more info on this convoluted construction) and then can overlay onto the map to make sure it in the correct vicinity (here we are eyeballing it a bit). For more on why this next line of code looks so crazy, see <a href="spatial-data.html#polygons">1.5.3</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">polys &lt;-<span class="st"> </span><span class="kw">SpatialPolygons</span>(<span class="kw">list</span>(<span class="kw">Polygons</span>(<span class="kw">list</span>(<span class="kw">Polygon</span>(pts)),<span class="st">&quot;Polygon&quot;</span>)))
+<pre class="sourceCode r"><code class="sourceCode r">polys &lt;-<span class="st"> </span><span class="kw">SpatialPolygons</span>(<span class="kw">list</span>(<span class="kw">Polygons</span>(<span class="kw">list</span>(<span class="kw">Polygon</span>(pts)),<span class="st">&quot;Polygon&quot;</span>)))
 <span class="kw">plot</span>(baja, <span class="dt">legend=</span><span class="ot">FALSE</span>)
-<span class="kw">plot</span>(polys, <span class="dt">add=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+<span class="kw">plot</span>(polys, <span class="dt">add=</span><span class="ot">TRUE</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
 <p>To use the polygon to crop the raster, we have to both remove the part of the raster that is not contained within the polygon (<code>mask</code>) and then cut down the remaining raster to change the bounding box to that representing the portion of the data that remains (<code>trim</code>). If you do not trim the raster, it will have the same amount of data associated with it as the previous raster (e.g., the underlying data matrix will have 960 rows and 720 columns) but the part that is masked will be represented by <code>NA</code> values. For many rasters, the data is held in-memory (see the entry for ’data source<code>in the summary above) and as such removing as much of a raster that is</code>NA` improves your ability to manipulate it better.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">loredo &lt;-<span class="st"> </span><span class="kw">trim</span>( <span class="kw">mask</span>( baja, polys ) )
-<span class="kw">plot</span>(loredo, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span>)</code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-58"></span>
-<img src="LGDA_files/figure-html/unnamed-chunk-58-1.png" alt="Extraction of region within polygon from the full Baja California raster." width="672" />
+<pre class="sourceCode r"><code class="sourceCode r">loredo &lt;-<span class="st"> </span><span class="kw">trim</span>( <span class="kw">mask</span>( baja, polys ) )
+<span class="kw">plot</span>(loredo, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span>)</code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-60"></span>
+<img src="LGDA_files/figure-html/unnamed-chunk-60-1.png" alt="Extraction of region within polygon from the full Baja California raster." width="672" />
 <p class="caption">
 Figure 1.7: Extraction of region within polygon from the full Baja California raster.
 </p>
@@ -1124,45 +1176,45 @@ Figure 1.7: Extraction of region within polygon from the full Baja California ra
 <p>An analysis common to modern population genetics is that of finding ecological distances between objects on a landscape. The estimation of pairwise distance derived from spatial data is a computationally intensive thing, one that if you are not careful will bring your laptop to its knees! One way to mitigate this data problem is to use a minimal amount raster area so that the estimation of the underlying distance graph can be done on a smaller set of points.</p>
 <p>Cropping by a polygon like demonstrated in the previous example is a ‘by hand’ approach to estimating a box that roughly encompasses your data points. A more efficient one is one where you simply provide your coordinates and we can estimate a polygon that surrounds those coordinates with the minimal amount of wasted space. This is called a <em>Convex Hull</em>, which is kind of like a polygon that is created as if there was a rubber band fit around all your points. It is a minimal area that includes all of your points.</p>
 <p>For this example, I’m going to use the populations found along the peninsula and find the minimal area encompassing those points.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">baja_coords &lt;-<span class="st"> </span>coords[ <span class="op">!</span>(coords<span class="op">$</span>Stratum <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;101&quot;</span>,<span class="st">&quot;102&quot;</span>,<span class="st">&quot;32&quot;</span>)), ]
+<pre class="sourceCode r"><code class="sourceCode r">baja_coords &lt;-<span class="st"> </span>coords[ <span class="op">!</span>(coords<span class="op">$</span>Stratum <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;101&quot;</span>,<span class="st">&quot;102&quot;</span>,<span class="st">&quot;32&quot;</span>)), ]
 baja_pts &lt;-<span class="st"> </span><span class="kw">SpatialPoints</span>( baja_coords[,<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>])
 <span class="kw">plot</span>(baja, <span class="dt">legend=</span><span class="ot">FALSE</span>)
 <span class="kw">plot</span>(baja_pts,<span class="dt">add=</span>T,<span class="dt">col=</span><span class="st">&quot;darkred&quot;</span>)
-<span class="kw">plot</span>(baja_pts,<span class="dt">add=</span>T,<span class="dt">col=</span><span class="st">&quot;darkred&quot;</span>,<span class="dt">pch=</span><span class="dv">16</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
+<span class="kw">plot</span>(baja_pts,<span class="dt">add=</span>T,<span class="dt">col=</span><span class="st">&quot;darkred&quot;</span>,<span class="dt">pch=</span><span class="dv">16</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
 <p>The methods for finding the hull and adding a buffer around it are found in the <code>rgeos</code> package. These are pretty easy functions to use and are very helpful. If you are having trouble installing the <code>rgeos</code> package from source, see my webpage (<a href="http://dyerlab.com" class="uri">http://dyerlab.com</a>), there is a short tutorial.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rgeos) <span class="co"># loads in gConvexHull &amp; gBuffer functions</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rgeos) <span class="co"># loads in gConvexHull &amp; gBuffer functions</span>
 hull &lt;-<span class="st"> </span><span class="kw">gConvexHull</span>(baja_pts)
 <span class="kw">plot</span>(baja, <span class="dt">legend=</span><span class="ot">FALSE</span>)
 <span class="kw">plot</span>(baja_pts,<span class="dt">add=</span>T,<span class="dt">col=</span><span class="st">&quot;darkred&quot;</span>)
 <span class="kw">plot</span>(baja_pts,<span class="dt">add=</span>T,<span class="dt">col=</span><span class="st">&quot;darkred&quot;</span>,<span class="dt">pch=</span><span class="dv">16</span>)
-<span class="kw">plot</span>(hull,<span class="dt">add=</span>T,<span class="dt">border=</span><span class="st">&quot;red&quot;</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
+<span class="kw">plot</span>(hull,<span class="dt">add=</span>T,<span class="dt">border=</span><span class="st">&quot;red&quot;</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
 <p>The function <code>gConvexHull()</code> returns an object of type <em>SpatialPolygons</em>, just like we created before. However, we now have a polygon that has each of our most ‘outward’ populations on the very edge of the polygon. It may be beneficial for us to add a buffer around this polygon.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hull_plus_buffer &lt;-<span class="st"> </span><span class="kw">gBuffer</span>(hull,<span class="dt">width=</span>.<span class="dv">2</span>)
+<pre class="sourceCode r"><code class="sourceCode r">hull_plus_buffer &lt;-<span class="st"> </span><span class="kw">gBuffer</span>(hull,<span class="dt">width=</span>.<span class="dv">2</span>)
 <span class="kw">plot</span>(baja, <span class="dt">legend=</span><span class="ot">FALSE</span>)
 <span class="kw">plot</span>(baja_pts,<span class="dt">add=</span>T,<span class="dt">col=</span><span class="st">&quot;darkred&quot;</span>)
 <span class="kw">plot</span>(baja_pts,<span class="dt">add=</span>T,<span class="dt">col=</span><span class="st">&quot;darkred&quot;</span>,<span class="dt">pch=</span><span class="dv">16</span>)
-<span class="kw">plot</span>(hull_plus_buffer, <span class="dt">add=</span>T, <span class="dt">border=</span><span class="st">&quot;red&quot;</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
+<span class="kw">plot</span>(hull_plus_buffer, <span class="dt">add=</span>T, <span class="dt">border=</span><span class="st">&quot;red&quot;</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-63-1.png" width="672" /></p>
 <p>Now, we can mask and trim it to include only the area of interest.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pop_hull &lt;-<span class="st"> </span><span class="kw">trim</span>( <span class="kw">mask</span>(baja,hull_plus_buffer) )
+<pre class="sourceCode r"><code class="sourceCode r">pop_hull &lt;-<span class="st"> </span><span class="kw">trim</span>( <span class="kw">mask</span>(baja,hull_plus_buffer) )
 <span class="kw">plot</span>(pop_hull, <span class="dt">legend=</span><span class="ot">FALSE</span>, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span>)
-<span class="kw">plot</span>(baja_pts,<span class="dt">add=</span>T,<span class="dt">col=</span><span class="st">&quot;darkred&quot;</span>,<span class="dt">pch=</span><span class="dv">16</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
+<span class="kw">plot</span>(baja_pts,<span class="dt">add=</span>T,<span class="dt">col=</span><span class="st">&quot;darkred&quot;</span>,<span class="dt">pch=</span><span class="dv">16</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-64-1.png" width="672" /></p>
 <p>This would be a great raster to start looking at ecological separation in since we have removed the extraneous data that would unintentionally cause problems with the distance estimators.</p>
 </div>
 <div id="extracting-point-data-from-rasters" class="section level3">
 <h3><span class="header-section-number">1.11.4</span> Extracting Point Data From Rasters</h3>
 <p>So far, the rasters have been confined to representing a single static object. However, it is not uncommon to need to query a raster and find out the values at particular points. These points may be pre-defined or they may be dynamic (e.g., you need to point at a location on the map and determine the value there).</p>
 <p>For queries of the first kind, we can use the <code>extract()</code> function. For this I downloaded the average temperature and precipitation rasters from Worldclim.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">baja_temp &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;./spatial_data/bio1.tif&quot;</span>)
-baja_prec &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;./spatial_data/bio12.tif&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">baja_temp &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;./spatial_data/bio1.tif&quot;</span>)
+baja_prec &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;./spatial_data/bio12.tif&quot;</span>)</code></pre>
 <p>And then extract the values from each of these layers into the <code>coords</code> data we already have set up.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">coords<span class="op">$</span>elevation &lt;-<span class="st"> </span><span class="kw">extract</span>( baja_california, coords[,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>)])
+<pre class="sourceCode r"><code class="sourceCode r">coords<span class="op">$</span>elevation &lt;-<span class="st"> </span><span class="kw">extract</span>( baja_california, coords[,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>)])
 coords<span class="op">$</span>mean_temp &lt;-<span class="st"> </span><span class="kw">extract</span>( baja_temp, coords[,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>)])
 coords<span class="op">$</span>mean_precip &lt;-<span class="st"> </span><span class="kw">extract</span>( baja_prec, coords[,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>)])
-coords[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,]</code></pre></div>
+coords[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,]</code></pre>
 <pre><code>##    Stratum Longitude Latitude elevation mean_temp mean_precip
 ## 1       88 -114.2935 29.32541       681       178         143
 ## 11       9 -113.9449 29.01457       361       195         148
@@ -1175,12 +1227,12 @@ coords[<span class="dv">1</span><span class="op">:</span><span class="dv">10</sp
 ## 76     159 -113.3161 27.52944        87       211         123
 ## 85     SFr -112.9640 27.36320       305       205         107</code></pre>
 <p>A note should be made on the temperature and precipitation values. Temperature is denoted in tenths of a degree Celsius. Though it does get quite hot at times, it does not average 188°C at population 88! Similarly, the units for precipitation are mm (or tenths of centimeters if you will…).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggrepel)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggrepel)
 coords &lt;-<span class="st"> </span>coords[ <span class="kw">order</span>(coords<span class="op">$</span>Latitude),]
 p &lt;-<span class="st"> </span><span class="kw">ggplot</span>( coords, <span class="kw">aes</span>(<span class="dt">x=</span>Latitude,<span class="dt">y=</span>elevation)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&quot;lightgrey&quot;</span>) 
 p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Elevation (m)&quot;</span>)
-p <span class="op">+</span><span class="st"> </span><span class="kw">geom_text_repel</span>(<span class="kw">aes</span>(<span class="dt">label=</span>Stratum), <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) </code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
+p <span class="op">+</span><span class="st"> </span><span class="kw">geom_text_repel</span>(<span class="kw">aes</span>(<span class="dt">label=</span>Stratum), <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) </code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
 <p>The package <code>ggrepel</code> provides a pseudo-smart labeling geometry for ggplot allowing you to have labels that are shifted around the points so as to maximize visibility.</p>
 <p>For inquires of the second type, we can use the function <code>click()</code> to retrieve one of several outputs. Here is the help file that describes the various components.</p>
 <div class="scrollingbox">
@@ -1241,19 +1293,19 @@ r <- raster(system.file("external/test.grd", package="raster"))
 #now click on the plot (map)</pre>
 </div>
 <p>Here is the output from a single inquire on the <code>baja_california</code> raster map, asking for both the coordinates and the elevation of a particular location.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>( baja_california, <span class="dt">legend=</span><span class="ot">FALSE</span>)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>( baja_california, <span class="dt">legend=</span><span class="ot">FALSE</span>)
 <span class="kw">click</span>(baja_california, <span class="dt">xy=</span><span class="ot">TRUE</span>)
-##           x        y value
-## 1 -113.3875 27.82083   116</code></pre></div>
+<span class="co">##           x        y value</span>
+<span class="co">## 1 -113.3875 27.82083   116</span></code></pre>
 <p>In a similar fashion, you can interactively create polygon points.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>cape_pts &lt;-<span class="st"> </span><span class="kw">click</span>(baja_california, <span class="dt">n=</span><span class="dv">5</span>, <span class="dt">xy=</span><span class="ot">TRUE</span>, <span class="dt">type=</span><span class="st">&quot;p&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>cape_pts &lt;-<span class="st"> </span><span class="kw">click</span>(baja_california, <span class="dt">n=</span><span class="dv">5</span>, <span class="dt">xy=</span><span class="ot">TRUE</span>, <span class="dt">type=</span><span class="st">&quot;p&quot;</span>)</code></pre>
 <p>and after you have selected the points, you get something like.</p>
 <div class="figure">
-<img src="../media/click_raster_example.png" alt="Raster points around the Cape region identified manually." />
+<img src="media/click_raster_example.png" alt="Raster points around the Cape region identified manually." />
 <p class="caption">Raster points around the Cape region identified manually.</p>
 </div>
 <p>with the data as:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cape_pts</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">cape_pts</code></pre>
 <pre><code>##           x        y value
 ## 1 -109.9542 24.22917    NA
 ## 2 -110.7542 23.66250    NA
@@ -1265,30 +1317,30 @@ r <- raster(system.file("external/test.grd", package="raster"))
 <div id="extracting-neighborhood-data-from-rasters" class="section level3">
 <h3><span class="header-section-number">1.11.5</span> Extracting Neighborhood Data from Rasters</h3>
 <p>Just as with points, we can also extract data around individual locations defined by either points with a buffer or from a polygon. The first approach requires us to put a buffer around the coordinate points and then extract the raster data. I’ll use the five most southern sites as an example.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">coords &lt;-<span class="st"> </span>coords[ <span class="kw">order</span>( coords<span class="op">$</span>Latitude) , ]
+<pre class="sourceCode r"><code class="sourceCode r">coords &lt;-<span class="st"> </span>coords[ <span class="kw">order</span>( coords<span class="op">$</span>Latitude) , ]
 cape_coords &lt;-<span class="st"> </span>coords[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,]
 pts &lt;-<span class="st"> </span><span class="kw">SpatialPoints</span>( cape_coords[,<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>] )
 <span class="kw">proj4string</span>(pts) &lt;-<span class="st"> </span><span class="kw">CRS</span>(<span class="kw">proj4string</span>(baja_california))
-pts</code></pre></div>
+pts</code></pre>
 <pre><code>## class       : SpatialPoints 
 ## features    : 5 
 ## extent      : -110.1091, -109.6487, 23.0757, 24.0195  (xmin, xmax, ymin, ymax)
 ## coord. ref. : +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0</code></pre>
 <p>These points are in the Cape region, which we can crop out of the <code>baja_california</code> raster as using the <code>cape_pts</code> we clicked out to form a polygon:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cpts &lt;-<span class="st"> </span><span class="kw">SpatialPoints</span>( cape_pts[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>] )
+<pre class="sourceCode r"><code class="sourceCode r">cpts &lt;-<span class="st"> </span><span class="kw">SpatialPoints</span>( cape_pts[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>] )
 b &lt;-<span class="st"> </span><span class="kw">bbox</span>( cpts )
 cape &lt;-<span class="st"> </span><span class="kw">crop</span>(baja_california, b)
 <span class="kw">plot</span>(cape, <span class="dt">xlab=</span><span class="st">&quot;Longitude&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Latitude&quot;</span>)
-<span class="kw">plot</span>( pts, <span class="dt">add=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
+<span class="kw">plot</span>( pts, <span class="dt">add=</span><span class="ot">TRUE</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
 <p>We can buffer these points</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">buff &lt;-<span class="st"> </span><span class="kw">gBuffer</span>(pts, <span class="dt">byid=</span><span class="ot">TRUE</span>, <span class="dt">width=</span><span class="fl">0.01</span>)
+<pre class="sourceCode r"><code class="sourceCode r">buff &lt;-<span class="st"> </span><span class="kw">gBuffer</span>(pts, <span class="dt">byid=</span><span class="ot">TRUE</span>, <span class="dt">width=</span><span class="fl">0.01</span>)
 <span class="kw">plot</span>( cape )
-<span class="kw">plot</span>( buff, <span class="dt">add=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
+<span class="kw">plot</span>( buff, <span class="dt">add=</span><span class="ot">TRUE</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
 <p>And we can extract the data from within those polygons for each of the five regions.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vals &lt;-<span class="st"> </span><span class="kw">extract</span>( cape, buff )
-vals</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">vals &lt;-<span class="st"> </span><span class="kw">extract</span>( cape, buff )
+vals</code></pre>
 <pre><code>## [[1]]
 ## [1] 79 75 28 37
 ## 
@@ -1304,35 +1356,35 @@ vals</code></pre></div>
 ## [[5]]
 ## [1] 584 651 609 510 597</code></pre>
 <p>You can do the same thing for larger polygons, as we established above when we drew the polygon around Loreto, BCS.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>( baja, <span class="dt">legend=</span><span class="ot">FALSE</span> )
-<span class="kw">plot</span>( polys, <span class="dt">add=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>( baja, <span class="dt">legend=</span><span class="ot">FALSE</span> )
+<span class="kw">plot</span>( polys, <span class="dt">add=</span><span class="ot">TRUE</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-76-1.png" width="672" /></p>
 <p>The resulting data is just a lot bigger in size.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data &lt;-<span class="st"> </span><span class="kw">extract</span>( baja_california, polys )
-<span class="kw">length</span>( data[[<span class="dv">1</span>]])</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">data &lt;-<span class="st"> </span><span class="kw">extract</span>( baja_california, polys )
+<span class="kw">length</span>( data[[<span class="dv">1</span>]])</code></pre>
 <pre><code>## [1] 19242</code></pre>
 </div>
 <div id="reprojecting-rasters" class="section level3">
 <h3><span class="header-section-number">1.11.6</span> Reprojecting Rasters</h3>
 <p>When working with rasters, we can reproject these onto other projections rather easily. Here is an example from the worldclim elevation tile we used previously.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">alt &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;data/bioclim/alt_22.tif&quot;</span>)
+<pre class="sourceCode r"><code class="sourceCode r">alt &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;data/bioclim/alt_22.tif&quot;</span>)
 e &lt;-<span class="st"> </span><span class="kw">extent</span>( <span class="kw">c</span>(<span class="op">-</span><span class="dv">115</span>,<span class="op">-</span><span class="dv">109</span>,<span class="dv">22</span>,<span class="dv">30</span>) )
 baja_california &lt;-<span class="st"> </span><span class="kw">crop</span>( alt, e )
-baja_california</code></pre></div>
+baja_california</code></pre>
 <pre><code>## class       : RasterLayer 
 ## dimensions  : 960, 720, 691200  (nrow, ncol, ncell)
 ## resolution  : 0.008333333, 0.008333333  (x, y)
 ## extent      : -115, -109, 22, 30  (xmin, xmax, ymin, ymax)
 ## coord. ref. : +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## data source : in memory
+## data source : /private/var/folders/nq/7jmnh01s3gl7ff3mf2rhblpc0000gn/T/RtmpA6DI6d/raster/r_tmp_2019-03-24_153031_6418_53713.grd 
 ## names       : alt_22 
 ## values      : -202, 2263  (min, max)</code></pre>
 <p>We can now project it to another projection, lets say Lambert Conic Conformal.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rgdal)
-<span class="kw">projection</span>(baja_california)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rgdal)
+<span class="kw">projection</span>(baja_california)</code></pre>
 <pre><code>## [1] &quot;+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">baja_lcc &lt;-<span class="st"> </span><span class="kw">projectRaster</span>( baja_california, <span class="dt">crs=</span><span class="st">&quot;+proj=lcc +lat_1=48 +lat_2=33 +lon_0=-100 +ellps=WGS84&quot;</span>)
-baja_lcc</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">baja_lcc &lt;-<span class="st"> </span><span class="kw">projectRaster</span>( baja_california, <span class="dt">crs=</span><span class="st">&quot;+proj=lcc +lat_1=48 +lat_2=33 +lon_0=-100 +ellps=WGS84&quot;</span>)
+baja_lcc</code></pre>
 <pre><code>## class       : RasterLayer 
 ## dimensions  : 1060, 878, 930680  (nrow, ncol, ncell)
 ## resolution  : 845, 935  (x, y)
@@ -1342,21 +1394,21 @@ baja_lcc</code></pre></div>
 ## names       : alt_22 
 ## values      : -202, 2205.154  (min, max)</code></pre>
 <p>These two projections influence the region as shown below.</p>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-78-1.png" width="672" /></p>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
 <p>As usual, there is probably a way to plot these values in <code>ggplot</code> to make the output just a little bit more awesome. Projections of data in <code>ggplot</code> displays can be manipulated by appending a <code>coord_*</code> object to the plot as we showed above. Here are two examples using a Mercator and azimuth equal area projection of the state maps.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 states &lt;-<span class="st"> </span><span class="kw">map_data</span>(<span class="st">&quot;state&quot;</span>)
 map &lt;-<span class="st"> </span><span class="kw">ggplot</span>( states, <span class="kw">aes</span>(<span class="dt">x=</span>long,<span class="dt">y=</span>lat,<span class="dt">group=</span>group))
 map &lt;-<span class="st"> </span>map <span class="op">+</span><span class="st"> </span><span class="kw">geom_polygon</span>( <span class="dt">fill=</span><span class="st">&quot;white&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>)
 map &lt;-<span class="st"> </span>map <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Longitude&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Latitude&quot;</span>)
-map <span class="op">+</span><span class="st"> </span><span class="kw">coord_map</span>(<span class="st">&quot;mercator&quot;</span>) </code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
-<p>Conversely, we can plot it using the equal area Azimuth projection</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">map <span class="op">+</span><span class="st"> </span><span class="kw">coord_map</span>(<span class="st">&quot;azequalarea&quot;</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
-<p>or fish-eye</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">map <span class="op">+</span><span class="st"> </span><span class="kw">coord_map</span>(<span class="st">&quot;fisheye&quot;</span>,<span class="dt">par=</span><span class="dv">3</span>)</code></pre></div>
+map <span class="op">+</span><span class="st"> </span><span class="kw">coord_map</span>(<span class="st">&quot;mercator&quot;</span>) </code></pre>
 <p><img src="LGDA_files/figure-html/unnamed-chunk-81-1.png" width="672" /></p>
+<p>Conversely, we can plot it using the equal area Azimuth projection</p>
+<pre class="sourceCode r"><code class="sourceCode r">map <span class="op">+</span><span class="st"> </span><span class="kw">coord_map</span>(<span class="st">&quot;azequalarea&quot;</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-82-1.png" width="672" /></p>
+<p>or fish-eye</p>
+<pre class="sourceCode r"><code class="sourceCode r">map <span class="op">+</span><span class="st"> </span><span class="kw">coord_map</span>(<span class="st">&quot;fisheye&quot;</span>,<span class="dt">par=</span><span class="dv">3</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-83-1.png" width="672" /></p>
 <p>or any other projection available listed in the <code>mapproject()</code> function.</p>
 </div>
 </div>
@@ -1375,16 +1427,16 @@ map <span class="op">+</span><span class="st"> </span><span class="kw">coord_map
 <div id="rasters-ggplot-1" class="section level3">
 <h3><span class="header-section-number">1.13.1</span> Rasters &amp; ggplot</h3>
 <p>If you like using <code>ggplot</code>, you can leverage its plotting abilities to work directly with raster data. Let’s look at the first biolayer and the traditional plotting of it (n.b., I’m using the <code>tidyverse</code> pipe characters here to pipe the output of the <code>raster()</code> function into the input of the <code>crop()</code>, we will see a lot more of this as we go forward).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
 <span class="kw">raster</span>(<span class="st">&quot;./spatial_data/bio1.tif&quot;</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">crop</span>( <span class="kw">extent</span>( <span class="kw">c</span>(<span class="op">-</span><span class="dv">115</span>,<span class="op">-</span><span class="dv">109</span>,<span class="dv">22</span>,<span class="dv">30</span>) ) ) -&gt;<span class="st"> </span>the_raster
   
-<span class="kw">plot</span>( the_raster )</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-83-1.png" width="672" /></p>
+<span class="kw">plot</span>( the_raster )</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-85-1.png" width="672" /></p>
 <p>Since ggplot works on data.frames, we need to turn the</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rasterToPoints</span>( the_raster ) <span class="op">%&gt;%</span><span class="st"> </span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rasterToPoints</span>( the_raster ) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">data.frame</span>() -&gt;<span class="st"> </span>df
-<span class="kw">summary</span>(df)</code></pre></div>
+<span class="kw">summary</span>(df)</code></pre>
 <pre><code>##        x                y              bio1      
 ##  Min.   :-115.0   Min.   :22.88   Min.   :120.0  
 ##  1st Qu.:-112.7   1st Qu.:26.69   1st Qu.:206.0  
@@ -1393,40 +1445,40 @@ map <span class="op">+</span><span class="st"> </span><span class="kw">coord_map
 ##  3rd Qu.:-110.0   3rd Qu.:29.05   3rd Qu.:235.0  
 ##  Max.   :-109.0   Max.   :30.00   Max.   :259.0</code></pre>
 <p>Since I now have a set of x, y, and <code>bio1</code> variables, we can now plot them but instead of points, we can use the <code>geom_tile()</code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df,<span class="kw">aes</span>(x,y,<span class="dt">fill=</span>bio1)) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_tile</span>() </code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-85-1.png" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df,<span class="kw">aes</span>(x,y,<span class="dt">fill=</span>bio1)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_tile</span>() </code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-87-1.png" width="672" /></p>
 <p>By default, <code>ggplot</code> attempts to make a square plot independent of the range of values on the x- and y- axes. However, our plot is intended to represent area on the ground where the scale for longitude is equal to the scale for latitude (n.b., not actually true but for this sized plot it is true enough).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df,<span class="kw">aes</span>(x,y,<span class="dt">fill=</span>bio1)) <span class="op">+</span><span class="st"> </span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df,<span class="kw">aes</span>(x,y,<span class="dt">fill=</span>bio1)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_tile</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">coord_equal</span>() <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Longitude&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Latitude&quot;</span>) </code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-86-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df,<span class="kw">aes</span>(x,y,<span class="dt">fill=</span>bio1)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Longitude&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Latitude&quot;</span>) </code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-88-1.png" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df,<span class="kw">aes</span>(x,y,<span class="dt">fill=</span>bio1)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_tile</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">coord_equal</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Longitude&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Latitude&quot;</span>)  <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">terrain.colors</span>(<span class="dv">7</span>))</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-87-1.png" width="672" /></p>
+<span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">terrain.colors</span>(<span class="dv">7</span>))</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-89-1.png" width="672" /></p>
 <p>As with most things in <code>ggplot</code>, you can customize the plot by layers or transformation or whatever to the plot. Here I make the range of values as degree celsius and change the legend and add a different color scheme.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df,<span class="kw">aes</span>(x,y,<span class="dt">fill=</span>bio1<span class="op">/</span><span class="fl">10.0</span>)) <span class="op">+</span><span class="st"> </span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df,<span class="kw">aes</span>(x,y,<span class="dt">fill=</span>bio1<span class="op">/</span><span class="fl">10.0</span>)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_tile</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">coord_equal</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">fill=</span><span class="st">&quot;Temperature (C)&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Longitude&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Latitude&quot;</span>)  <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">scale_fill_distiller</span>(<span class="dt">palette =</span> <span class="st">&quot;Spectral&quot;</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-88-1.png" width="672" /></p>
+<span class="st">  </span><span class="kw">scale_fill_distiller</span>(<span class="dt">palette =</span> <span class="st">&quot;Spectral&quot;</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-90-1.png" width="672" /></p>
 </div>
 <div id="ggmap" class="section level3">
 <h3><span class="header-section-number">1.13.2</span> ggmap</h3>
 <p>The ggplot2 library does a ton of stuff and it is probably in your best interests to become familiar with it at your earliest convience. For mapping, there is an associated package <code>ggmap</code> that will go and grab tiles for you and allow you to plot them in your current workflow. Here is an example of how it works.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggmap)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggmap)
 map &lt;-<span class="st"> </span><span class="kw">get_map</span>( <span class="dt">location =</span> <span class="kw">c</span>(<span class="op">-</span><span class="fl">111.3</span>, <span class="fl">26.0</span>) )
-<span class="kw">ggmap</span>(map)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-89-1.png" width="672" /></p>
+<span class="kw">ggmap</span>(map)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-91-1.png" width="672" /></p>
 <p>Alone, you pass it a centroid and it takes a default ‘zoom’ level for what you are doing. If you are looking at plotting stuff on top of that tile, then you will need to futz (that means play around with in Rodney vernacular) the value of the zoom parameter. Ranges for this parameter are dependent upon which map tile provider you are using. For <code>source=&quot;google&quot;</code> (the default at this time), they range from 3 (continental scale) to 21 (building scale). OpenStreetMaps (<code>source=&quot;osm&quot;</code>) limits the upper level to 10 and Stamen maps depend upon the type of map being displayed.</p>
 <p>Adding points onto an existing map is just like other ggplot operations. Notice how the points plotted are cropped to the extent of the underlying map.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggrepel)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggrepel)
 <span class="kw">library</span>(gstudio)
 <span class="kw">data</span>(arapat)
 coords &lt;-<span class="st"> </span><span class="kw">strata_coordinates</span>(arapat)
@@ -1434,15 +1486,15 @@ coords &lt;-<span class="st"> </span><span class="kw">strata_coordinates</span>(
 <span class="kw">ggmap</span>(map) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">x=</span>Longitude,<span class="dt">y=</span>Latitude), <span class="dt">data=</span>coords) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_label_repel</span>( <span class="kw">aes</span>(<span class="dt">x=</span>Longitude, <span class="dt">y=</span>Latitude, <span class="dt">label=</span>Stratum), <span class="dt">data=</span>coords) <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Longitude&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Latitude&quot;</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-90-1.png" width="672" /></p>
+<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Longitude&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Latitude&quot;</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-92-1.png" width="672" /></p>
 <p>For the full extent you’d have to make a new underlying map tile.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">population_map</span>(coords) <span class="op">%&gt;%</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">population_map</span>(coords) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">ggmap</span>()  <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">x=</span>Longitude,<span class="dt">y=</span>Latitude), <span class="dt">data=</span>coords) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_label_repel</span>( <span class="kw">aes</span>(<span class="dt">x=</span>Longitude, <span class="dt">y=</span>Latitude, <span class="dt">label=</span>Stratum), <span class="dt">data=</span>coords) <span class="op">+</span>
-<span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Longitude&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Latitude&quot;</span>)</code></pre></div>
-<p><img src="LGDA_files/figure-html/unnamed-chunk-91-1.png" width="672" /></p>
+<span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Longitude&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Latitude&quot;</span>)</code></pre>
+<p><img src="LGDA_files/figure-html/unnamed-chunk-93-1.png" width="672" /></p>
 <p><strong>Attention:</strong> Recently, google has changed its terms of service for map tile usage that impacts the use of ggmap if you are going to use their maps. They require you to register to get an API key to use the maps. This key is <em>your</em> key and you should not share it with anyone. You can find out more <a href="https://developers.google.com/maps/documentation/javascript/get-api-key">here</a>. For registering you will be given $200 montly credit, which translates into 100,000 static map calls per month. If you go over 100,000 map calls, you will be charged $1 per 1000 map calls. If your analyses are producing 100,000 map requests per month (e.g., a map call every 25 seconds for the entire 43,200 minutes in the month), then you will have to pay. For all intents and purposes, this is free to us. A <a href="https://mapsplatformtransition.withgoogle.com/calculator">calculator</a> is available if you are going to be doing some high-throughput mapping (we are asking for “static maps” in R). If you do not like registering for this, you can use <code>source=&quot;osm&quot;</code> or <code>source=&quot;stamen&quot;</code> for your plotting.</p>
 
 </div>
@@ -1506,7 +1558,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
+    var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');

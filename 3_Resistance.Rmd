@@ -36,7 +36,7 @@ These layers are provided in the <tt>data/dogwood</tt> folder as *.asc raster fi
 
 Resistance is a cost associated with movement across a landscape.  In the context of landscape genetics, we assume that this parameter is what is influencing connectivity.  As a raster, resistance is represented by the values stored in a raster.  A feature on the landscape may either promote or retard movement.  The greater the value, the more effects that may have on movement across the pixel.  The example below shows conifer canopy structure across the study area.  It can be that movement is hindered under the conifer canopy (left) *or* it could be restricted moving outside the conifer canopy (right).
 
-```{r echo=FALSE,fig.cap="Mirror resistance rasters based upon the presence of conifer canopy structure."}
+```{r}
 require(raster)
 pines <- raster("./data/dogwood/pines.asc")
 dfp <- data.frame( rasterToPoints(pines) )
@@ -48,11 +48,28 @@ names( dfn )[3] <- "pines"
 dfn <- dfn[ dfn$pines > 0 , ]
 dfn$Ratio <- "Pine 0 : Not Pine 1"
 df.pines <- rbind( dfp, dfn )
-p <- ggplot( df.pines, aes(x,y,fill=pines)) + geom_tile() 
-p <- p + coord_equal() + xlab("") + ylab("")
-p <- p + scale_fill_gradient(low="#f7fcfd",high="#00441b") 
-p + facet_grid(~Ratio )
 ```
+
+And now we can plot this using *tidyverse*.
+
+```{r eval=FALSE}
+library(tidyverse)
+```
+
+```{r echo=FALSE}
+suppressMessages(library(tidyverse))
+```
+
+as:
+
+```{r echo=FALSE,fig.cap="Mirror resistance rasters based upon the presence of conifer canopy structure."}
+df.pines %>%
+  ggplot( aes(x,y,fill=pines)) + geom_tile() + 
+  coord_equal() + xlab("") + ylab("") + 
+  scale_fill_gradient(low="#f7fcfd",high="#00441b") + 
+  facet_grid(~Ratio )
+```
+
 
 The data we use for parameterizing resistance rasters may come from many different sources.  The key here is that the proper set of features influencing connectivity and their individual interactions and resistance values are those that *best describe the spatial distribution of genetic variation*.  The genotypes and where they are located are the answer, resulting from the demographic processes we are trying to analyze.  Theory surrounding resistance derivations for connectivity are still being actively developed, so pay attention to the literature exciting developments are ahead.
 
@@ -125,7 +142,7 @@ As a last word of concern, you should also consider reducing the extent of your 
 A least cost path is the route between two points, say $A \to B$, whose length is minimal.  This is the *optimal* route across the landscape.  Organisms or vectors of gene exchange may, or may not, move across a landscape following an *optimal* path.
 
 ```{r lcp-example, echo=FALSE, fig.cap="Estimation algorithm for least-cost path distance.  The path chosen is the one with the shortest overall distance, or at least one of the paths with equally short overall distances."}
-knitr::include_graphics("../media/LCP.png")
+knitr::include_graphics("./media/LCP.png")
 ```
 
 One way to estimate distances in R, is through the use of the `gdistance` library.  In this approach, we define a transition object based upon:  
@@ -377,7 +394,18 @@ One of the most common approaches to evaluating the extent to which resistance d
 Z = \sum_{i=1}^N\sum_{j=1}^N x_{ij}*y_{ij}
 \]
 
-and then invokes the null hypothesis, $H_O:$*The values in the matrices are independent*.  If this is true then large values in $\mathbf{X}$ should be randomly associated with all the values in $\mathbf{Y}$.  However, if there is an association than large values in one matrix may be associated with large ones in the other (for a positive correlation) or small in one may be associated with large in another (for a negative correlation).  If $H_O$ is true, then any permutation of $\mathbf{X}$ and a re-estimation of $Z$ should produce values as large (or small) as the observed $Z$ value.  Sounds simple, no?  It also estimates a correlation coefficient, the default is a Pearson Product Moment though you can specify Spearman's $\rho$ or Kendall's $\tau$ as well. There are a few different implementations of the Mantel, the one I'm using below is the one from the *vegan* library.  Here is the documentation for the function that provides a bit more information.
+and then invokes the null hypothesis, $H_O:$*The values in the matrices are independent*.  If this is true then large values in $\mathbf{X}$ should be randomly associated with all the values in $\mathbf{Y}$.  However, if there is an association than large values in one matrix may be associated with large ones in the other (for a positive correlation) or small in one may be associated with large in another (for a negative correlation).  If $H_O$ is true, then any permutation of $\mathbf{X}$ and a re-estimation of $Z$ should produce values as large (or small) as the observed $Z$ value.  Sounds simple, no?  It also estimates a correlation coefficient, the default is a Pearson Product Moment though you can specify Spearman's $\rho$ or Kendall's $\tau$ as well. There are a few different implementations of the Mantel, the one I'm using below is the one from the *vegan* library.  
+
+
+```{r eval=FALSE}
+library(vegan)
+```
+
+```{r echo=FALSE}
+suppressMessages(library(vegan))
+```
+
+Here is the documentation for the function that provides a bit more information.
 
 <div class="scrollingbox"><pre>
 mantel {vegan}	R Documentation
@@ -468,9 +496,8 @@ Each distance matrix is in a single file, the name of which records the algorith
 
 In the following code, I loop through the files estimated using the least cost path approach (`pattern='lcp*'`).  For each file, I break apart the file name and record the feature type, the in cost, the out cost, the algorithm used to estimate distances, and the correlation.
 
-```{r}
+```{r warning=FALSE, error=FALSE, message=FALSE}
 lcp.files <- list.files("./data/dogwood/", pattern="lcp*", full.names = TRUE)
-library(vegan)
 df <- data.frame( File=lcp.files,
                   Feature=NA,
                   In=NA,
@@ -519,7 +546,7 @@ fit.mh
 
 In the previous example, we examined the correlation in only one feature at a time.  The partial Mantel test extends this approach to fit one feature and then estimate the conditional correlation of the second one on the genetic distances providing an indication of two-way relationships.  Using the same approach as before, we iterate through the remaining features and estimate the partial correlation coefficient after conditioning on the *mh* raster.
 
-```{r}
+```{r warning=FALSE, error=FALSE, message=FALSE}
 target <- lcp.files[ 34 ]
 remaining <- lcp.files[ -(27:34) ]
 dfp <- data.frame( File=remaining,
@@ -552,7 +579,7 @@ ggplot( dfp, aes(x=Ratio, y=Correlation, color=Feature)) + geom_line() + geom_po
 
 From these results, we would conclude that both *mh* and *cv* are the best features we examined.
 
-```{r}
+```{r warning=FALSE, error=FALSE, message=FALSE}
 load("data/dogwood/lcp.cv.1.10.rda")
 CV <- D
 fit <- mantel.partial(as.dist(G), as.dist(MH), as.dist(CV), permutations = 10000)
@@ -564,9 +591,14 @@ fit
 
 A direct extension of the Mantel test (in the same way a linear regression is an extension of a correlation) is are methods for multiple regression on distance matrices.  The most commonly used implementation is that provided by the *ecodist* library.
 
-```{r}
+```{r eval=FALSE}
 library(ecodist)
 ```
+
+```{r echo=FALSE}
+suppressMessages(library(ecodist))
+```
+
 
 The main difficulty in using multiple regression on distance (and Mantel as well) is to know the proper way to ascertain probabilities.  Both rely upon permutations approaches, though knowing what level or what combinations of data to permute becomes problematic for all but the most simplistic model specifications.  Here is the documentation for the MRM function, the one that actually fits the model and assesses the significance.
 
