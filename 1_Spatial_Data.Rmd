@@ -624,15 +624,12 @@ save( baja_california, file="baja_california.rda")
 
 This will save the raster object to file exactly like it is in your R session.  To load it back in you just use `load()` and it is returned just like it was.  The benefit to saving these as R objects is that you do not need to change it at all to pick up where you left off.
 
-
-
 You may also need to export the vector or raster data into a non-R format for external analyses.  A common format for vector data is the ubiquitous ESRI shapefile.  
 
 ```{r eval=FALSE}
 library(rgdal)
 writeOGR( obj=SPDF, dsn="spatial_data", layer="SpatialPolyExample", driver="ESRI Shapefile")
 ```
-
 
 For rasters, you use the `writeRaster()` function.  The file extension is used to determine the file format used and R saves it automatically.
 
@@ -1028,12 +1025,12 @@ summary( rho[ lower.tri(rho)])
 
 
 
-## Appendix - Other Plotting Tools
+## Other Plotting Tools {-}
 
 There are a bunch of other plotting tools that you can use for plotting and making maps.  Here I provide some additional examples.
 
 
-### Rasters & ggplot
+### Rasters & ggplot {-}
 
 If you like using `ggplot`, you can leverage its plotting abilities to work directly with raster data.  Let's look at the first biolayer and the traditional plotting of it (n.b., I'm using the `tidyverse` pipe characters here to pipe the output of the `raster()` function into the input of the `crop()`, we will see a lot more of this as we go forward).
 
@@ -1090,7 +1087,7 @@ ggplot(df,aes(x,y,fill=bio1/10.0)) +
 ```
 
 
-### ggmap
+### ggmap {-}
 
 The ggplot2 library does a ton of stuff and it is probably in your best interests to become familiar with it at your earliest convience.  For mapping, there is an associated package `ggmap` that will go and grab tiles for you and allow you to plot them in your current workflow.  Here is an example of how it works.
 
