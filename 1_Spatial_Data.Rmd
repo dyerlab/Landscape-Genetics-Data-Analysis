@@ -619,7 +619,7 @@ As all of these objects are R objects, they can be saved to disk using the `save
 There are many situations where you need to save a raster you've manipulated.  As these raster objects are R objects, you can save them directly to the file system using the `write()` as:
 
 ```{r eval=FALSE}
-write( baja_california, filename="baja_california.rda")
+save( baja_california, file="baja_california.rda")
 ```
 
 This will save the raster object to file exactly like it is in your R session.  To load it back in you just use `load()` and it is returned just like it was.  The benefit to saving these as R objects is that you do not need to change it at all to pick up where you left off.
