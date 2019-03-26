@@ -141,9 +141,6 @@ library(DT)
 
 strata_coordinates( arapat ) %>% 
   datatable(rownames=FALSE)
-
-#coords <- strata_coordinates( arapat )
-#datatable(coords, rownames = FALSE)
 ```
 
 Creating maps of locales are also such a common feature that *gstudio* has integration with online mapping providers, allowing you to grab some map tiles from Google, OSM, and other map providers and use them to overlay your data.  
