@@ -88,7 +88,7 @@ loci
 
 ### Loading External Data
 
-The most way to get genotypes into R is to load them from an external file.  In many labs, genotypic data is kept in a spreadsheet-like format (or `data.frame` in R), where:  
+The most common way to get genotypes into R is to load them from an external file.  In many labs, genotypic data is kept in a spreadsheet-like format (or `data.frame` in R), where:  
 
 - Each row of the data represent observations on a single individual.  This may include information other than genotypes such as spatial coordinates, sampling locale, internal ID number, etc.   
 - Each column represents a single kind of data measured across all observations.  May be missing observations, genotypes, or whatever.  
@@ -1030,8 +1030,8 @@ If the underlying mating patterns among subdivided populations restrict *gene fl
 To date, we've already used one of these parameters, when examining inbreeding.  Our $F$-statistic is the first demographic level.  Using this new terminology for heterozygosity, the inbreeding statistic is defined as: 
 
 \begin{aligned}
-F_{IS} &= \frac{H_S - H_I}{H_S} \\
-& = 1 - \frac{H_I}{H_S}
+F_{IS}  &= \frac{H_S - H_I}{H_S} \\
+        & = 1 - \frac{H_I}{H_S}
 \end{aligned}
 
 where the subscripts on the parameters reveal the sampling level being used.  In this case, the subscripts on $F_{IS}$ stand for “inbreeding of _I_ndividuals relative to the _S_ubpopulation they are sampled."  The values of this parameter are positive when we see less heterozygotes than expected, and can be negative when we see more heterozygotes than expected under HWE.  This parameter makes particular sense in light of unknown subdivision in populations, the Wahlund Effect discussed earlier.  
@@ -1221,7 +1221,7 @@ Taken as a whole, the distance among all N individuals can be represented as a p
 knitr::include_graphics("./media/amova_D.png")
 ```
 
-which is symmetric ($\delta_{ij}^2 = \delta_{ji}^2) and has zero squared distance down the diagonal.  This can be evaluated as an Analysis of Variance by decomposing the squared distance values into the Total Sums of Squared Distances
+which is symmetric ($\delta_{ij}^2 = \delta_{ji}^2$) and has zero squared distance down the diagonal.  This can be evaluated as an Analysis of Variance by decomposing the squared distance values into the Total Sums of Squared Distances
 
 \[
 SSD_{T} = \frac{\sum_{i=1}^N\sum_{j=1}^N\delta_{ij}^2}{2N-1}
@@ -1287,19 +1287,12 @@ Which means that roughly `r print(PhiST*100,digits=3)`% of the genetic variation
 
 The estimation of genetic structure is a fundamental endeavor in population genetics that at times can be given a bit more weight than it may warrant.  These parameters are simply estimates of a magnitude of structure in relation to either the degree to which populations have gone to fixation or as a statistical decomposition of raw variation.  The important component here is that there are a lot of ways that a set of population histories may result in the same amount of genetic variation.  The important point here is that simply looking at the magnitude of variation among strata does not allow us to differentiate among alternative demographic histories.  
 
-
-
-
 ## Questions
-
 
 1. Using the *arapat* data set, create a map of allele frequencies for the loci "EF" an "ZMP".  Are there patterns in allele frequencies across the landscape that suggest spatial structuring?
 
-2. Hardy-Weinberg Equilibrium assumes that the genotype frequencies at a locus are dictated only by the allele frequencies.  As such, test the null hypothesis $H_O: ZMP is in HWE"$ using the $\chi^2$ approximation.
+2. Hardy-Weinberg Equilibrium assumes that the genotype frequencies at a locus are dictated only by the allele frequencies.  As such, test the null hypothesis $H_O: ZMP \; is \; in \; HWE"$ using the $\chi^2$ approximation.
 
 3. Create a plot of allele frequencies for the LTRS locus allele "01" along Latitude.  Does this help interpret spatial structure.
 
 4. Partition out the populations in the *arapat* data set into those with `Species=="Peninsula"` and `Species=="Cape"` and perform an analysis of molecular variance on them individually.  Which group of populations has more genetic structure?
-
-
-
