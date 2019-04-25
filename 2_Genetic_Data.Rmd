@@ -1263,7 +1263,7 @@ and then using the `amova()` function from the pegas library (there are many dif
 
 ```{r message=FALSE,warning=FALSE, error=FALSE}
 library(pegas)
-fit <- amova( D ~ pop, nperm=1000 )
+fit <- amova( D ~ pop, nperm=1000, is.squared=TRUE )
 fit
 ```
 
