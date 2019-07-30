@@ -22,7 +22,8 @@
 # library(devtools)
 # source_url( url )
 
-files_from_cran <- c("cowplot",
+files_from_cran <- c("cowplot",                     
+                     "cartography",
                      "DT",
                      "ecodist",
                      "devtools",
@@ -32,6 +33,7 @@ files_from_cran <- c("cowplot",
                      "ggplot2",
                      "ggrepel",
                      "igraph",
+                     "leaflet",
                      "lme4",
                      "lpSolve",
                      "kinship2",
@@ -52,6 +54,7 @@ files_from_cran <- c("cowplot",
                      "rmarkdown",
                      "SDMTools",
                      "sp",
+                     "sf",
                      "tidyverse",
                      "vegan")
 
