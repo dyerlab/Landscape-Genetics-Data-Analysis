@@ -2,8 +2,9 @@
 date: "2021-01-24"
 linkTitle: Logistics
 summary: Logistics and background information for a applied landscape genetics workshop.
-title: "\U00002699 Pre-Workshop Activities"
+title: "\U00002699 Regression Based Models"
 type: book
+weight: 16
 ---
 
 {{< figure src="https://live.staticflickr.com/65535/51022901556_a26d260297_o_d.png" >}}

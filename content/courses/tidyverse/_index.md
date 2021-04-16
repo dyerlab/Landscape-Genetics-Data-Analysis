@@ -1,9 +1,10 @@
 ---
-date: "2021-01-02"
+date: "2021-01-13"
 linkTitle: Tidyverse
-summary: Base sk.
+summary: The `R` ecosystem provides a wealth of tools to help you effectively manipulate ecological, spatial, and genetic data.
 title: "\U00002699 Effective Data Manipulation"
 type: book
+weight: 4
 ---
 
 {{< figure src="https://live.staticflickr.com/65535/51022901556_a26d260297_o_d.png" >}}

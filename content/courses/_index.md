@@ -2,13 +2,18 @@
 header:
   caption: ""
   image: ""
-title: Lectures
+title: Overview
 type: page
+math: true
+content:
+  count: 20 
 ---
 
 This course examines the methodologies utilized in the pursuit of research self-identifying as landscape genetics—an analysis of how ecological, vegetation, anthropogenic and topographic context influences genetic connectivity and structure in both natural and modified populations.  This topic uses spatio-ecological data analyses to predict genetic characteristics of existing—and even potential structure of future—orgnamsimal populations.  This course is intended to help population geneticists learn landscape ecological approaches that may be impacting current movement, connectivity, and strucgture as well as spatial ecologists who know little about population genetic  structure and microevolutionary processes.  
 
 You **must** have a seasoned background in R for this course.
+
+---
 
 ## Learning Objectives
 
@@ -32,6 +37,13 @@ where the left side of this equation ($G$) represents the spatial distribution a
 - Decide which set of {{<hl>}}statistical approaches{{</hl>}} are most appropriate to examine at-site, around-site, and between-site influences on genetic structure and connectivity.
 - Be able to present results in a way that {{<hl>}}does not suck{{</hl>}}.
 
+---
 
-# Lectures
+## Content
+
+The items below are 
+
+
+
+
 

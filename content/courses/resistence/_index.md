@@ -1,9 +1,10 @@
 ---
-date: "2021-01-24"
+date: "2021-01-04"
 linkTitle: Resistance Models
 summary: Resistance models were a common part of the genesis of landscape genetic infrences.
 title: "Resistance is (not) futile \U000025A0 "
 type: book
+weight: 14
 ---
 
 

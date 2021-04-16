@@ -1,5 +1,5 @@
 ---
-date: "2021-01-08"
+date: "2021-01-15"
 title: Theory
 type: book
 weight: 20

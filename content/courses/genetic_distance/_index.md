@@ -1,9 +1,10 @@
 ---
-date: "2021-01-24"
+date: "2021-01-06"
 linkTitle: Logistics
 summary: Logistics and background information for a applied landscape genetics workshop.
-title: "\U00002699 Pre-Workshop Activities"
+title: "\U00002699 Genetic Distance"
 type: book
+weight: 12
 ---
 
 {{< figure src="https://live.staticflickr.com/65535/51022901556_a26d260297_o_d.png" >}}

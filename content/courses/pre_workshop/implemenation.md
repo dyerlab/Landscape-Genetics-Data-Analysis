@@ -1,5 +1,5 @@
 ---
-date: "2021-01-06"
+date: "2021-01-15"
 highlight: true
 title: Implementation
 type: book

@@ -1,9 +1,10 @@
 ---
-date: "2021-01-24"
+date: "2021-01-10"
 linkTitle: Raster Data 
 summary: Raster man!
-title: "Continuously distributed data in Rasters \U00002699 "
+title: "\U00002699 Continuously distributed data in Rasters"
 type: book
+weight: 7
 ---
 
 {{< figure src="https://live.staticflickr.com/65535/51022901556_a26d260297_o_d.png" >}}

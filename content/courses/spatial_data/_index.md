@@ -1,9 +1,10 @@
 ---
-date: "2021-01-24"
+date: "2021-01-12"
 linkTitle: Spatial Data
 summary: Working with geospatial location data has a set of unique challenges associated with it.  In this topic, we explore how spatial data is encoded, how we can translate between representations, and how to effectivlty viaualize and work with point-based data types.
 title: "\U00002699 Quantifying Where"
 type: book
+weight: 5
 ---
 
 {{< figure src="https://live.staticflickr.com/65535/51022901556_a26d260297_o_d.png" >}}
