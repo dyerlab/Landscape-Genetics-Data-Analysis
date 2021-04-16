@@ -20,13 +20,12 @@ twitter: ''
 
 # Contact (edit or remove options as required)
 
-email: test@example.org
+email: rodney.dyer@gmail.com
 phone: 888 888 88 88
 address:
-  street: 450 Serra Mall
-  city: Stanford
-  region: CA
-  postcode: '94305'
+  city: Richmond
+  region: VA
+  postcode: '23284'
   country: United States
   country_code: US
 coordinates:
@@ -77,8 +76,6 @@ address_format: en-us
 highlight: true
 highlight_languages:
   - r
-  - python
-  - latex
 math: false
 diagram: false
 privacy_pack: false
